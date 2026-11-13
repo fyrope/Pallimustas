@@ -389,7 +389,7 @@
      * Optional summary and description text is shown below the equipment name.
      * Configure character titles and inventory as [{ name, description }].
      * Weapons use attacks: [{ id, name, stat, modifier }]; attack amounts include matching active/passive ability and racial-gift statEffects.
-     * Tag an ability with "attack" to show its attack buttons. Configure attacks: [{ id, name, stats: ["physicalAttack", "magic"], modifier }] to add those stats together; a tagged ability without attacks defaults to physicalAttack.
+     * Tag an ability with "attack" to show its attack buttons. Configure attacks: [{ id, name, stats: ["physicalAttack", "magic"], modifier }] to add those stats together; statMode: "highest" uses only the stat with the highest average formula. A tagged ability without attacks defaults to physicalAttack.
      * Ability attacks use the same formula options as weapons (damageMultiplier and damageDieSides), but do not spend the ability's resources or trigger its cooldown.
      * Set damageMultiplier on a weapon (for example 0.75) to scale the selected stat and its bonuses, rounding up after the roll, before adding the weapon modifier.
      * Set damageDieSides on a weapon to convert every die in its attack stat, stat bonuses, and weapon modifier to that die size before damage scaling. Flat bonuses are unchanged.
@@ -638,11 +638,16 @@
           { id: "giorn-god-striking-fist", name: "God Striking Fist", category: "Dimension", summary: "Make a hard fast punch extremely powerful punch.", description: "Make a hard, fast punch. Time and space manipulation will not function in the vicinity while the punch is being swung. Damage for this ability is double your attack and magic attack combined. Cooldown is reduced based on the condition of the enemy after the attack. More resilient enemies result in a shorter cooldown time. An amount of stamina and mana is refunded based on the condition of the enemy. A sufficiently resilient enemy may trigger a refund of stamina and mana greater than the initial cost.", mana: "XX", stamina: "XX", cooldown: 6666, tags: ["Dimension", "Special Attack", "attack"],
             attacks: [{ id: "god-striking-fist-punch", name: "Punch", stats: ["physicalAttack", "magic"] }]
           },
-          { id: "giorn-dimensional-blade", name: "Dimensional Blade", category: "Dimension", summary: "summons a dimensional sword that increases your damage.", description: "Summon a sword made of black lightning lined in silver; it can cut through almost anything. +2D8 extra with your higher attack stat", mana: 20, stamina: 0, cooldown: 0, tags: ["dimension", "conjuration", "attack"],
-          attacks: [{ id: "god-striking-fist-punch", name: "Punch", stats: ["physicalAttack", "magic"], statmode: "highest" }]
+          { id: "giorn-dimensional-blade", name: "Dimensional Blade", category: "Dimension", summary: "Summon a dimensional sword that adds 2D8 to your higher attack stat.", description: "Summon a sword made of black lightning lined in silver; it can cut through almost anything. Its slash uses whichever is higher, Physical Attack or Magic, and adds 2D8.", mana: 20, stamina: 0, cooldown: 0, tags: ["dimension", "conjuration", "attack"],
+          attacks: [{ id: "dimensional-blade-slash", name: "Dimensional Slash", stats: ["physicalAttack", "magic"], statMode: "highest", modifier: "2D8" }]
           },
-          { id: "giorn-echo-strike", name: "Echo Strike", category: "Combat", summary: "A false swing distracts before the real blow lands.", description: "A false swing distracts before the real blow lands.", mana: 12, stamina: 18, cooldown: 2, tags: ["echo", "illusion"] },
-          { id: "giorn-hunters-mark", name: "Hunter's Mark", category: "Combat", summary: "Mark a target and press the attack with relentless precision.", description: "Mark a target and press the attack with relentless precision.", mana: 10, stamina: 20, cooldown: 2, tags: ["hunger", "blood"] },
+          { id: "giorn-dimensional-transfiguration", name: "Dimensional Transfiguration ", category: "Dimension", summary: "You may switch your physical and magical attributes during a long rest.", description: "You may switch your physical and magical attributes during a long rest and get a temporary 1 hour 1D8 buff to both stats which can be extended by 30mins during a short rest.", mana: 0, stamina: 0, cooldown: 0, tags: ["Dimension", "Special Ability", "Buff"], statEffects: [
+            { id: "dimensional-transfiguration-physical", stat: "physicalAttack", bonus: "1D8", duration: 1, target: "self" },
+            { id: "dimensional-transfiguration-magic", stat: "magic", bonus: "1D8", duration: 1, target: "self" },
+            { id: "dimensional-transfiguration-physical-resistance", stat: "damageResistance", bonus: "1D8", duration: 1, target: "self" },
+            { id: "dimensional-transfiguration-magic-resistance", stat: "magicResistance", bonus: "1D8", duration: 1, target: "self" }
+          ] },
+          { id: "giorn-Reaper-Hand", name: "Hand of the Reaper", category: "Dimension", summary: "expand your reach to 2 spaces through a semi-substantial arm.", description: "Conjure up to 2 highly flexible semi-substantial shadow-arms that can extend or shrink up to 2 spaces. Conjured items can be conjured into the shadow hand. Can be used to make melee special attacks. Special attacks made using the arm inflict [Creeping Death] and [Rigor Mortis].", mana: 6, stamina: 0, cooldown: 0, activeMode: "toggle", upkeep: { mana: 6 }, tags: ["Conjuration", "Disease", "Magic", "Holy"] },
           { id: "giorn-vanishing-cut", name: "Vanishing Cut", category: "Combat", summary: "Slice through the air and leave a trail of illusionary blades.", description: "Slice through the air and leave a trail of illusionary blades.", mana: 16, stamina: 24, cooldown: 2, tags: ["echo", "illusion"] },
           { id: "sera-quickblood", name: "Quickblood", category: "Technique", description: "Spend a burst of vitality to sharpen your reflexes.", mana: 4, stamina: 16, cooldown: 2, tags: ["blood", "movement"] },
           { id: "sera-mist-mend", name: "Mist Mend", category: "Support", description: "Wrap a companion in cool mist that eases their wounds.", mana: 18, stamina: 0, cooldown: 2, tags: ["mist", "healing"] },
@@ -785,6 +790,14 @@
         name: "Subjugating Toxin",
         description: "Anyone with this affliction has -1 reflexes, wears off after 1 turn.",
         statEffects: [{ stat: "reflexes", bonus: "-1", perStack: true }]
+      },
+      "creeping death": {
+        name: "Creeping Death",
+        description: "Inflicts 1/s necrotic damage until the disease is cleansed. Additional instances have a cumulative effect."
+      },
+      "rigor mortis": {
+        name: "Rigor Mortis",
+        description: "Penalty to the [Speed] and [Recovery] attributes. Additional instances have a cumulative effect. Each time a new instance is inflicted, it deals 2 necrotic damage for each existing instance."
       }
     };
     const STORAGE_KEY = "pallimustas-campaign-v1";
@@ -1031,33 +1044,32 @@
       };
     }
 
+    function expectedDiceFormulaValue(formula) {
+      return formula.flat + [...formula.dice.entries()]
+        .reduce((total, [sides, count]) => total + count * (sides + 1) / 2, 0);
+    }
+
     function equipmentAttackResult(character, item, attack) {
       const multiplier = attack.damageMultiplier ?? item.damageMultiplier ?? 1;
       if (!Number.isFinite(multiplier) || multiplier <= 0) return null;
       const stats = attack.stats === undefined ? [attack.stat] : attack.stats;
       if (!Array.isArray(stats) || !stats.length || stats.some((stat) => typeof stat !== "string" || !Object.hasOwn(character.stats, stat))) return null;
+      const statMode = attack.statMode ?? attack.statmode;
+      if (statMode !== undefined && statMode !== "highest") return null;
 
       const configuredDieSides = attack.damageDieSides ?? item.damageDieSides;
       const transformDice = configuredDieSides !== undefined;
       const hasWeaponModifier = attack.modifier !== undefined && attack.modifier !== null && String(attack.modifier).trim() !== "";
       const rawWeaponFormula = hasWeaponModifier ? parseDiceFormula(attack.modifier) : { dice: new Map(), flat: 0 };
       if (!rawWeaponFormula) return null;
-      const totalStatFormula = { dice: new Map(), flat: 0 };
+      const statFormulas = [];
       for (const stat of stats) {
         const rawStatFormula = parseDiceFormula(character.stats[stat]);
         const statFormula = rawStatFormula && transformDice
           ? changeDiceSides(rawStatFormula, configuredDieSides)
           : rawStatFormula;
         if (!statFormula) return null;
-        for (const [sides, count] of statFormula.dice) {
-          totalStatFormula.dice.set(sides, (totalStatFormula.dice.get(sides) || 0) + count);
-        }
-        totalStatFormula.flat += statFormula.flat;
-      }
-      const weaponFormula = transformDice ? changeDiceSides(rawWeaponFormula, configuredDieSides) : rawWeaponFormula;
-      if (!weaponFormula) return null;
-
-      for (const stat of stats) {
+        const totalStatFormula = { dice: new Map(statFormula.dice), flat: statFormula.flat };
         for (const modifier of getStatModifiers(character, stat, false)) {
           const rawModifier = parseDiceFormula(modifier.bonus);
           const parsed = rawModifier && transformDice
@@ -1069,7 +1081,24 @@
           }
           totalStatFormula.flat += parsed.flat;
         }
+        statFormulas.push({ stat, formula: totalStatFormula });
       }
+      const selectedStatFormulas = statMode === "highest"
+        ? [statFormulas.reduce((highest, current) =>
+          expectedDiceFormulaValue(current.formula) > expectedDiceFormulaValue(highest.formula)
+            ? current
+            : highest
+        )]
+        : statFormulas;
+      const totalStatFormula = { dice: new Map(), flat: 0 };
+      for (const { formula } of selectedStatFormulas) {
+        for (const [sides, count] of formula.dice) {
+          totalStatFormula.dice.set(sides, (totalStatFormula.dice.get(sides) || 0) + count);
+        }
+        totalStatFormula.flat += formula.flat;
+      }
+      const weaponFormula = transformDice ? changeDiceSides(rawWeaponFormula, configuredDieSides) : rawWeaponFormula;
+      if (!weaponFormula) return null;
       const scaled = { dice: new Map(), flat: 0 };
       for (const [sides, count] of totalStatFormula.dice) {
         scaled.dice.set(sides, Math.ceil(count * multiplier - Number.EPSILON * Math.abs(count * multiplier) * 4));
@@ -1082,7 +1111,8 @@
 
       return {
         amount: formatDiceFormula(scaled),
-        weaponModifier: hasWeaponModifier ? formatDiceFormula(weaponFormula) : ""
+        weaponModifier: hasWeaponModifier ? formatDiceFormula(weaponFormula) : "",
+        selectedStats: selectedStatFormulas.map(({ stat }) => stat)
       };
     }
 
@@ -1143,9 +1173,13 @@
     function equipmentAttackSummary(character, item, attack) {
       const result = equipmentAttackResult(character, item, attack);
       if (!result) return "Invalid damage formula";
-      return result.weaponModifier
-        ? `${result.amount} (includes ${item.name} ${result.weaponModifier})`
-        : result.amount;
+      const highestStat = (attack.statMode ?? attack.statmode) === "highest"
+        ? `highest stat: ${result.selectedStats.map(statDisplayName).join(", ")} · `
+        : "";
+      const modifier = result.weaponModifier
+        ? ` (includes ${item.name} ${result.weaponModifier})`
+        : "";
+      return `${highestStat}${result.amount}${modifier}`;
     }
 
     function isValidStatEffect(effect, character, isToggleable = false) {
