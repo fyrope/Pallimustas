@@ -462,7 +462,7 @@
             { id: "sanguine-horror-stamina", resource: "stamina", amount: 6, target: "self" }
           ] },
           { id: "bob-mirage-step", name: "Mirage Step", category: "Doppelganger", summary: "Move instantly to a nearby location, leaving an afterimage.", description: "Move instantly to a nearby location, leaving an afterimage. Can be used twice, with one use regained every 6 turns after it is spent. When enemies attack an afterimage, they are trapped in a short lived illusion.", mana: 10, stamina: 10, cooldown: 0, charges: 2, recharge: 6, tags: ["Special Ability", "Dimension", "illusion", "movement"], enhancements: [
-            { cooldownReduction: 1 }
+            { rechargeReduction: 1 }
           ] },
           { id: "bob-counterfeit-combatant", name: "Counterfeit Combatant", category: "Doppelganger", summary: "damage increases by 2d10s", description: "Grow to a large form(2x2) and gain temporary proficiency with armour and melee weapons. Your maximum stamina increases by 50, your damage is increased by 2d10s, your damage resistance is increased by 1D10 and gain an extra +6 to stamina recovery.", mana: 60, stamina: 0, cooldown: 3600, tags: ["Special Ability", "Shapeshift", "Buff", "Attribute-Increasing"], statEffects: [
             { id: "counterfeit-attack", stat: "physicalAttack", bonus: "2D10", duration: 10, target: "self" },
@@ -2724,7 +2724,11 @@
       if (hasCharges) {
         progress.chargeRecharges ??= {};
         progress.chargeRecharges[stateKey] ??= [];
-        progress.chargeRecharges[stateKey].push(ability.recharge);
+        const rechargeReduction = (ability.enhancements || []).reduce((total, enhancement) => total + ( Number.isSafeInteger(enhancement?.rechargeReduction) && enhancement.rechargeReduction > 0 ? enhancement.rechargeReduction : 0 ), 0 );
+
+progress.chargeRecharges[stateKey].push(
+  Math.max(1, ability.recharge - rechargeReduction)
+);
       }
       if (ability.crystalSummon) {
         progress.crystals ??= {};
