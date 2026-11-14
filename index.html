@@ -462,7 +462,7 @@
             { id: "sanguine-horror-stamina", resource: "stamina", amount: 6, target: "self" }
           ] },
           { id: "bob-mirage-step", name: "Mirage Step", category: "Doppelganger", summary: "Move instantly to a nearby location, leaving an afterimage.", description: "Move instantly to a nearby location, leaving an afterimage. Can be used twice, with one use regained every 6 turns after it is spent. When enemies attack an afterimage, they are trapped in a short lived illusion.", mana: 10, stamina: 10, cooldown: 0, charges: 2, recharge: 6, tags: ["Special Ability", "Dimension", "illusion", "movement"], enhancements: [
-            { cooldownReductions: 1 }
+            { cooldownReduction: 1 }
           ] },
           { id: "bob-counterfeit-combatant", name: "Counterfeit Combatant", category: "Doppelganger", summary: "damage increases by 2d10s", description: "Grow to a large form(2x2) and gain temporary proficiency with armour and melee weapons. Your maximum stamina increases by 50, your damage is increased by 2d10s, your damage resistance is increased by 1D10 and gain an extra +6 to stamina recovery.", mana: 60, stamina: 0, cooldown: 3600, tags: ["Special Ability", "Shapeshift", "Buff", "Attribute-Increasing"], statEffects: [
             { id: "counterfeit-attack", stat: "physicalAttack", bonus: "2D10", duration: 10, target: "self" },
@@ -1243,6 +1243,33 @@
       return [...(ability.tags || []), ...(configuration?.tags || [])]
         .some((tag) => typeof tag === "string" && expectedTags.has(tag.toLowerCase()));
     }
+
+    function getEnhancedAbilityCooldown(character, ability, configuration, cooldown) {
+      if (!Number.isSafeInteger(cooldown) || cooldown < 0) return cooldown;
+
+      const enhancements = configuration.enhancements || ability.enhancements || [];
+      const reduction = enhancements.reduce((total, entry) =>
+        total + (Number.isSafeInteger(entry?.cooldownReduction) && entry.cooldownReduction > 0
+          ? entry.cooldownReduction
+          : 0), 0);
+
+      if (!reduction) return cooldown;
+
+      const qualifies = CHARACTERS.some((enhancerCharacter) =>
+        allCharacterAbilities(enhancerCharacter).some((enhancer) =>
+          [enhancer, ...(enhancer.variants || [])].some((enhancerConfiguration) => {
+            const rule = enhancerConfiguration.enhancement;
+            return enhancerConfiguration.tags?.includes("enhancement") &&
+              isPassiveConfiguration(enhancerConfiguration) &&
+              rule &&
+              abilityHasAnyTag(ability, rule.targetTags, configuration) &&
+              statEffectTargets(rule, enhancerCharacter).includes(character.id);
+          })
+        )
+      );
+
+  return qualifies ? Math.max(0, cooldown - reduction) : cooldown;
+}
 
     function getAbilityCostModifiers(character, resource, targetAbility = null) {
       return CHARACTERS.flatMap((sourceCharacter) =>
@@ -2223,6 +2250,7 @@
       const manaEffect = getEffectiveAbilityCost(character, "mana", manaCost, selectedAbility);
       const staminaEffect = getEffectiveAbilityCost(character, "stamina", staminaCost, selectedAbility);
       const cooldown = progress.cooldowns[stateKey] || 0;
+      const displayCooldown = isConfigurableAbilityValue(selectedAbility.cooldown) ? selectedAbility.cooldown : getEnhancedAbilityCooldown(character, ability, selectedAbility, selectedAbility.cooldown ?? 0);
       const activeTurns = progress.activeTurns[stateKey] || 0;
       const chargeRecharges = progress.chargeRecharges?.[stateKey] || [];
       const hasCharges = Number.isInteger(selectedAbility.charges) && selectedAbility.charges > 0 &&
@@ -2276,9 +2304,9 @@
         }).join("")
         : invalidUpkeep ? '<span class="cost-chip cooldown">Invalid upkeep configuration</span>' : "";
       const costs = passive ? '<span class="cost-chip passive-chip">Passive</span>' : [
-        isConfigurableAbilityValue(manaCost) ? `<span class="cost-chip"${manaTooltip}>◈ Mana: set on use${manaEffect.reduction ? ` (−${manaEffect.reduction})` : ""}</span>` : manaCost > 0 ? `<span class="cost-chip"${manaTooltip}>◈ ${manaEffect.cost} mana${manaEffect.reduction ? ` (was ${manaCost})` : ""}</span>` : "",
-        isConfigurableAbilityValue(staminaCost) ? `<span class="cost-chip stamina"${staminaTooltip}>⌁ Stamina: set on use${staminaEffect.reduction ? ` (−${staminaEffect.reduction})` : ""}</span>` : staminaCost > 0 ? `<span class="cost-chip stamina"${staminaTooltip}>⌁ ${staminaEffect.cost} stamina${staminaEffect.reduction ? ` (was ${staminaCost})` : ""}</span>` : "",
-        isConfigurableAbilityValue(selectedAbility.cooldown) ? '<span class="cost-chip cooldown">↻ Cooldown: set on use</span>' : selectedAbility.cooldown > 0 ? `<span class="cost-chip cooldown">↻ ${selectedAbility.cooldown} turn${selectedAbility.cooldown === 1 ? "" : "s"} CD</span>` : "",
+        isConfigurableAbilityValue(manaCost) ? `<span class="cost-chip"${manaTooltip}>◈ Mana: set on use${manaEffect.reduction ? ` (-${manaEffect.reduction})` : ""}</span>` : manaCost > 0 ? `<span class="cost-chip"${manaTooltip}>◈ ${manaEffect.cost} mana${manaEffect.reduction ? ` (was ${manaCost})` : ""}</span>` : "",
+        isConfigurableAbilityValue(staminaCost) ? `<span class="cost-chip stamina"${staminaTooltip}>⌁ Stamina: set on use${staminaEffect.reduction ? ` (-${staminaEffect.reduction})` : ""}</span>` : staminaCost > 0 ? `<span class="cost-chip stamina"${staminaTooltip}>⌁ ${staminaEffect.cost} stamina${staminaEffect.reduction ? ` (was ${staminaCost})` : ""}</span>` : "",
+        isConfigurableAbilityValue(displayCooldown) ? '<span class="cost-chip cooldown">↻ Cooldown: set on use</span>' : displayCooldown > 0 ? `<span class="cost-chip cooldown">↻ ${displayCooldown} turn${displayCooldown === 1 ? "" : "s"} CD</span>`: "",
         selectedAbility.duration > 0 ? `<span class="cost-chip active-chip">◉ ${selectedAbility.duration} turn${selectedAbility.duration === 1 ? "" : "s"} active</span>` : "",
         toggleActive ? '<span class="cost-chip active-chip">◉ Active until turned off</span>' : "",
         manaTideChip,
