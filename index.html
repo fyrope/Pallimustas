@@ -686,11 +686,11 @@
           ] }
         ],
         equipment: [
-          { id: "giorn-champion-sabre", name: "Champion Sabre", type: "Weapon", summary: "A sabre that a fabled champion once used.", description: "Can channel conjured weapons to gain their effects, reflexes increased by +2. Hit \“Champion\'s Sabre\” against \“Champion\'s Aspis\” to lure the enemy towards you", statEffects: 
-          { id: "champion-sabre", stat: "reflexes", bonus: "+2", target: "self" }, attacks: [
+          { id: "giorn-champion-sabre", name: "Champion Sabre", type: "weapon", summary: "A sabre that a fabled champion once used.", description: "Can channel conjured weapons to gain their effects, reflexes increased by +2. Hit \“Champion\'s Sabre\” against \“Champion\'s Aspis\” to lure the enemy towards you(2D8 modifier in the attack equation is from dimensional blade channeling)", statEffects: 
+          [{ id: "champion-sabre", stat: "reflexes", bonus: "+2", target: "self" }], attacks: [
             { id: "standard", name: "Standard Attack", stats: ["physicalAttack", "magic"], statMode: "highest", modifier: "2D8" } ] },
           { id: "giorn-champion-aspis", name: "Champion Aspis", type: "Shield", summary: "The shield that protected the champion from harm.", description: "Transfer an amount of targetable damage to a willing ally within 1 space, Damage Resistance is increased by 1D8 and you gain instances of [Resistant] over time", statEffects: 
-          { id: "champion-aspis", stat: "damageResistance", bonus: "+1D8", target: "self" } }
+          [{ id: "champion-aspis", stat: "damageResistance", bonus: "+1D8", target: "self" }] }
         ],
         inventory: [
           { id: "giorn-lessor-miracle-potion", name: "Lesser Miracle Potion", description: "A potion that completely restores health, mana and stamina. Only works on iron rankers and below."},
