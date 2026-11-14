@@ -502,29 +502,26 @@
         { id: "bob-money", name: "Money", description: "500 Gold spirit coints, can eat one to temporarily increase power levels for one turn but has debilitating effects on next turn." }
         ],
         racialGifts: [
-          { id: "bob-strengthened-flesh", name: "Strengthened Flesh", summary: "Increased damage resistance.", description: "Your Smoulder ancestry and flesh powers have mutated you into a combination of both; you have increased damage resistance.", stamina: 0, mana: 0, cooldown: 0, duration: 0, tags: ["Racial Gift", "elemental", "Buff", "passive"], statEffects: [
+          { id: "bob-strengthened-flesh", name: "Strengthened Flesh", summary: "Increased damage resistance.", description: "Your Smoulder ancestry and flesh powers have mutated you into a combination of both; you have increased damage resistance.", stamina: 0, mana: 0, cooldown: 0, duration: 0, tags: ["Racial Gift", "Elemental", "Buff", "passive"], statEffects: [
             { id: "strengthened-flesh-resistance", stat: "damageResistance", bonus: "1D8", target: "self" }
           ] },
           { id: "bob-spellborn", name: "Spellborn", summary: "Your spells have increased effect.", description: "Your spells damage is increased by 1D8.", stamina: 0, mana: 0, cooldown: 0, duration: 0, tags: ["Racial Gift", "Buff", "passive"], statEffects: [
             { id: "spellborn-effect", stat: "magic", bonus: "1D8", target: "self" }
           ] },
-          { id: "bob-earthborn", name: "Earthborn", summary: "Increased damage resistance.", description: "Increased damage resistance by 1D8.", stamina: 0, mana: 0, cooldown: 0, duration: 0, tags: ["Racial Gift", "elemental", "Buff", "passive"], statEffects: [
+          { id: "bob-earthborn", name: "Earthborn", summary: "Increased damage resistance.", description: "Increased damage resistance by 1D8.", stamina: 0, mana: 0, cooldown: 0, duration: 0, tags: ["Racial Gift", "Elemental", "Buff", "passive"], statEffects: [
             { id: "earthborn-resistance", stat: "damageResistance", bonus: "1D8", target: "self" }
           ] },
-          { id: "bob-life-fire", name: "Life Fire", summary: "health and stamina recovery from heat.", description: "Increases health and stamina recovery when near heat.", stamina: 0, mana: 0, cooldown: 3, duration: 2, tags: ["Racial Gift", "elemental", "Buff", "passive"], resourceEffects: [
-            { id: "life-fire-health", resource: "health", bonus: "1D6", target: "self" } ], statEffects: [
-            { id: "life-fire-stamina", stat: "staminaRecovery", bonus: "6", target: "self" }
-          ] },
-          { id: "bob-heart-of-the-earth", name: "Heart of the Earth", summary: "Increase stamina and mana recovery after meditation.", description: "Increase stamina and mana recovery by 6 for 10 turns after meditating.", stamina: 0, mana: 0, cooldown: 0, duration: 10, tags: ["Racial Gift", "elemental", "Buff"], statEffects: [
+          { id: "bob-life-fire", name: "Life Fire", summary: "health and stamina recovery from heat.", description: "Increases health and stamina recovery when near heat.", stamina: 0, mana: 0, cooldown: 3, duration: 2, tags: ["Racial Gift", "Elemental", "Buff", "passive"] },
+          { id: "bob-heart-of-the-earth", name: "Heart of the Earth", summary: "Increase stamina and mana recovery after meditation.", description: "Increase stamina and mana recovery by 6 for 10 turns after meditating.", stamina: 0, mana: 0, cooldown: 0, duration: 10, tags: ["Racial Gift", "Elemental", "Buff"], statEffects: [
             { id: "heart-of-the-earth-stamina", stat: "staminaRecovery", bonus: "6", duration: 10, target: "self" },
             { id: "heart-of-the-earth-mana", stat: "manaRecovery", bonus: "6", duration: 10, target: "self"}
           ] },
-          { id: "bob-backup-plan", name: "The Backup Plan", summary: "Make an object explode in relation to it's size.", description: "Make an object explode in relation to it's size. Must be holdable", stamina: 0, mana: 0, cooldown: 0, duration: 0, tags: ["Racial Gift", "elemental"] },
+          { id: "bob-backup-plan", name: "The Backup Plan", summary: "Make an object explode in relation to it's size.", description: "Make an object explode in relation to it's size. Must be holdable", stamina: 0, mana: 0, cooldown: 0, duration: 0, tags: ["Racial Gift", "Elemental"] },
         ]
       },
       {
         id: "Pat", name: "Nero Everett", race: "Leonid", magicspecialty: "Improv",
-        rank: "Bronze", initials: "P", color: "#b1bdc8", avatarBg: "#283039",
+        rank: "Bronze", initials: "NE", color: "#b1bdc8", avatarBg: "#283039",
         resources: { health: 76, mana: 200, stamina: 400 },
         stats: { manaRecovery: 12, staminaRecovery: 102, physicalAttack: "2D8", damageResistance: "2D8", magic: "2D8", magicResistance: "1D8", speed: 51, reflexes: 6 },
         tags: ["unlocked-potential"],
@@ -716,17 +713,20 @@
       ] },
       {id: "giorn-prismatic-heritage", name: "Prismatic Heritage", summary: "Strong breath weapon with a mixture of elements", description: "You can open your mouth to emit a mixture of purple lightning and green acid in a 3-space cone. This does 2d10(4d10 when combined with Fire Breath, actually use fire breath if you do this) damage and can only be done once per long rest.", mana: 0, stamina: 0, cooldown: 3600, duration: 0, tags: ["Racial Gift", "Fire", "attack"] } ] },
       {
-        id: "Lizzie", name: "Amarynth Bellwether", race: "Dawnkin", magicspecialty: "Solar",
-        rank: "Gold", initials: "OB", color: "#c5a6d8", avatarBg: "#30273a",
-        resources: { health: 112, mana: 105, stamina: 82 },
-        stats: { manaRecovery: 16, staminaRecovery: 14, physicalAttack: "3D8+2", damageResistance: "4D8", magic: "5D8+2", magicResistance: "5D8+1", speed: 10, reflexes: 12 },
-        essences: ["Halo", "Ash", "Bell", "Mercy"],
+        id: "Lizzie", name: "Amarynth Bellwether", race: "Celelstine", magicspecialty: "Array",
+        rank: "Bronze", initials: "AB", color: "#c5a6d8", avatarBg: "#30273a",
+        resources: { health: 24, mana: 440, stamina: 440 },
+        stats: { manaRecovery: 24, staminaRecovery: 64, physicalAttack: "2D8+1", damageResistance: "2D8+1", magic: "2D8", magicResistance: "2D8", speed: 32, reflexes: 4 },
+        essences: ["Moon", "Star", "Sun", "Sky"],
         abilities: [
-          { id: "orin-dawn-lance", name: "Dawn Lance", category: "Arcana", description: "Form a bright spear of solar magic and cast it forward.", mana: 22, stamina: 0, cooldown: 1, tags: ["sun", "light"], variants: [
-            { id: "noon-chime", name: "Noon chime", description: "Ring out a burst of light that disrupts nearby enemies.", mana: 32, stamina: 6, cooldown: 3, tags: ["bell", "area"] }
+          { id: "amarynth-fountain", name: "Fountain of Life", category: "Moon", summary: "summons a healing fountain", description: "Creates an ornate fountain that appears in the air, spraying water over people to heal their wounds over time and slowly regenerate mana.", mana: 80, stamina: 0, cooldown: 9999, tags: ["Special Ability", "Healing", "Conjuration"], afflictionEffects: [
+            { id: "fountain-of-life-healing", afflictionId: "fountain of life", target: "party", stacks: 1, duration: 10}
           ] },
-          { id: "orin-ashen-seal", name: "Ashen Seal", category: "Arcana", description: "Mark a foe with a seal that dampens hostile magic.", mana: 20, stamina: 4, cooldown: 2, tags: ["ash", "warding"] },
-          { id: "orin-bell-of-noon", name: "Bell of Noon", category: "Arcana", description: "Ring out a burst of light that disrupts nearby enemies.", mana: 32, stamina: 6, cooldown: 3, tags: ["bell", "area"] },
+          { id: "amarynth-path-of-shadows", name: "Path of Shadows", category: "Moon", summary: "Teleport using shadows as a portal", description: "You can sense nearby shadows within your aura and teleport to them using another shadow. Increase the cost to moderate to be able to expand shadows at both the ingress and egress points", mana: 10, stamina: 0, cooldown: 0, tags: ["Special Ability", "Conjuration", "Dimension", "Teleport", "Darkness"], variants: [
+            { id: "amarynth-path-of-shadows-expand", name: "Path of Shadows (Expanded)", description: "Expand shadows at both the ingress and egress points so you can teleport between them", mana: 20, stamina: 0, cooldown: 0, usesPerTurn: 2, tags: ["Special Ability", "Conjuration", "Dimension", "Teleport", "Darkness"] },
+            { id: "amarynth-shadow-portal", name: "Shadow Portal", description: "Conjure a shadow gate between two locations up to 10km apart. The distant location must be a location you've previously visited.", mana: 20, stamina: 0, cooldown: 0, usesPerTurn: 1, tags: ["Special Ability", "Conjuration", "Dimension", "Teleport", "Darkness"] }
+          ] },
+          { id: "amarynth-reaper-shadow", name: "Shadow of the Reaper", category: "Arcana", description: "Ring out a burst of light that disrupts nearby enemies.", mana: 32, stamina: 6, cooldown: 3, tags: ["bell", "area"] },
           { id: "orin-mercy-flame", name: "Mercy Flame", category: "Arcana", description: "Call a gentle solar flame to soothe an injured ally.", mana: 28, stamina: 0, cooldown: 2, tags: ["sun", "healing"] },
           { id: "orin-radiant-step", name: "Radiant Step", category: "Arcana", description: "Cross a short distance in a flash of golden light.", mana: 16, stamina: 10, cooldown: 1, tags: ["movement", "light"] },
           { id: "orin-sunward-strike", name: "Sunward Strike", category: "Combat", description: "Strike with a weapon warmed by the first light of dawn.", mana: 8, stamina: 20, cooldown: 1, tags: ["sun", "melee"] },
@@ -854,7 +854,15 @@
       burning: {
         name: "Burning",
         description: "takes 1D6 damage at the start of each turn."
-      }
+      },
+      "fountain of life": {
+        name: "Fountain of Life",
+        description: "At the end of each turn, recover 1 health and 1 mana.",
+        resourceEffects: [
+          { resource: "health", amountPerStack: 1 },
+          { resource: "mana", amountPerStack: 1 }
+        ]
+      },
     };
     const STORAGE_KEY = "pallimustas-campaign-v1";
 
