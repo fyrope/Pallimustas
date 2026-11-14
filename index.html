@@ -480,12 +480,12 @@
           { id: "bob-seeing-double", name: "Seeing Double", category: "Doppelganger", summary: "Decrease perception of enemies within your aura.", description: "Decrease perception of enemies within your aura and you can see through illusions upto bronze rank.", mana: 0, stamina: 0, cooldown: 0, tags: ["Aura", "Perception", "Illusion", "passive"] }
         ],
         equipment: [
-          { id: "spectres-blade", name: "Spectre's Blade", type: "weapon", summary: "Deals damage equal to 0.75 of magic damage and does afflictions", description: "Spectre's Blade does damage equal to 0.75 of the user's magic damage. Inficts [Phantom\'s Curse] on enemies and [Ectoplasm] on user. Imbued with Bloodroot Sap and applies [Subjugating Toxin] on hit.", damageMultiplier: 0.75, attacks: [
+          { id: "spectres-blade", name: "Spectre's Blade", type: "weapon", summary: "A Blade that any assassin would approve of", description: "Spectre's Blade does damage equal to 0.75 of the user's magic damage. Inficts [Phantom\'s Curse] on enemies and [Ectoplasm] on user. Imbued with Bloodroot Sap and applies [Subjugating Toxin] on hit.", damageMultiplier: 0.75, attacks: [
             { id: "standard", name: "Standard Attack", stat: "magic", modifier: "+1" },
             { id: "sneak", name: "Sneak Attack", stat: "magic", modifier: "2D8" }
           ], afflictionEffects: [
             { id: "ectoplasm", afflictionId: "ectoplasm", target: "wielder", stacks: 1, duration: null } ] },
-          { id: "cloak-of-the-spectre", name: "Cloak of the Spectre", summary: "While equipped, become intangible, do sneak attacks and disengage/dash as bonus action", description: "While equipped, become intangible(take 0.75 damage from physical but 1.5 from disruptive force(you must do the math yourself)), you can do sneak attacks if an ally is within one space of your target for an extra 2D8 and you may disengage/dash as a bonus action" },
+          { id: "cloak-of-the-spectre", name: "Cloak of the Spectre", summary: "A cloak blessed by the Spectre", description: "While equipped, become intangible(take 0.75 damage from physical but 1.5 from disruptive force(you must do the math yourself)), you can do sneak attacks if an ally is within one space of your target for an extra 2D8 and you may disengage/dash as a bonus action" },
           { id: "bramble-crown", name: "Bramble Crown", summary: "While equipped, afflictions can be applied to plants.", description: "While equipped, you make plants and other organic entities more vulnerable, allowing afflictions to be more easily applied, this includes afflictions that they may have an intrinsic immunity too such as [Bleeding] or curses." },
           { id: "amulet-of-elemental-protection", name: "Amulet of Elemental Protection", summary: "While equipped, protection from weather events.", description: "While equipped, you are protected from the effects of weather events such as rain, hail, and snow bouncing off an invisible shield, harsh sunlight being toned down and sandstorms blowing around you." }
         ],
@@ -585,11 +585,11 @@
           { id: "nero-complete-unification", name: "Complete Unification", category: "Vessel", summary: "You are a gestalt entity and you are stronger because of it.", description: "Your body and soul are one. Your aura is greatly strengthened, and you have a greater resistance to astral forces or effects that utilise the soul-body disconnect. Your resistance to hostile dimension effects is increased and dimension effects, disruptive force damage and transcendent damage you deal is increased. Physicall reallity around you is more stable and you are able to sense nearby astral space aperatures and proto-spaces coterminous to your location. You can enter them even if they\'re closed or sealed. If you can enter the astral, you can create a small zone of physical reality around you. When suffering lethal damage, instead of dying. Your new body wil undergo a nirvanic rebirth, returning to a state of full integrity. This effect can only be triggered again after you rank up from the last time it was used.", mana: 0, stamina: 0, cooldown: 0, tags: ["Special Ability", "Dimension", "passive"] }
         ],
         equipment: [
-          { id: "nero-gladiator-sword", name: "Gladiator's Sword", type: "weapon", summary: "A sword that does afflictions and more damage with speed", description: "Strikes with this weapon inflict [Gladiator's Honour] and [The Crowd Cheers] on both target and wielder. All melee attacks with this weapon deal D10 damage and attacks made double momentum stacks. Imbued with Bloodroot Sap and applies [Subjugating Toxin] on hit.", damageDieSides: 10, attacks: [
+          { id: "nero-gladiator-sword", name: "Gladiator's Sword", type: "weapon", summary: "The sword of a mighty gladiator", description: "Strikes with this weapon inflict [Gladiator's Honour] and [The Crowd Cheers] on both target and wielder. All melee attacks with this weapon deal D10 damage and attacks made double momentum stacks. Imbued with Bloodroot Sap and applies [Subjugating Toxin] on hit.", damageDieSides: 10, attacks: [
             { id: "standard", name: "Standard Attack", stat: "physicalAttack" } ], afflictionEffects: [
             { id: "gladiators-honour", afflictionId: "gladiator's honour", target: "wielder", stacks: 1, duration: null },
             { id: "crowd-cheers", afflictionId: "the crowd cheers", target: "wielder", stacks: 1, duration: null } ] },
-          { id: "nero-gladiator-scabbard", name: "Gladiator's Scabbard", type: "weapon", summary: "A scabbard that shows your mercy and honour", description: "when \"Gladiator's Sword\" is sheathed inside, any instances of [Gladiator's Honour] and [The Crowd Cheers] are removed from everyone. Strike enemies with the sheathed sword to inflict [Gladiator's Mercy] and [The Crowd Boos] on the target.", damageDieSides: 10, attacks: [
+          { id: "nero-gladiator-scabbard", name: "Gladiator's Scabbard", type: "weapon", summary: "The trusty Scabbard that keeps a mighty sword", description: "when \"Gladiator's Sword\" is sheathed inside, any instances of [Gladiator's Honour] and [The Crowd Cheers] are removed from everyone. Strike enemies with the sheathed sword to inflict [Gladiator's Mercy] and [The Crowd Boos] on the target.", damageDieSides: 10, attacks: [
             { id: "standard", name: "Sheathed Strike", stat: "physicalAttack" } ] },
           { id: "nero-frying-pan", name: "Frying Pan", type: "weapon", summary: "A improvised frying pan", description: "An improvised frying pan that has been attached to a long bendy stick... for some reason. Imbued with Bloodroot Sap and applies [Subjugating Toxin] on hit.", attacks: [
             { id: "standard", name: "Standard Attack", stat: "physicalAttack", modifier: "-1D8" } ] },
@@ -669,18 +669,52 @@
             { stat: "physicalAttack", bonus: "1D8" } ], statEffects: [
             { id: "flying-leap-attack", stat: "physicalAttack", bonus: "1D8", duration: 1, target: "self" } ] },
           { id: "giorn-gust", name: "Gust", category: "Wing", summary: "Flap your wings to create a gust of wind.", description: "flap your wings to create a gust of wind, this will create difficult terrain for 1 turn, ground anyone who is flying and give everyone disadvantage on attack checks unless they have wind resistance.", mana: 0, stamina: 20, cooldown: 1, tags: ["Special Ability", "Wind"] },
-          { id: "giorn-dragon-wings", name: "Dragon Wings", category: "Wing", summary: "Manifest powerful dragon wings that lack agility", description: "Manifest powerful dragon wings that lack agility, they allow you to fly or make crude attacks to the sides and rear using half your physical attack.", mana: 18, stamina: 0, cooldown: 0, tags: ["Conjuration", "Movement", "Dragon"], 
+          { id: "giorn-dragon-wings", name: "Dragon Wings", category: "Wing", summary: "Manifest powerful dragon wings that lack agility", description: "Manifest powerful dragon wings that lack agility, they allow you to fly or make crude attacks to the sides and rear using half your physical attack, enhancement reduces cost from 18 to 12.", mana: 12, stamina: 0, cooldown: 0, activeMode: "toggle", upkeep: { mana: 12 }, tags: ["Conjuration", "Movement", "Dragon", "attack"],
           attacks: [{ id: "dragon-wings-attack", name: "Wing Attack", stats: ["physicalAttack"], damageMultiplier: 0.5 } ] },
-          { id: "sera-blood-offering", name: "Blood Offering", category: "Support", summary: "Blood Offering", description: "Give up a little vitality to restore an ally's strength.", mana: 14, stamina: 8, cooldown: 3, tags: ["blood", "healing"] },
-          { id: "sera-quiet-company", name: "Quiet Company", category: "Support", summary: "Quiet Company", description: "Soothe an ally with a familiar voice carried on the wind.", mana: 20, stamina: 0, cooldown: 2, tags: ["echo", "support"] }
+          { id: "giorn-spiritual-wings", name: "Spiritual Wings", category: "Wing", summary: "Allies within the aura have feather falling", description: "Allies within your aura take reduced fall damage and have increased mobility in the air.", mana: 0, stamina: 0, cooldown: 0, tags: ["Aura", "passive"] },
+          { id: "giorn-spartoi", name: "Spartoi", category: "Dragon", summary: "summon 7 dragon tooth warriors", description: "summon 7 dragon tooth warriors, +1 extra because of draconic ancestry.", mana: 80, stamina: 0, cooldown: 3600, tags: ["Ritual", "Summon", "Dragon"] },
+          { id: "giorn-mirage-dragon", name: "Mirage Dragon", category: "Dragon", summary: "You have bonded with a mirage dragon familiar", description: "you have bonded with a mirage dragon familiar, it can transform into any creature it has seen of bronze rank or lower but it only gains the magical abilities of creatures of bronze rank or lower. In it's dragon form, it's about the size of a golden retriever.", mana: 0, stamina: 0, cooldown: 0, tags: ["Familiar", "Bond", "passive"] },
+          { id: "giorn-fire-breath", name: "Fire Breath", category: "Dragon", summary: "breathe a 3 space long line of fire", description: "breathe a 3 space long line of fire, dealing magic damage +1D8(2D8s because of Dragon's Might) that inflicts [Burning]", mana: 80, stamina: 0, cooldown: 9, tags: ["Dragon", "Magic", "attack", "Fire"], attacks: [
+            { id: "fire-breath-attack", name: "Fire Breath", stats: ["magic"], modifier: "2D8" } ], enhancements: [
+            { stat: "magic", bonus: "+1" } ] },
+          { id: "giorn-dragon-sight", name: "Dragon Sight", category: "Dragon", summary: "You can see magic and auras", description: "You can see magic and auras of creatures at bronze rank or lower.", mana: 0, stamina: 0, cooldown: 0, tags: ["Dragon", "Perception", "passive"] },
+          { id: "giorn-dragon-might", name: "Dragon's Might", category: "Dragon", summary: "Allies have significantly increased power and spirit attributes", description: "Allies within your aura have significantly increased power and spirit attributes and fire created by your essence abilities become dragon fire(+1D8)", mana: 0, stamina: 0, cooldown: 0, tags: ["Aura", "Buff", "passive", "Attribute Increasing"], enhancement: { target: "self", targetTags: ["Fire"] }, statEffects: [
+            { id: "dragon-might-power", stat: "physicalAttack", bonus: "1D12", target: "others" },
+            { id: "dragon-might-spirit", stat: "magic", bonus: "1D12", target: "others" },
+            { id: "dragon-might-magic-resistance", stat: "magicResistance", bonus: "1D12", target: "others" },
+            { id: "dragon-might-damage-resistance", stat: "damageResistance", bonus: "1D12", target: "others" }
+          ] }
         ],
-        equipment: [],
-        titles: [],
-        inventory: [],
+        equipment: [
+          { id: "giorn-champion-sabre", name: "Champion Sabre", type: "Weapon", summary: "A sabre that a fabled champion once used.", description: "Can channel conjured weapons to gain their effects, reflexes increased by +2. Hit \“Champion\'s Sabre\” against \“Champion\'s Aspis\” to lure the enemy towards you", statEffects: 
+          { id: "champion-sabre", stat: "reflexes", bonus: "+2", target: "self" }, attacks: [
+            { id: "standard", name: "Standard Attack", stats: ["physicalAttack", "magic"], statMode: "highest", modifier: "2D8" } ] },
+          { id: "giorn-champion-aspis", name: "Champion Aspis", type: "Shield", summary: "The shield that protected the champion from harm.", description: "Transfer an amount of targetable damage to a willing ally within 1 space, Damage Resistance is increased by 1D8 and you gain instances of [Resistant] over time", statEffects: 
+          { id: "champion-aspis", stat: "damageResistance", bonus: "+1D8", target: "self" } }
+        ],
+        inventory: [
+          { id: "giorn-lessor-miracle-potion", name: "Lesser Miracle Potion", description: "A potion that completely restores health, mana and stamina. Only works on iron rankers and below."},
+          { id: "nero-plant-essence", name: "Plant Essence", description: "An essence that gives 1 active ability and 4 inactive abilities related to plants. Only usable if an eligible race has less than 4 essences. This one used to belong to Hamish but he's dead now so it belongs to Nero."},
+          { id: "giorn-scroll-of-the-reaper", name: "Scroll of the Reaper", description: "increases physical attack by 2 but reduces magical attack by 2(trainable)." },
+          { id: "giorn-money", name: "Money", description: "100 Gold spirit coints, can eat one to temporarily increase power levels for one turn but has debilitating effects on next turn." }
+        ],
         racialGifts: [
-          { id: "sera-veilborn-step", name: "Veilborn Step", description: "Slip into the veil and emerge from a nearby shadow.", cooldown: 3, duration: 1, tags: ["movement", "illusion"] }
-        ]
-      },
+          { id: "giorn-draconic-might", name: "Draconic Might", summary: "Increased power.", description: "Increases your power attribute by 1D8.", cooldown: 0, duration: 0, tags: ["Attribute Increasing", "Racial Gift", "passive"], statEffects: [
+            { id: "draconic-might-power", stat: "physicalAttack", bonus: "1D8", target: "self" },
+            { id: "draconic-might-damage-resistance", stat: "damageResistance", bonus: "1D8", target: "self" }
+        ]},
+      { id: "giorn-draconic-power", name: "Draconic Power", summary: "Increased spirit.", description: "Increases your spirit attribute by 1D8.", cooldown: 0, duration: 0, tags: ["Attribute Increasing", "Racial Gift", "passive"], statEffects: [
+        { id: "draconic-spirit-spirit", stat: "magic", bonus: "1D8", target: "self" },
+        { id: "draconic-spirit-magic-resistance", stat: "magicResistance", bonus: "1D8", target: "self" }
+      ] },
+      { id: "giorn-ancestry-blessing", name: "Ancestry's Blessing", summary: "Your dragon abilities are enhanced.", description: "Your dragon tagged abilities are enhanced", cooldown: 0, duration: 0, tags: ["Racial Gift", "Buff", "passive"], enhancement: { target: "self", targetTags: ["Dragon"] } },
+      { id: "giorn-magic-affinity", name: "Magic Affinity", summary: "Enhanced magical abilities.", description: "Increases magic damage by 1D8", cooldown: 0, duration: 0, tags: ["Racial Gift", "Buff", "passive"], statEffects: [
+        { id: "magic-affinity-magic", stat: "magic", bonus: "1D8", target: "self" } ] },
+      { id: "giorn-reinforced-dragonhide", name: "Reinforced Dragonhide", summary: "Increased damage and magic resistance.", description: "Increases damage and magic resistance by 1D8.", cooldown: 0, duration: 0, tags: ["Racial Gift", "Buff", "passive"], statEffects: [
+        { id: "reinforced-dragonhide-damage", stat: "damage", bonus: "1D8", target: "self" },
+        { id: "reinforced-dragonhide-magic-resistance", stat: "magicResistance", bonus: "1D8", target: "self" }
+      ] },
+      {id: "giorn-prismatic-heritage", name: "Prismatic Heritage", summary: "Strong breath weapon with a mixture of elements", description: "You can open your mouth to emit a mixture of purple lightning and green acid in a 3-space cone. This does 2d10(4d10 when combined with Fire Breath, actually use fire breath if you do this) damage and can only be done once per long rest.", mana: 0, stamina: 0, cooldown: 3600, duration: 0, tags: ["Racial Gift", "Fire", "attack"] } ] },
       {
         id: "orin", name: "Orin Bellweather", race: "Dawnkin", magicspecialty: "Solar",
         rank: "Gold", initials: "OB", color: "#c5a6d8", avatarBg: "#30273a",
@@ -715,7 +749,7 @@
         titles: [],
         inventory: [],
         racialGifts: [
-          { id: "orin-dawnkin-aura", name: "Dawnkin Aura", description: "Surround yourself and nearby allies with a renewing dawnlight.", cooldown: 4, duration: 2, tags: ["light", "healing"] }
+          { id: "orin-dawnkin-aura", name: "Dawnkin Aura", summary: "", description: "Surround yourself and nearby allies with a renewing dawnlight.", cooldown: 4, duration: 2, tags: ["light", "healing"] }
         ]
       }
     ];
@@ -816,6 +850,10 @@
       "rigor mortis": {
         name: "Rigor Mortis",
         description: "Penalty to the [Speed] and [Recovery] attributes. Additional instances have a cumulative effect. Each time a new instance is inflicted, it deals 2 necrotic damage for each existing instance."
+      },
+      burning: {
+        name: "Burning",
+        description: "takes 1D6 damage at the start of each turn."
       }
     };
     const STORAGE_KEY = "pallimustas-campaign-v1";
