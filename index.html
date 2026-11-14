@@ -418,12 +418,18 @@
           { id: "bob-spirit-reaper", name: "Spirit Reaper", category: "Magic", summary: "+1D8 disruptive force damage; can stun incorporeal foes.", description: "Inflicts additional disruptive force damage (+1D8) and drains mana equal to damage. Doubles mana drain and inflicts [stunned] on incorporeal and semi-incorporeal entities.", mana: 10, stamina: 10, cooldown: 0, tags: ["Melee", "Dimension", "Drain"], statEffects: [
             { id: "spirit-reaper-magic", stat: "magic", bonus: "1D8", duration: 1, target: "self" },
             { id: "spirit-reaper-attack", stat: "physicalAttack", bonus: "1D8", duration: 1, target: "self" }
+          ], enhancements: [
+            { stat: "magic", bonus: "+1" },
+            { stat: "physicalAttack", bonus: "+1" }
           ] },
           { id: "bob-juxtapose", name: "Juxtapose", category: "Magic", summary: "Swap the location of two entities.", description: "Swap the location of two allies and/or enemies. You must be able to see both subjects. If an ally resists or prevents it, it is negated.Enemies affected by this ability take +10% from all sources for 1 turn.", mana: 40, stamina: 0, cooldown: 10, tags: ["Special Ability", "Magic", "Teleport"] },
           { id: "bob-power-lock", name: "Power Lock", category: "Magic", summary: "When the target uses an ability, a second one goes on cooldown.", description: "When the target uses an ability, a random other ability goes on cooldown and uses mana, as if it has been used, if the ability had no mana cost, the target suffers disruptive-force damage commensurate with the strength of the ability. If the target has no other abilities, the ability it used has doubled cooldown, or if the ability has no cooldown, it becomes unavailable for a brief period.", mana: 40, stamina: 0, cooldown: 10, tags: ["Special Ability", "Curse", "Magic"] },
-          { id: "bob-strong-soul", name: "Strong Soul", category: "Magic", summary: "Resistances increased and you can physically interact with incorporeal entities.", description: "Disruptive force damage is reduced by a large amount, other damage is reduced by a small amount, increased curse, magic and unholy resistance. You can physically interact with incorporeal entities", mana: 0, stamina: 0, cooldown: 0, tags: ["Special Abiity", "Dimension", "Magic", "passive"], statEffects: [
+          { id: "bob-strong-soul", name: "Strong Soul", category: "Magic", summary: "Resistances increased and you can physically interact with incorporeal entities.", description: "Disruptive force damage is reduced by a large amount, other damage is reduced by a small amount, increased curse, magic and unholy resistance. You can physically interact with incorporeal entities", mana: 0, stamina: 0, cooldown: 0, tags: ["Special Abiity", "Dimension", "Magic", "passive", "Attribute-Increasing"], statEffects: [
             { id: "strong-soul-damage-resistance", stat: "damageResistance", bonus: "1D8", target: "self" },
             { id: "strong-soul-magic-resistance", stat: "magicResistance", bonus: "1D8", target: "self" }
+          ], enhancements: [
+            { stat: "damageResistance", bonus: "+1" },
+            { stat: "magicResistance", bonus: "+1" }
           ] },
           { id: "bob-mirror-magic", name: "Mirror Magic", category: "Mirror", summary: "Copy an ability an ally has used within the last turn", description: "Copy an ability an ally has used within the last turn. This ability has the same cost and cooldown as the original spell. Using this spell can increase or decrease the rank of the original spell to the rank of this spell, including gaining or losing effects. This also has a reduced cooldown and cost if the rank has been increased.", mana: "XX", stamina: "XX", cooldown: "XX", tags: ["Special Ability", "Magic", "Copy"] },
           { id: "bob-vengeance-Mirror", name: "Vengeance Mirror", category: "Mirror", summary: "Copy an ability an enemy has used once or twice.", description: "Copy an ability an enemy has used once or twice, Cost and cooldown are the same as the original. You may still use this if the original was negated.", mana: "XX", stamina: "XX", cooldown: "XX", tags: ["Special Attack", "Copy", "Retributive"] },
@@ -455,12 +461,19 @@
             { id: "sanguine-horror-health", resource: "health", amount: 1, target: "self" },
             { id: "sanguine-horror-stamina", resource: "stamina", amount: 6, target: "self" }
           ] },
-          { id: "bob-mirage-step", name: "Mirage Step", category: "Doppelganger", summary: "Move instantly to a nearby location, leaving an afterimage.", description: "Move instantly to a nearby location, leaving an afterimage. Can be used twice, with one use regained every 6 turns after it is spent. When enemies attack an afterimage, they are trapped in a short lived illusion.", mana: 10, stamina: 10, cooldown: 0, charges: 2, recharge: 6, tags: ["Special Ability", "Dimension", "illusion", "movement"] },
-          { id: "bob-counterfeit-combatant", name: "Counterfeit Combatant", category: "Doppelganger", summary: "damage increases by 2d10s", description: "Grow to a large form(2x2) and gain temporary proficiency with armour and melee weapons. Your maximum stamina increases by 50, your damage is increased by 2d10s, your damage resistance is increased by 1D10 and gain an extra +6 to stamina recovery.", mana: 60, stamina: 0, cooldown: 3600, tags: ["Special Ability", "Shapeshift", "Buff"], statEffects: [
+          { id: "bob-mirage-step", name: "Mirage Step", category: "Doppelganger", summary: "Move instantly to a nearby location, leaving an afterimage.", description: "Move instantly to a nearby location, leaving an afterimage. Can be used twice, with one use regained every 6 turns after it is spent. When enemies attack an afterimage, they are trapped in a short lived illusion.", mana: 10, stamina: 10, cooldown: 0, charges: 2, recharge: 6, tags: ["Special Ability", "Dimension", "illusion", "movement"], enhancements: [
+            { cooldownReductions: 1 }
+          ] },
+          { id: "bob-counterfeit-combatant", name: "Counterfeit Combatant", category: "Doppelganger", summary: "damage increases by 2d10s", description: "Grow to a large form(2x2) and gain temporary proficiency with armour and melee weapons. Your maximum stamina increases by 50, your damage is increased by 2d10s, your damage resistance is increased by 1D10 and gain an extra +6 to stamina recovery.", mana: 60, stamina: 0, cooldown: 3600, tags: ["Special Ability", "Shapeshift", "Buff", "Attribute-Increasing"], statEffects: [
             { id: "counterfeit-attack", stat: "physicalAttack", bonus: "2D10", duration: 10, target: "self" },
             { id: "counterfeit-resistance", stat: "damageResistance", bonus: "1D10", duration: 10, target: "self" },
             { id: "counterfeit-stamina", stat: "staminaRecovery", bonus: "+6", duration: 10, target: "self" } ], resourceEffects: [
             { id: "counterfeit-stamina-max", resource: "stamina", amount: 50, maximumIncrease: 50, target: "self" },
+          ], enhancements: [
+            { stat: "physicalAttack", bonus: "1D6" },
+            { stat: "damageResistance", bonus: "1D6" },
+            { stat: "staminaRecovery", bonus: "+1" },
+            { resource: "stamina", maximumIncrease: 25 }
           ] },
           { id: "bob-unexpected-allies", name: "Unexpected Allies", category: "Doppelganger", summary: "Switch positions of all enemies and allies.", description: "You and your allies take an illusionary form of nearby enemies for a minute but you can all still recognise each other, everyone is randomly switch teleported. Also create illusions of your allies", mana: 60, stamina: 0, cooldown: 100, tags: ["Special Ability", "Dimension", "illusion", "Teleport"] },
           { id: "bob-echo-spirit", name: "Echo Spirit", category: "Doppelganger", summary: "An Incorporeal entity that can mimic the form of allies and enemies.", description: "An incorporeal entity that can mimic the form of allies and enemies as well as switch teleport with mimicked allies as well as mirroring ally's movements and attacks but can't inflict damage. While subsumed into the summoners aura, the summoner can manipulate it into projecting false traits, mimicking others auras or can be used to lift objects lighter than 10kg", mana: 0, stamina: 0, cooldown: 0, tags: ["Ritual", "Familiar", "passive"] },
@@ -546,8 +559,8 @@
           ]},
           { id: "nero-large-pockets", name: "Large Pockets", category: "Cage", summary: "You have a dimensional storage space accessible through your pockets", description: "You have a dimensional storage space accessible through your pockets. The entry can be stretched as big as you needbut anything with a motive spirit cannot enter", mana: 0, stamina: 0, cooldown: 0, tags: ["Special Ability", "Dimension", "passive"] },
           { id: "nero-unlocked-potential", name: "Unlocked Potential", category: "Cage", summary: "Overcharge mana and stamina; negative resources prevent further ability use.", description: "You can push yourself further than you could before, spending mana or stamina below zero. While either resource is negative, you cannot activate any abilities until both return to zero or higher.", mana: 0, stamina: 0, cooldown: 0, tags: ["Special Ability", "passive"] },
-          { id: "nero-counterfeit-combatant", name: "Counterfeit Combatant", category: "Vessel", summary: "damage increases by 2d10s", description: "Grow to a large form(2x2) and gain temporary proficiency with armour and melee weapons. Your maximum stamina increases by 50, your damage is increased by 2d10s, your damage resistance is increased by 1D10 and gain an extra +6 to stamina recovery. Beacon of Hope increases stat gain to +3D10 and +2D10, +9 and +75 to damage, damage resistance, stamina recovery and stamina respectively", mana: 60, stamina: 0, cooldown: 3600, tags: ["Special Ability", "Shapeshift", "Buff"], enhancements: [
-            { stat: "physicalAttack", bonus: "1D10" }, { stat: "damageResistance", bonus: "1D10" }, { stat: "staminaRecovery", bonus: "+3" }, { resource: "stamina", bonus: 25 } ], statEffects: [
+          { id: "nero-counterfeit-combatant", name: "Counterfeit Combatant", category: "Vessel", summary: "damage increases by 2d10s", description: "Grow to a large form(2x2) and gain temporary proficiency with armour and melee weapons. Your maximum stamina increases by 50, your damage is increased by 2d10s, your damage resistance is increased by 1D10 and gain an extra +6 to stamina recovery. Beacon of Hope increases stat gain to +3D10 and +2D10, +9 and +75 to damage, damage resistance, stamina recovery and stamina respectively", mana: 60, stamina: 0, cooldown: 3600, tags: ["Special Ability", "Shapeshift", "Buff", "Attribute-Increasing"], enhancements: [
+            { stat: "physicalAttack", bonus: "1D6" }, { stat: "damageResistance", bonus: "1D6" }, { stat: "staminaRecovery", bonus: "+1" }, { resource: "stamina", bonus: 25 } ], statEffects: [
             { id: "counterfeit-attack", stat: "physicalAttack", bonus: "2D10", duration: 10, target: "self" },
             { id: "counterfeit-resistance", stat: "damageResistance", bonus: "1D10", duration: 10, target: "self" },
             { id: "counterfeit-stamina", stat: "staminaRecovery", bonus: "+6", duration: 10, target: "self" } ], resourceEffects: [
@@ -638,7 +651,7 @@
           { id: "giorn-god-striking-fist", name: "God Striking Fist", category: "Dimension", summary: "Make a hard fast punch extremely powerful punch.", description: "Make a hard, fast punch. Time and space manipulation will not function in the vicinity while the punch is being swung. Damage for this ability is double your attack and magic attack combined. Cooldown is reduced based on the condition of the enemy after the attack. More resilient enemies result in a shorter cooldown time. An amount of stamina and mana is refunded based on the condition of the enemy. A sufficiently resilient enemy may trigger a refund of stamina and mana greater than the initial cost.", mana: "XX", stamina: "XX", cooldown: 6666, tags: ["Dimension", "Special Attack", "attack"],
             attacks: [{ id: "god-striking-fist-punch", name: "Punch", stats: ["physicalAttack", "magic"] }]
           },
-          { id: "giorn-dimensional-blade", name: "Dimensional Blade", category: "Dimension", summary: "Summon a dimensional sword that adds 2D8 to your higher attack stat.", description: "Summon a sword made of black lightning lined in silver; it can cut through almost anything. Its slash uses whichever is higher, Physical Attack or Magic, and adds 2D8.", mana: 20, stamina: 0, cooldown: 0, tags: ["dimension", "conjuration", "attack"],
+          { id: "giorn-dimensional-blade", name: "Dimensional Blade", category: "Dimension", summary: "Summon a dimensional sword that adds 2D8 to your higher attack stat.", description: "Summon a sword made of black lightning lined in silver; it can cut through almost anything. Its slash uses whichever is higher, Physical Attack or Magic, and adds 2D8.", mana: 20, stamina: 0, cooldown: 0, tags: ["Dimension", "conjuration", "attack"],
           attacks: [{ id: "dimensional-blade-slash", name: "Dimensional Slash", stats: ["physicalAttack", "magic"], statMode: "highest", modifier: "2D8" }]
           },
           { id: "giorn-dimensional-transfiguration", name: "Dimensional Transfiguration ", category: "Dimension", summary: "You may switch your physical and magical attributes during a long rest.", description: "You may switch your physical and magical attributes during a long rest and get a temporary 1 hour 1D8 buff to both stats which can be extended by 30mins during a short rest.", mana: 0, stamina: 0, cooldown: 0, tags: ["Dimension", "Special Ability", "Buff"], statEffects: [
@@ -647,8 +660,8 @@
             { id: "dimensional-transfiguration-physical-resistance", stat: "damageResistance", bonus: "1D8", duration: 1, target: "self" },
             { id: "dimensional-transfiguration-magic-resistance", stat: "magicResistance", bonus: "1D8", duration: 1, target: "self" }
           ] },
-          { id: "giorn-Reaper-Hand", name: "Hand of the Reaper", category: "Dimension", summary: "expand your reach to 2 spaces through a semi-substantial arm.", description: "Conjure up to 2 highly flexible semi-substantial shadow-arms that can extend or shrink up to 2 spaces. Conjured items can be conjured into the shadow hand. Can be used to make melee special attacks. Special attacks made using the arm inflict [Creeping Death] and [Rigor Mortis].", mana: 6, stamina: 0, cooldown: 0, activeMode: "toggle", upkeep: { mana: 6 }, tags: ["Conjuration", "Disease", "Magic", "Holy"] },
-          { id: "giorn-vanishing-cut", name: "Vanishing Cut", category: "Combat", summary: "Slice through the air and leave a trail of illusionary blades.", description: "Slice through the air and leave a trail of illusionary blades.", mana: 16, stamina: 24, cooldown: 2, tags: ["echo", "illusion"] },
+          { id: "giorn-reaper-hand", name: "Hand of the Reaper", category: "Dimension", summary: "expand your reach to 2 spaces through a semi-substantial arm.", description: "Conjure up to 2 highly flexible semi-substantial shadow-arms that can extend or shrink up to 2 spaces. Conjured items can be conjured into the shadow hand. Can be used to make melee special attacks. Special attacks made using the arm inflict [Creeping Death] and [Rigor Mortis].", mana: 6, stamina: 0, cooldown: 0, activeMode: "toggle", upkeep: { mana: 6 }, tags: ["Conjuration", "Disease", "Magic", "Holy"] },
+          { id: "giorn-dimensional-anomaly", name: "Dimensional Anomaly", category: "Dimension", summary: "Allies dimensional and attribute increasing abilities are enhanced.", description: "Allies within your aura gain a bonus to their dimensional and attribute increasing abilities and the physical reality around you is more stable.", mana: 0, stamina: 0, cooldown: 0, tags: ["aura", "Dimension", "buff", "passive"], enhancement: { target: "others", targetTags: ["Attribute Increasing", "Dimension"] } },
           { id: "sera-quickblood", name: "Quickblood", category: "Technique", description: "Spend a burst of vitality to sharpen your reflexes.", mana: 4, stamina: 16, cooldown: 2, tags: ["blood", "movement"] },
           { id: "sera-mist-mend", name: "Mist Mend", category: "Support", description: "Wrap a companion in cool mist that eases their wounds.", mana: 18, stamina: 0, cooldown: 2, tags: ["mist", "healing"] },
           { id: "sera-shared-echo", name: "Shared Echo", category: "Support", description: "Carry an ally's warning across the battlefield instantly.", mana: 12, stamina: 5, cooldown: 1, tags: ["echo", "support"] },
@@ -1247,6 +1260,61 @@
           })
         )
       );
+    }
+
+    function getEnhancedAbilityCooldown(character, ability, configuration, cooldown) {
+      if (!Number.isSafeInteger(cooldown) || cooldown < 0) return cooldown;
+
+      const enhancements = configuration.enhancements || ability.enhancements || [];
+      if (!Array.isArray(enhancements)) {
+        console.error(`Invalid enhancements configured for ${ability.name}.`, enhancements);
+        return cooldown;
+      }
+
+      const reduction = enhancements.reduce((total, enhancement) => {
+        const amount = enhancement?.cooldownReduction;
+        return total + (Number.isSafeInteger(amount) && amount > 0 ? amount : 0);
+      }, 0);
+
+      if (reduction === 0) return cooldown;
+
+      let isEnhanced = false;
+
+      for (const enhancerCharacter of CHARACTERS) {
+        for (const enhancer of allCharacterAbilities(enhancerCharacter)) {
+          for (const enhancerConfiguration of [enhancer, ...(enhancer.variants || [])]) {
+            const rule = enhancerConfiguration.enhancement;
+
+            if (
+              !enhancerConfiguration.tags?.includes("enhancement") ||
+              !isPassiveConfiguration(enhancerConfiguration)
+            ) continue;
+
+            const validRule = rule &&
+              ["self", "others", "party", "tagged", "self-and-tagged"].includes(rule.target) &&
+              Array.isArray(rule.targetTags) &&
+              rule.targetTags.length > 0 &&
+              rule.targetTags.every((tag) => typeof tag === "string" && tag.trim()) &&
+              (!["tagged", "self-and-tagged"].includes(rule.target) ||
+                (Array.isArray(rule.tags) && rule.tags.length > 0 &&
+                  rule.tags.every((tag) => typeof tag === "string" && tag.trim())));
+
+            if (!validRule) {
+              console.error(`Invalid enhancement configuration for ${enhancer.name}.`, rule);
+              continue;
+            }
+
+            if (
+              abilityHasAnyTag(ability, rule.targetTags, configuration) &&
+              statEffectTargets(rule, enhancerCharacter).includes(character.id)
+            ) {
+              isEnhanced = true;
+            }
+          }
+        }
+      } 
+
+      return isEnhanced ? Math.max(0, cooldown - reduction) : cooldown;
     }
 
     function getEffectiveAbilityCost(character, resource, cost, ability = null) {
@@ -2611,7 +2679,7 @@
       const resolvedValues = {
         mana: getEffectiveAbilityCost(character, "mana", baseCosts.mana, ability).cost,
         stamina: getEffectiveAbilityCost(character, "stamina", baseCosts.stamina, ability).cost,
-        cooldown: isConfigurableAbilityValue(ability.cooldown) ? suppliedValues.cooldown : ability.cooldown ?? 0
+        cooldown: getEnhancedAbilityCooldown(character, configuredAbility, ability, isConfigurableAbilityValue(ability.cooldown) ? suppliedValues.cooldown : ability.cooldown ?? 0)
       };
       if (Object.values(resolvedValues).some((value) => !Number.isSafeInteger(value) || value < 0)) {
         notify("Mana, stamina, and cooldown values must be whole numbers of zero or more.");
