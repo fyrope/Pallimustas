@@ -1,0 +1,36 @@
+    .modal-backdrop { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 20px; background: #090b0ac9; }
+    .modal { width: min(420px, 100%); padding: 21px; border: 1px solid var(--line-bright); border-radius: 13px; background: #1b1e1c; box-shadow: 0 25px 70px #0009; }
+    .modal-close { float: right; min-width: 30px; min-height: 30px; padding: 0; border: 1px solid var(--line); border-radius: 6px; background: var(--panel-raised); color: var(--muted); cursor: pointer; }
+    .modal h2 { margin: 0; font: 500 21px Georgia, "Times New Roman", serif; }
+    .modal p { color: var(--muted); font-size: 12px; line-height: 1.6; }
+
+@media (max-width: 800px) {
+    .affliction-form { 
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    } 
+    .affliction-form .button { 
+        grid-column: 1 / -1; 
+    }
+}
+    .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
+
+    .affliction-form { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) auto; align-items: end; gap: 10px; padding: 15px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+    .affliction-form label { display: grid; gap: 6px; color: var(--muted); font-size: 10px; }
+    .affliction-form input, .affliction-form select { min-width: 0; width: 100%; padding: 8px; border: 1px solid var(--line-bright); border-radius: 6px; background: #171a19; color: var(--text); font: inherit; }
+    .affliction-player { padding: 15px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+    .affliction-player + .affliction-player { margin-top: 10px; }
+    .affliction-player-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .affliction-player-head .section-title { flex: 1; }
+    .affliction-entry { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); }
+    .affliction-entry-name { font-size: 12px; font-weight: 650; }
+    .affliction-entry-detail { margin-top: 4px; color: var(--muted); font-size: 10px; line-height: 1.5; }
+    .affliction-entry-actions { display: flex; align-items: center; gap: 6px; }
+    .affliction-count { min-width: 44px; color: var(--gold); font-size: 10px; text-align: center; }
+
+    .ability-cost-inputs { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+    .ability-cost-inputs label.ability-cost-input { display: grid; grid-template-columns: 1fr auto; align-items: center; width: 100%; box-sizing: border-box; gap: 12px; }
+    .ability-cost-inputs label.ability-cost-input input[type="checkbox"] { justify-self: end; margin: 0; }
+    .ability-cost-input { display: grid; gap: 5px; color: var(--muted); font-size: 11px; }
+    .ability-cost-input input { width: 100%; padding: 9px 10px; border: 1px solid var(--line-bright); border-radius: 7px; background: #171a19; color: var(--text); font: inherit; }
+    .affliction-link { padding: 0; border: 0; background: transparent; color: #c9a7db; font: inherit; text-decoration: underline dotted; cursor: pointer; }
+    .affliction-link:hover { color: #e1c8ef; }
