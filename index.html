@@ -658,7 +658,7 @@
             { id: "dimensional-transfiguration-magic-resistance", stat: "magicResistance", bonus: "1D8", duration: 1, target: "self" }
           ] },
           { id: "giorn-reaper-hand", name: "Hand of the Reaper", category: "Dimension", summary: "expand your reach to 2 spaces through a semi-substantial arm.", description: "Conjure up to 2 highly flexible semi-substantial shadow-arms that can extend or shrink up to 2 spaces. Conjured items can be conjured into the shadow hand. Can be used to make melee special attacks. Special attacks made using the arm inflict [Creeping Death] and [Rigor Mortis].", mana: 6, stamina: 0, cooldown: 0, activeMode: "toggle", upkeep: { mana: 6 }, tags: ["Conjuration", "Disease", "Magic", "Holy"] },
-          { id: "giorn-dimensional-anomaly", name: "Dimensional Anomaly", category: "Dimension", summary: "Allies dimensional and attribute increasing abilities are enhanced.", description: "Allies within your aura gain a bonus to their dimensional and attribute increasing abilities and the physical reality around you is more stable.", mana: 0, stamina: 0, cooldown: 0, tags: ["aura", "Dimension", "buff", "passive"], enhancement: { target: "others", targetTags: ["Attribute Increasing", "Dimension"] } },
+          { id: "giorn-dimensional-anomaly", name: "Dimensional Anomaly", category: "Dimension", summary: "Allies dimensional and attribute increasing abilities are enhanced.", description: "Allies within your aura gain a bonus to their dimensional and attribute increasing abilities and the physical reality around you is more stable.", mana: 0, stamina: 0, cooldown: 0, tags: ["aura", "Dimension", "buff", "passive", "enhancement"], enhancement: { target: "others", targetTags: ["Attribute-Increasing", "Dimension"] } },
           { id: "giorn-dive-bomb", name: "Dive Bomb", category: "Wing", summary: "Dive at an enemy from above to deal extra damage", description: "Accelerate down to attack from above; can be combined with normal or special melee attacks. Physical damage is increased by +1D8 and a resonating force shockwave is produced from the impact point to produce knockback but not damage. No falling damage is suffered from this ability, even if it misses. Can be specially combined with Flying Leap and another Special Attack for even more damage", mana: 0, stamina: 40, cooldown: 3, tags: ["Special Ability", "Movement", "Combination"], enhancements: [
             { stat: "physicalAttack", bonus: "1D8" } ], statEffects: [
             { id: "dive-bomb-attack", stat: "physicalAttack", bonus: "1D8", duration: 1, target: "self" } ] },
@@ -675,7 +675,7 @@
             { id: "fire-breath-attack", name: "Fire Breath", stats: ["magic"], modifier: "2D8" } ], enhancements: [
             { stat: "magic", bonus: "+1" } ] },
           { id: "giorn-dragon-sight", name: "Dragon Sight", category: "Dragon", summary: "You can see magic and auras", description: "You can see magic and auras of creatures at bronze rank or lower.", mana: 0, stamina: 0, cooldown: 0, tags: ["Dragon", "Perception", "passive"] },
-          { id: "giorn-dragon-might", name: "Dragon's Might", category: "Dragon", summary: "Allies have significantly increased power and spirit attributes", description: "Allies within your aura have significantly increased power and spirit attributes and fire created by your essence abilities become dragon fire(+1D8)", mana: 0, stamina: 0, cooldown: 0, tags: ["Aura", "Buff", "passive", "Attribute Increasing"], enhancement: { target: "self", targetTags: ["Fire"] }, statEffects: [
+          { id: "giorn-dragon-might", name: "Dragon's Might", category: "Dragon", summary: "Allies have significantly increased power and spirit attributes", description: "Allies within your aura have significantly increased power and spirit attributes and fire created by your essence abilities become dragon fire(+1D8)", mana: 0, stamina: 0, cooldown: 0, tags: ["Aura", "Buff", "passive", "Attribute Increasing", "enhancement"], enhancement: { target: "self", targetTags: ["Fire"] }, statEffects: [
             { id: "dragon-might-power", stat: "physicalAttack", bonus: "1D12", target: "others" },
             { id: "dragon-might-spirit", stat: "magic", bonus: "1D12", target: "others" },
             { id: "dragon-might-magic-resistance", stat: "magicResistance", bonus: "1D12", target: "others" },
@@ -722,14 +722,19 @@
           { id: "amarynth-fountain", name: "Fountain of Life", category: "Moon", summary: "summons a healing fountain", description: "Creates an ornate fountain that appears in the air, spraying water over people to heal their wounds over time and slowly regenerate mana.", mana: 80, stamina: 0, cooldown: 9999, tags: ["Special Ability", "Healing", "Conjuration"], afflictionEffects: [
             { id: "fountain-of-life-healing", afflictionId: "fountain of life", target: "party", stacks: 1, duration: 10}
           ] },
-          { id: "amarynth-path-of-shadows", name: "Path of Shadows", category: "Moon", summary: "Teleport using shadows as a portal", description: "You can sense nearby shadows within your aura and teleport to them using another shadow. Increase the cost to moderate to be able to expand shadows at both the ingress and egress points", mana: 10, stamina: 0, cooldown: 0, tags: ["Special Ability", "Conjuration", "Dimension", "Teleport", "Darkness"], variants: [
+          { id: "amarynth-path-of-shadows", name: "Path of Shadows", category: "Moon", summary: "Teleport using shadows as a portal", description: "You can sense nearby shadows within your aura and teleport to them using another shadow. Increase the cost to moderate to be able to expand shadows at both the ingress and egress points", mana: 10, stamina: 0, cooldown: 0, tags: ["Special Ability", "Conjuration", "Dimension", "Teleport", "light"], variants: [
             { id: "amarynth-path-of-shadows-expand", name: "Path of Shadows (Expanded)", description: "Expand shadows at both the ingress and egress points so you can teleport between them", mana: 20, stamina: 0, cooldown: 0, usesPerTurn: 2, tags: ["Special Ability", "Conjuration", "Dimension", "Teleport", "Darkness"] },
             { id: "amarynth-shadow-portal", name: "Shadow Portal", description: "Conjure a shadow gate between two locations up to 10km apart. The distant location must be a location you've previously visited.", mana: 20, stamina: 0, cooldown: 0, usesPerTurn: 1, tags: ["Special Ability", "Conjuration", "Dimension", "Teleport", "Darkness"] }
           ] },
-          { id: "amarynth-reaper-shadow", name: "Shadow of the Reaper", category: "Arcana", description: "Ring out a burst of light that disrupts nearby enemies.", mana: 32, stamina: 6, cooldown: 3, tags: ["bell", "area"] },
-          { id: "orin-mercy-flame", name: "Mercy Flame", category: "Arcana", description: "Call a gentle solar flame to soothe an injured ally.", mana: 28, stamina: 0, cooldown: 2, tags: ["sun", "healing"] },
-          { id: "orin-radiant-step", name: "Radiant Step", category: "Arcana", description: "Cross a short distance in a flash of golden light.", mana: 16, stamina: 10, cooldown: 1, tags: ["movement", "light"] },
-          { id: "orin-sunward-strike", name: "Sunward Strike", category: "Combat", description: "Strike with a weapon warmed by the first light of dawn.", mana: 8, stamina: 20, cooldown: 1, tags: ["sun", "melee"] },
+          { id: "amarynth-reaper-shadow", name: "Shadow of the Reaper", category: "Moon", summary: "Summons a Shadow of the Reaper to serve as your familiar", description: "An incorporeal shadow entity with 7 bodies, highly visible in well lit areas but has high mobility, shadow bodies can hide in other peoples shadows as well as your own. When there is no body attached to the summoner, they won't have a shadow and when there is atleast one inside the summoners shadow: they can see and hear through other shadow bodies and hide traces of the summoners presense such as heat, scent, sound, etc. The summoner can also shadow teleport between shade bodies with the teleport range limited to one rank below the current abilities rank.", mana: 0, stamina: 0, cooldown: 0, tags: ["Familiar", "Summon", "light", "Teleport", "passive"] },
+          { id: "amarynth-moon-mans-blessing", name: "Moon Man's Blessing", category: "Moon", summary: "The Man on the Moon has blessed you and your abilities are stronger", description: "Your astral affinity has increased, strengthening your astral attacks and resistances. Your spirit attribute is greatly enhanced", mana: 0, stamina: 0, cooldown: 0, tags: ["Aura", "Attribute-Increasing", "passive"], statEffects: [
+            { id: "moon-mans-blessing-spirit", stat: "magic", bonus: "1D12", target: "self" },
+            { id: "moon-mans-blessing-magic-resistance", stat: "magicResistance", bonus: "1D12", target: "self" }
+          ] },
+          { id: "amarynth-midnight-eyes", name: "Midnight Eyes", category: "Moon", summary: "Perception ability that allows you to see in the dark", description: "You can see in the dark, but only in monochrome colours and you can sense magic.", mana: 0, stamina: 0, cooldown: 0, tags: ["perception", "light", "passive"] },
+          { id: "amarynth-retribution-mantle", name: "Mantle of Retribution", category: "Star", summary: "inflicts retributive impact on anyone who attacks the target", description: "Inflicts retributive impact damage on anyone who attacks the target ally equal to the damage dealt; lasts for 1 turn.", mana: 10, stamina: 0, cooldown: 2, tags: ["Spell", "Boon", "Retributive"], afflictionEffects: [
+            { id: "mantle-of-retribution", afflictionId: "retributive", target: "selected", selectPlayers: true, stacks: 1, duration: 1 }
+          ] },
           { id: "orin-bellringer", name: "Bellringer", category: "Combat", description: "Land a ringing blow that staggers a nearby opponent.", mana: 4, stamina: 26, cooldown: 2, tags: ["bell", "impact"] },
           { id: "orin-ashfall", name: "Ashfall", category: "Combat", description: "Scatter a veil of hot ash with a sweeping attack.", mana: 12, stamina: 28, cooldown: 2, tags: ["ash", "area"] },
           { id: "orin-mercy-counter", name: "Mercy Counter", category: "Combat", description: "Redirect a strike without turning defense into cruelty.", mana: 6, stamina: 16, cooldown: 1, tags: ["mercy", "counter"] },
@@ -863,6 +868,10 @@
           { resource: "mana", amountPerStack: 1 }
         ]
       },
+      retributive: {
+        name: "Retributive",
+        description: "Inflicts the damage that was done to the target back on the attacker."
+      }
     };
     const STORAGE_KEY = "pallimustas-campaign-v1";
 
@@ -897,6 +906,12 @@
       if (effect.target === "self") return [sourceCharacter.id];
       if (effect.target === "others") return CHARACTERS.filter((character) => character.id !== sourceCharacter.id).map((character) => character.id);
       if (effect.target === "party") return CHARACTERS.map((character) => character.id);
+      if (effect.target === "selected" && Array.isArray(effect.characterIds)) {
+        const selectedIds = new Set(effect.characterIds);
+        return CHARACTERS
+          .filter((character) => selectedIds.has(character.id))
+          .map((character) => character.id);
+      }
       if (["tagged", "self-and-tagged"].includes(effect.target) && Array.isArray(effect.tags)) {
         const targetTags = effect.tags.map((tag) => tag.trim().toLowerCase());
         const taggedTargets = CHARACTERS.filter((character) =>
@@ -941,7 +956,15 @@
         effect &&
         typeof effect.id === "string" && effect.id.trim() &&
         Object.hasOwn(AFFLICTION_GLOSSARY, effect.afflictionId) &&
-        ["self", "others", "party", "tagged", "self-and-tagged"].includes(effect.target) &&
+        (["self", "others", "party", "tagged", "self-and-tagged"].includes(effect.target) ||(effect.target === "selected" && effect.selectPlayers === true)) &&
+      (effect.selectPlayers === undefined || typeof effect.selectPlayers === "boolean") &&
+      (effect.selectPlayers !== true || effect.target === "selected") &&
+        (effect.target !== "selected" || effect.selectPlayers === true) &&
+        (effect.characterIds === undefined ||
+          (Array.isArray(effect.characterIds) &&
+          effect.characterIds.every((id) => CHARACTERS.some((character) => character.id === id)))) &&
+        (effect.selectPlayers === undefined ||
+          (effect.selectPlayers === true && effect.target === "selected")) &&
         (!["tagged", "self-and-tagged"].includes(effect.target) ||
           (Array.isArray(effect.tags) && effect.tags.length > 0 && effect.tags.every((tag) => typeof tag === "string" && tag.trim()))) &&
         (effect.stacks === undefined || (Number.isSafeInteger(effect.stacks) && effect.stacks > 0)) &&
@@ -1295,32 +1318,6 @@
         .some((tag) => typeof tag === "string" && expectedTags.has(tag.toLowerCase()));
     }
 
-    function getEnhancedAbilityCooldown(character, ability, configuration, cooldown) {
-      if (!Number.isSafeInteger(cooldown) || cooldown < 0) return cooldown;
-
-      const enhancements = configuration.enhancements || ability.enhancements || [];
-      const reduction = enhancements.reduce((total, entry) =>
-        total + (Number.isSafeInteger(entry?.cooldownReduction) && entry.cooldownReduction > 0
-          ? entry.cooldownReduction
-          : 0), 0);
-
-      if (!reduction) return cooldown;
-
-      const qualifies = CHARACTERS.some((enhancerCharacter) =>
-        allCharacterAbilities(enhancerCharacter).some((enhancer) =>
-          [enhancer, ...(enhancer.variants || [])].some((enhancerConfiguration) => {
-            const rule = enhancerConfiguration.enhancement;
-            return enhancerConfiguration.tags?.includes("enhancement") &&
-              isPassiveConfiguration(enhancerConfiguration) &&
-              rule &&
-              abilityHasAnyTag(ability, rule.targetTags, configuration) &&
-              statEffectTargets(rule, enhancerCharacter).includes(character.id);
-          })
-        )
-      );
-
-  return qualifies ? Math.max(0, cooldown - reduction) : cooldown;
-}
 
     function getAbilityCostModifiers(character, resource, targetAbility = null) {
       return CHARACTERS.flatMap((sourceCharacter) =>
@@ -2261,7 +2258,10 @@
         ...(ability.inputFields || []).map((field) => `input:${field.id}`),
         ...(ability.resourceEffects || [])
           .filter((effect) => isConfigurableAbilityValue(effect.amount))
-          .map((effect) => `resourceEffect:${effect.id}`)
+          .map((effect) => `resourceEffect:${effect.id}`),
+        ...(ability.afflictionEffects || [])
+          .filter((effect) => effect.selectPlayers === true)
+          .map((effect) => `targetPlayers:${effect.id}`)
       ];
     }
 
@@ -2612,6 +2612,34 @@
 
     function showAbilityCostForm(abilityId, abilityName, fields, ability) {
       const inputs = fields.map((field) => {
+        if (field.startsWith("targetPlayers:")) {
+          const effectId = field.slice("targetPlayers:".length);
+          const effect = (ability.afflictionEffects || []).find(
+            (entry) => entry.id === effectId
+          );
+
+          const options = CHARACTERS.map((player) => `
+            <label class="ability-cost-input">
+              <input
+                type="checkbox"
+                name="${field}"
+                value="${escapeHtml(player.id)}"
+              >
+              ${escapeHtml(player.name)}
+            </label>
+          `).join("");
+
+          return `
+            <fieldset class="ability-cost-input">
+              <legend>
+                Choose players to receive ${
+                  escapeHtml(AFFLICTION_GLOSSARY[effect?.afflictionId]?.name || "this affliction")
+                }
+              </legend>
+              <div class="ability-cost-inputs">${options}</div>
+            </fieldset>
+          `;
+        }
         const inputId = field.startsWith("input:") ? field.slice("input:".length) : null;
         const inputConfig = ability.inputFields?.find((entry) => entry.id === inputId);
         const minimum = inputConfig?.min ?? (field.startsWith("resourceEffect:") ? "" : 0);
@@ -2698,7 +2726,7 @@
         console.error(`Invalid affliction effect configured for ${character.name}'s ${ability.name}.`, invalidAfflictionEffect);
         notify(`${ability.name} has an invalid affliction effect configuration. Check the code.`);
         return;
-      }
+      };
       const isRacialGift = (character.racialGifts || []).some((gift) => gift.id === abilityId);
       const stateKey = abilityStateKey(configuredAbility, ability.id === configuredAbility.id ? null : ability);
       if (toggleable && progress.activeAbilities?.[stateKey]) return;
@@ -2724,6 +2752,20 @@
       const configurableFields = configurableAbilityFields(ability, isRacialGift);
       if (configurableFields.some((field) => !Object.hasOwn(suppliedValues, field))) {
         showAbilityCostForm(abilityId, ability.name, configurableFields, ability);
+        return false;
+      }
+      const invalidPlayerSelection = (ability.afflictionEffects || []).find((effect) => {
+        if (effect.selectPlayers !== true) return false;
+
+        const selected = suppliedValues[`targetPlayers:${effect.id}`];
+
+        return !Array.isArray(selected) ||
+          selected.length === 0 ||
+          selected.some((id) => !CHARACTERS.some((player) => player.id === id));
+      });
+
+      if (invalidPlayerSelection) {
+        notify("Choose at least one valid player.");
         return false;
       }
       const invalidInput = (ability.inputFields || []).find((field) =>
@@ -2834,7 +2876,16 @@ progress.chargeRecharges[stateKey].push(
             stacks = Math.max(1, Math.ceil(Math.abs(change.amount) / maximum * 100));
           }
           if (!Number.isSafeInteger(stacks) || stacks <= 0) continue;
-          for (const targetCharacterId of statEffectTargets(effect, character)) {
+
+          const selectedPlayers = effect.selectPlayers === true
+            ? suppliedValues[`targetPlayers:${effect.id}`]
+            : effect.characterIds;
+
+          const targetEffect = effect.selectPlayers === true
+            ? { ...effect, target: "selected", characterIds: selectedPlayers }
+            : effect;
+
+          for (const targetCharacterId of statEffectTargets(targetEffect, character)) {
             applyConfiguredAfflictionEffect(
               character,
               ability,
@@ -3364,8 +3415,27 @@ progress.chargeRecharges[stateKey].push(
         return;
       }
       if (!form.matches("[data-configurable-ability]")) return;
-      const values = Object.fromEntries(new FormData(form).entries());
-      for (const [field, value] of Object.entries(values)) values[field] = Number(value);
+
+      const formData = new FormData(form);
+      const values = Object.fromEntries(formData.entries());
+
+      const playerSelectionFields = [
+        ...new Set(
+          [...form.querySelectorAll('input[type="checkbox"][name^="targetPlayers:"]')]
+            .map((checkbox) => checkbox.name)
+        )
+      ];
+
+      for (const field of playerSelectionFields) {
+        values[field] = formData.getAll(field);
+      }
+
+      for (const [field, value] of Object.entries(values)) {
+        if (!field.startsWith("targetPlayers:")) {
+          values[field] = Number(value);
+        }
+      }
+
       if (useAbility(form.dataset.configurableAbility, values)) {
         document.getElementById("modal-root").innerHTML = "";
       }
