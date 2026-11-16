@@ -109,6 +109,10 @@
       retributive: {
         name: "Retributive",
         description: "Inflicts the damage that was done to the target back on the attacker."
+      },
+      "blessing of anticipation": {
+        name: "Blessing of Anitcipation",
+        description: "Consumes 1 stack for each damage taken.",
       }
     };
 
