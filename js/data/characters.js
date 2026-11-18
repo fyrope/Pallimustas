@@ -59,7 +59,7 @@
     const CHARACTERS = [
       {
         id: "Jamez", name: "Bob Smith", race: "Smoulder", magicspecialty: "Astral",
-        rank: "Bronze", initials: "BS", color: "#d8aa67", avatarBg: "#352b1e",
+        rank: "Bronze", initials: "BS", color: "#d4cece", avatarBg: "#454340",
         resources: { health: 50, mana: 300, stamina: 300 },
         stats: { manaRecovery: 12, staminaRecovery: 64, physicalAttack: "2D8-2", damageResistance: "2D8", magic: "3D8+2.01", magicResistance: "3D8", speed: 32, reflexes: 5 },
         essences: ["Magic", "Mirror", "Flesh", "Doppelganger"],
@@ -194,7 +194,7 @@
           ] },
           { id: "nero-mana-tide", name: "Mana Tide", category: "Balance", summary: "Draw mana from the astral to replenish allies.", description: "All party members gain an accelerating mana-recovery bonus over 300 rounds, reaching +40 mana recovery per turn on round 300. While Mana Tide is active, each 10 mana an ally actually spends on abilities adds 1/6 mana recovery per turn to that ally; every 60 mana spent adds +1 recovery per turn.", mana: 60, stamina: 0, cooldown: 999, manaTide: { durationRounds: 300, maxRecovery: 40, manaPerRecovery: 60, growth: "quadratic" }, tags: ["Special Ability", "Recovery", "Counter-Execute"] },
           { id: "nero-juxtapose", name: "Juxtapose", category: "Balance", summary: "Swap the location of two entities.", description: "Swap the location of two allies and/or enemies. You must be able to see both subjects. If an ally resists or prevents it, it is negated. Enemies affected by this ability take +10% from all sources for 1 turn.", mana: 40, stamina: 0, cooldown: 10, tags: ["Special Ability", "Magic", "Teleport"] },
-          { id: "nero-instant-karma", name: "Instant Karma", category: "Balance", summary: "Target takes the damage it just dealt", description: "The target suffers damage of the same amount and type. This is considered retributive damage. Reducing or negating the original damage does not reduce or negate the retributive damage. (Only affects entities with a motive spirit).", mana: 10, stamina: 0, cooldown: 0, tags: ["Spell", "Retribution", "Holy"] },
+          { id: "nero-instant-karma", name: "Instant Karma", category: "Balance", summary: "Target takes the damage it just dealt", description: "The target suffers damage of the same amount and type. This is considered retributive damage. Reducing or negating the original damage does not reduce or negate the retributive damage. (Only affects entities with a motive spirit).", mana: 10, stamina: 0, cooldown: 0, tags: ["Spell", "Retributive", "Holy"] },
           { id: "nero-equillibrium", name: "Equilibrium", category: "Balance", summary: "Meditate to accrue instances of [Integrity] and [Resistant].", description: "Meditate to accrue 6 instances of [Integrity] and 12 instances of [Resistant] per turn up to a maximum of 20 Integrity and 40 Resistant. Beacon of Hope increases stacks to 9 and 18 gained respectively", mana: 0, stamina: 0, cooldown: 0, tags: ["Special Ability", "Buff", "Recovery"], afflictionEffects: [
             { id: "equilibrium-integrity", afflictionId: "integrity", target: "self", stacks: 9, duration: 1, maxStacksPerTurn: 9, maxTotalStacks: 20 },
             { id: "equilibrium-resistant", afflictionId: "resistant", target: "self", stacks: 18, duration: null, maxStacksPerTurn: 18, maxTotalStacks: 40 }
@@ -285,7 +285,7 @@
       },
       {
         id: "Sam", name: "Giorn the Bald Pigeon ™ the Third ™ ™ .™", race: "Draconian", magicspecialty: "Artificing and Ritual",
-        rank: "Bronze", initials: "GBP", color: "#a9c28f", avatarBg: "#293327",
+        rank: "Bronze", initials: "GBP", color: "#831010", avatarBg: "#ca2525",
         resources: { health: 53, mana: 340, stamina: 340 },
         stats: { manaRecovery: 12, staminaRecovery: 32, physicalAttack: "2D8", damageResistance: "2D8", magic: "3D8+1", magicResistance: "2D8+1", speed: 16, reflexes: 3 },
         essences: ["Magic", "Dimension", "Wing", "Dragon"],
@@ -336,12 +336,12 @@
           { id: "giorn-champion-sabre", name: "Champion Sabre", type: "weapon", summary: "A sabre that a fabled champion once used.", description: "Can channel conjured weapons to gain their effects, reflexes increased by +2. Hit \“Champion\'s Sabre\” against \“Champion\'s Aspis\” to lure the enemy towards you(2D8 modifier in the attack equation is from dimensional blade channeling)", statEffects: 
           [{ id: "champion-sabre", stat: "reflexes", bonus: "+2", target: "self" }], attacks: [
             { id: "standard", name: "Standard Attack", stats: ["physicalAttack", "magic"], statMode: "highest", modifier: "2D8" } ] },
-          { id: "giorn-champion-aspis", name: "Champion Aspis", type: "Shield", summary: "The shield that protected the champion from harm.", description: "Transfer an amount of targetable damage to a willing ally within 1 space, Damage Resistance is increased by 1D8 and you gain instances of [Resistant] over time", statEffects: 
+          { id: "giorn-champion-aspis", name: "Champion Aspis", summary: "The shield that protected the champion from harm.", description: "Transfer an amount of targetable damage to a willing ally within 1 space, Damage Resistance is increased by 1D8 and you gain instances of [Resistant] over time", statEffects: 
           [{ id: "champion-aspis", stat: "damageResistance", bonus: "+1D8", target: "self" }] }
         ],
         inventory: [
           { id: "giorn-lessor-miracle-potion", name: "Lesser Miracle Potion", description: "A potion that completely restores health, mana and stamina. Only works on iron rankers and below."},
-          { id: "nero-plant-essence", name: "Plant Essence", description: "An essence that gives 1 active ability and 4 inactive abilities related to plants. Only usable if an eligible race has less than 4 essences. This one used to belong to Hamish but he's dead now so it belongs to Nero."},
+          { id: "giorn-plant-essence", name: "Plant Essence", description: "An essence that gives 1 active ability and 4 inactive abilities related to plants. Only usable if an eligible race has less than 4 essences. This one used to belong to Hamish but he's dead now so it belongs to Nero."},
           { id: "giorn-scroll-of-the-reaper", name: "Scroll of the Reaper", description: "increases physical attack by 2 but reduces magical attack by 2(trainable)." },
           { id: "giorn-money", name: "Money", description: "100 Gold spirit coints, can eat one to temporarily increase power levels for one turn but has debilitating effects on next turn." }
         ],
@@ -366,7 +366,7 @@
         id: "Lizzie", name: "Amarynth Bellwether", race: "Celelstine", magicspecialty: "Array",
         rank: "Bronze", initials: "AB", color: "#c5a6d8", avatarBg: "#30273a",
         resources: { health: 24, mana: 440, stamina: 440 },
-        stats: { manaRecovery: 24, staminaRecovery: 64, physicalAttack: "2D8+1", damageResistance: "2D8+1", magic: "2D8", magicResistance: "2D8", speed: 32, reflexes: 4 },
+        stats: { manaRecovery: 12, staminaRecovery: 64, physicalAttack: "2D8+1", damageResistance: "2D8+1", magic: "2D8", magicResistance: "2D8", speed: 32, reflexes: 4 },
         essences: ["Moon", "Star", "Sun", "Sky"],
         abilities: [
           { id: "amarynth-fountain", name: "Fountain of Life", category: "Moon", summary: "summons a healing fountain", description: "Creates an ornate fountain that appears in the air, spraying water over people to heal their wounds over time and slowly regenerate mana.", mana: 80, stamina: 0, cooldown: 9999, tags: ["Special Ability", "Healing", "Conjuration"], afflictionEffects: [
@@ -391,11 +391,11 @@
           { id: "amarynth-astral-lantern", name: "Astral Lantern", category: "Star", summary: "Familiar that resembles a small floating lantern.", description: "Reveals nearby, hidden enemies. Makes ranged attacks with bolts of disruptive force. Can intercept and negate magical projectiles. Negating powerful projectiles means the Astral lantern needs to recharge. The summoner can use mana to help Astral lantern recharge faster. Familiar can be subsumed into the caster's eyes. When it has done so, the summoner can see hidden enemies and consume mana to make disruptive-force beam attacks from their eyes. Enemies revealed by the Astral lantern take 6 transcendent damage per turn.", mana: 0, stamina: 0, cooldown: 2, tags: ["Familiar", "Summon", "Transcendent"] },
           { id: "amarynth-burning-orbs", name: "Burning Orbs", category: "Sun", summary: "3 flaming orbs float around you and attack", description: "3 floating orbs float around you, attacking as a free action for 2D10 + your magic damage dice amount(eg. 2D8+1D10+1D6= +4 per orb).", mana: 20, stamina: 0, cooldown: 600, tags: ["Elemental", "Spell", "Conjuration"] },
           { id: "amarynth-boost", name: "Boost", category: "Sun", summary: "Enhances the effect of the next 2 abilities", description: "Enhances the effect of the next 2 abilities.", mana: 10, stamina: 0, cooldown: 600, tags: ["Special Ability", "enhancement"] },
-          { id: "amarynth-infinite-eclipse", name: "Realm of the Infinite Eclipse", category: "Sun", summary: "Creates a zone of darkness that suppresses light", description: "TODO.", mana: 80, stamina: 0, cooldown: 7200, tags: ["Spell", "Curse", "Buff", "Magic", "Elemental", "Dimension"] },
+          { id: "amarynth-infinite-eclipse", name: "Realm of the Infinite Eclipse", category: "Sun", summary: "Creates a zone of darkness that suppresses light", description: "Create a zone of darkness that suppresses light sources other than those that come from the user's essence abilities. Enemies are limned in moonlight that increases damage suffered from all sources, which is a curse effect. Allies are limned in sunlight that adds heat damage to all their physical and projectile attacks, which is a magic and fire boon effect. Attacks made by allies bestow [Burning Eye of the Sun] of them and [Pale Eye of the Moon] on enemies. On the 5th turn of this effect, all instances of [Burning Eye of the Sun] and [Pale Eye of the Moon] are consumed to create a powerful beam attack from the eclipse in the sky. Inflicting 1D8 transcendant damage for each affliction consumed", mana: 80, stamina: 0, cooldown: 7200, tags: ["Spell", "Curse", "Buff", "Magic", "Elemental", "Dimension", "Light"] },
           { id: "amarynth-magma-golem", name: "Magma Golem", category: "Sun", summary: "Summons a magma golem to fight for you", description: "Summons a magma golem that can fight for you and make ranged attacks that deal 2D8 damage. Takes this turn to summon but you are unable to use your next turn, magma golem can move next turn. Costs 1 bronze spirit coin ontop of the mana cost", mana: 40, stamina: 0, cooldown: 3600, tags: ["Summon", "Ritual", "Elemental"] },
           { id: "amarynth-radiant-fist", name: "Radiant Fist", category: "Sun", summary: "Unarmed attacks deal additional damage to magical defences and intangible/incorporeal entities", description: "Unarmed attacks deal additional disruptive-force damage, which is highly effective against magical defences and intangible or incorporeal enemies. Unarmed attacks do not trigger retaliation effects. Negate any non-damage effects from actively intercepted attacks(This uses your reaction). Gain an instance of [Impervious] when intercepting non-physical attacks. Gain mana when intercepting magical projectiles.", mana: 0, stamina: 0, cooldown: 0, tags: ["Special Ability", "passive"] },
           { id: "amarynth-life-bolt", name: "Life Bolt", category: "Sky", summary: "deliver an instanious healing effect through a projectile", description: "Delivers life energy through a projectile, giving a small burst of instantaneous healing as a well as a mild ongoing healing effect. Damages certain targets that are inimical to life force, such as most forms of undead (gives healing equal to your magic). Incantation: \"Imbue with life\"", mana: 10, stamina: 0, cooldown: 0, tags: ["Spell", "Healing"] },
-          { id: "amarynth-lightning-tether", name: "Lightning Tether", category: "Sky", summary: "Conjure an iron rod that tethers to a nearby enemy", description: "Conjures an iron rod, from which a tether connects to the nearest enemy within a short range and then chain between any other enemies with 3 spaces. If no enemy is in range, it will attach to the first enemy that enters range. The tether deals 1 damage per space away from the rod/previous connectee per turn. If the rod is destroyed or removed from its location, then lightning strikes the nearest enemy before chaining from one enemy to the next until all enemies in the vicinity have been struck that does damage equal to double your magic damage. The lightning triggered by the destruction of the rod deals heavy electrical damage and inflicts the [Stunned] condition. Dimensional displacement severs the tether. Only one tether may exist at a time.", mana: 30, stamina: 0, cooldown: 3, tags: ["sun", "healing"] },
+          { id: "amarynth-lightning-tether", name: "Lightning Tether", category: "Sky", summary: "Conjure an iron rod that tethers to a nearby enemy", description: "Conjures an iron rod, from which a tether connects to the nearest enemy within a short range and then chain between any other enemies with 3 spaces. If no enemy is in range, it will attach to the first enemy that enters range. The tether deals 1 damage per space away from the rod/previous connectee per turn. If the rod is destroyed or removed from its location, then lightning strikes the nearest enemy before chaining from one enemy to the next until all enemies in the vicinity have been struck that does damage equal to double your magic damage. The lightning triggered by the destruction of the rod deals heavy electrical damage and inflicts the [Stunned] condition. Dimensional displacement severs the tether. Only one tether may exist at a time.", mana: 6, stamina: 0, cooldown: 0, activeMode: "toggle", upkeep: { mana: 18 }, tags: ["Special Ability", "Conjuration", "Elemental", "Lightning"] },
           { id: "amarynth-flying-leap", name: "Flying Leap", category: "Sky", summary: "Powerful leap that can be combined with special attacks", description: "Swift and powerful leap with limited air control that can be combined with normal or special melee attacks, increasing all damage regardless of damage type by +1D8. Can be specially combined with Dive Bomb and another Special Attack for even more damage", mana: 0, stamina: 10, cooldown: 2, tags: ["Special Ability", "Combination", "Movement", "Wind"], enhancements: [
             { stat: "physicalAttack", bonus: "1D8" } ], statEffects: [
             { id: "flying-leap-attack", stat: "physicalAttack", bonus: "1D8", duration: 1, target: "self" } ] },
@@ -404,13 +404,176 @@
             { id: "free-runner-speed", stat: "speed", bonus: 6, target: "self" },
             { id: "free-runner-reflexes", stat: "reflexes", bonus: 1, target: "self" } ], variants: [
             { id: "free-runner-balance", name: "Wall/Water Run", description: "Low mana cost to run on walls or water. Momentum must be maintained on walls or water to prevent falling", mana: 6, stamina: 6, cooldown: 0, activeVersion: true, tags: ["Movement"] }]},
-          { id: "amarynth-celestial-wind", name: "Child of the Celestial Wind", category: "Sky", summary: "Your powers have increased effect", description: "Your celestine racial powers, dimension and wind-related abilities have increased effect. You gain damage reduction to disruptive-force damage and increased resistance to dimension and wind-based effects, and enemies subjected to your wind-related abilities suffer disruptive-force damage.", mana: 16, stamina: 6, cooldown: 2, tags: ["light", "support"] }
+          { id: "amarynth-celestial-wind", name: "Child of the Celestial Wind", category: "Sky", summary: "Your powers have increased effect", description: "Your celestine racial powers, dimension and wind-related abilities have increased effect. You gain damage reduction to disruptive-force damage and increased resistance to dimension and wind-based effects, and enemies subjected to your wind-related abilities suffer disruptive-force damage.", mana: 0, stamina: 0, cooldown: 0, tags: ["Special Ability", "Dimension", "Holy", "passive"] }
         ],
-        equipment: [],
-        titles: [],
-        inventory: [],
+        equipment: [
+          { id: "amarynth-enchantress-gauntlet", name: "Enchantress' Gauntlet", summary: "The glove of a mighty magic user.", description: "Elemental and Astral Abilities have an increased effect and all mana costs are decreased", statEffects: 
+          [{ id: "enchantress-gauntlet", stat: "damageResistance", bonus: "+1D8", target: "self" }]},
+          { id: "amarynth-enchantress-amulet", name: "Enchantress' Amulet", summary: "The queen of the succubus' amulet.", description: "Healing spells have increased effect and once-off healing bestows an over-time effect, you can also imbue 5 other weapons with [Succubus Blessing]", statEffects: 
+          [{ id: "enchantress-amulet", stat: "damageResistance", bonus: "+1D8", target: "self" }] },
+          { id: "amarynth-bramble-glove", name: "Glove of Brambles", summary: "Increases elemental abilities effects", description: "Increases the effects of Elemental abilities and significantly increases the effect of nature abilities"},
+          { id: "amarynth-kunai-chain", name: "Kunai with Chain", type: "weapon", summary: "A weapon used by a great ninja.", description: "A bronze rank weapon that uses physical attack with 2 spaces of reach.", attacks: [
+            { id: "standard", name: "Standard Attack", stats: ["physicalAttack"]}
+          ]},
+        ],
+        inventory: [
+          { id: "amarynth-lessor-miracle-potion", name: "Lesser Miracle Potion", description: "A potion that completely restores health, mana and stamina. Only works on iron rankers and below."},
+          { id: "amarynth-scroll-of-the-reaper", name: "Scroll of the Reaper", description: "increases magic by 2 but reduces physical attack by 2(trainable)." },
+          { id: "amarynth-money", name: "Money", description: "70 Gold spirit coints, can eat one to temporarily increase power levels for one turn but has debilitating effects on next turn." }
+        ],
         racialGifts: [
-          { id: "orin-dawnkin-aura", name: "Dawnkin Aura", summary: "", description: "Surround yourself and nearby allies with a renewing dawnlight.", cooldown: 4, duration: 2, tags: ["light", "healing"] }
+          { id: "amarynth-twilight-avatar", name: "Avatar of Twilight", summary: "Your light abilities have decreased mana and stamina costs", description: "Your light tagged abilities have decreased mana and stamina costs.", cooldown: 0, duration: 0, tags: ["Buff", "Racial Gift", "passive", "enhancement"], costEffects: [
+            { id: "Twilight-Avatar", mana: 5, stamina: 5, target: "self", abilityTags: ["Light"] } ] },
+          { id: "amarynth-elemental-avatar", name: "Elemental Avatar", summary: "Increased resistances and enhanced elemental abilities", description: "dimension effects, astral forces and Elemental strikes have increased resistance and effects. Transcendent damage is also increased.", cooldown: 0, duration: 0, tags: ["Buff", "Racial Gift", "passive", "enhancement"] },
+          { id: "amarynth-holy-affinity", name: "Holy Affinity", summary: "Increased resistance to holy afflictions", description: "Increased resistance to holy afflictions, and Cleanse effects are more effective.", cooldown: 0, duration: 0, tags: ["Holy", "Racial Gift", "passive", "enhancement"] },
+          { id: "amarynth-celestial-bounty", name: "Celestial Bounty", summary: "Increased mana recovery", description: "Increases mana recovery by +1.", cooldown: 0, duration: 0, tags: ["Racial Gift", "passive"], statEffects: [{ id: "celetial-mana-recovery", stat: "manaRecovery", bonus: "+1", target: "self" } ] },
+          { id: "amarynth-mana-integrity", name: "Mana Integrity", summary: "Mana costs are reduced", description: "Ongoing mana costs for maintained abilities are reduced. Resistance to mana drain effects is increased.", cooldown: 0, duration: 0, tags: ["Racial Gift", "passive"] },
+          { id: "amarynth-faster-than-light", name: "Faster than Light", summary: "Speed and Reflexes increased", description: "Your Speed and Reflexes increase proportionally to the amount of [Shades] in your shadow.", cooldown: 0, duration: 0, tags: ["Racial Gift", "passive", "Buff"] }
+        ]
+      },
+      {
+        id: "Hamish", name: "Gertrude Smith", race: "Celestine", magicspecialty: "Astral",
+        rank: "Bronze", initials: "GS", color: "#55dc6e", avatarBg: "#1a6120",
+        resources: { health: 59, mana: 500, stamina: 500 },
+        stats: { manaRecovery: 12, staminaRecovery: 64, physicalAttack: "2D8", damageResistance: "2D8", magic: "2D8", magicResistance: "2D8", speed: 32, reflexes: 4 },
+        essences: ["Wind", "Balance", "Potent", "Dimension"],
+        abilities: [
+          { id: "gertrude-absorb-energy", name: "Absorb Energy", category: "Wind", summary: "Drain energy to get mana that caps at your maximum", description: "You can drain kinetic, heat and potential energy from objects and creatures within 2 spaces, this bestows you with mana equal to 1D20 multiplied by 10 but cannot go above your maximum.", mana: 0, stamina: 0, cooldown: 0, tags: ["Special Ability", "Drain"] },
+          { id: "gertrude-wind-wave", name: "Wind Wave", category: "Wind", summary: "Produce a powerful blast of air.", description: "Produce a powerful blast of air that can push away enemies and physical projectiles and affects magic area affects/projectiles. Can launch you into the air or move rapidly while already airborne. Is a reaction.", mana: 20, stamina: 0, cooldown: 1, tags: ["Special Ability", "Movement", "Reaction", "Wind"] },
+          { id: "gertrude-wind-blade", name: "Wind Blade", category: "Wind", summary: "Create a cutting projectile of air", description: "Create a cutting projectile of air that starts at half a space long and grows for every space it moves while tracking it's target until it hits something, deals half of Magic Damage.", mana: 10, stamina: 0, cooldown: 0, tags: ["Special Attack", "Elemental", "Wind"] },
+          { id: "gertrude-cleansing-breeze", name: "Cleansing Breeze", category: "Wind", summary: "Aura that purges toxins from the air", description: "Allies within the aura have increased Resistance to curses, diseases, magic afflictions, poisons and unholy afflictions. Cleansing abilities used on allies within the aura have an increased effect and toxins are continuously purged from allies and the air within the aura.", mana: 0, stamina: 0, cooldown: 0, tags: ["Aura", "Cleanse", "passive"] },
+          { id: "gertrude-celestial-wind", name: "Child of the Celestial Wind", category: "Wind", summary: "Your powers have increased effect", description: "Your celestine racial powers, dimension and wind-related abilities have increased effect. You gain damage reduction to disruptive-force damage and increased resistance to dimension and wind-based effects, and enemies subjected to your wind-related abilities suffer disruptive-force damage.", mana: 0, stamina: 0, cooldown: 0, tags: ["Special Ability", "Dimension", "Holy", "passive"] },
+          { id: "gertrude-burst-shield", name: "Burst Shield", category: "Balance", summary: "Give an ally a shield", description: "Create a short-lived shield that can fully negate an enemy attack less than silver and partially negate a silver one, exploding outwards, knocking back nearby enemies and inflicting 1D6 of concussive damage and [Vibrant Echo] on anyone damaged by the blast. This is a predictive action, not a reaction", mana: 20, stamina: 0, cooldown: 4, tags: ["Special Ability", "Recovery", "Retributive", "Curse", "Magic"] },
+          { id: "gertrude-instant-karma", name: "Instant Karma", category: "Balance", summary: "Target takes the damage it just dealt", description: "The target suffers damage of the same amount and type. This is considered retributive damage. Reducing or negating the original damage does not reduce or negate the retributive damage. (Only affects entities with a motive spirit).", mana: 10, stamina: 0, cooldown: 0, tags: ["Spell", "Retributive", "Holy"] },
+          { id: "gertrude-magic-lord", name: "Lord of Magic", category: "Balance", summary: "Increases magic stats and resistance to negative magical effects", description: "You and Allies gain 12 mana recovery and increased resistance to mana drain effects. You gain a permanent +30 maximum mana", mana: 0, stamina: 0, cooldown: 0, tags: ["Aura", "Magic", "Buff", "passive"] }, 
+          { id: "gertrude-karmic-warrior", name: "Karmic Warrior", category: "Balance", summary: "Gain and afflict a bunch of stupid Afflictions", description: "When attacked, gain an instance of [Agent of Karma] and [Karmic Sacrifice] and inflict [Bad Karma] on the enemy. Gain an instance of [Good Karma] when healing, cleansing others or suffering damage", mana: 0, stamina: 0, cooldown: 0, tags: ["Special Ability", "Healing", "Recovery", "passive"] },
+          { id: "gertrude-equity", name: "Equity", category: "Balance", summary: "you gain boons that the enemy gains", description: "When an enemy gains a boon, you can choose to take that same boon. When you suffer a non-wounding affliction, all enemies within the aura suffer that same affliction", mana: 0, stamina: 0, cooldown: 0, tags: ["Aura", "Holy", "Retributive", "passive"] },
+          { id: "gertrude-crystalise-mana", name: "Crystalise Mana", category: "Potent", summary: "Create up to three crystals that accelerate mana recovery.", description: "Create a crystal that floats around you, accelerating mana recovery. The crystal is impervious to damage, but vulnerable to dispel effects and can intercept projectiles, negating the effect then it becomes inactive for 3 turns. If dispelled, crystals grant an immediate burst of 50 mana. You can have up to three mana crystals at a time.", mana: 10, stamina: 0, cooldown: 0, charges: 3, recharge: 3, crystalSummon: { max: 3, disableTurns: 3 }, tags: ["Conjuration", "Restoration", "Buff"] },
+          { id: "gertrude-reaper-hand", name: "Hand of the Reaper", category: "Potent", summary: "expand your reach to 2 spaces through a semi-substantial arm.", description: "Conjure up to 2 highly flexible semi-substantial shadow-arms that can extend or shrink up to 2 spaces. Conjured items can be conjured into the shadow hand. Can be used to make melee special attacks. Special attacks made using the arm inflict [Creeping Death] and [Rigor Mortis].", mana: 6, stamina: 0, cooldown: 0, activeMode: "toggle", upkeep: { mana: 6 }, tags: ["Conjuration", "Disease", "Magic", "Holy"] },
+          { id: "gertrude-immortality", name: "Immortality", category: "Potent", summary: "Restore everything", description: "Instantly Fully restore all health, mana and stamina. Gain an ongoing health, mana and stamina recovery effects of 10/s for 3 rounds", mana: 0, stamina: 0, cooldown: 9999, tags: ["Special Ability", "Healing", "Recovery"] },
+          { id: "gertrude-specious-sorcerer", name: "Specious Sorcerer", category: "Potent", summary: "You can use magical tools and your magical attributes are increased.", description: "You can use magical tools, your maximum mana is increased by 40 and you have a permanent +12 to mana recovery.", mana: 0, stamina: 0, cooldown: 0, tags: ["Special Ability", "Buff", "passive"], statEffects: [
+            { id: "specious-sorcerer-recovery", stat: "manaRecovery", bonus: "+12", target: "self" }], resourceEffects: [
+            { id: "specious-sorcerer-mana", resource: "mana", bonus: 40, maximumIncrease: 40, target: "self" } ], variants: [
+            { id: "specious-sorcerer-buff", name: "Spirit Increase", description: "Increase Magic and Magic Resistance by 1D12", mana: 60, stamina: 0, cooldown: 3600, tags: ["Special Ability", "Buff"], statEffects: [{ id: "specious-sorcerer-magic", stat: "magic", bonus: "+1D12", target: "self" }, { id: "specious-sorcerer-resistance", stat: "magicResistance", bonus: "+1D12", target: "self" }] }]},
+          { id: "gertrude-immortal-fist", name: "Immortal Fist", category: "Potent", summary: "Unarmed attacks deal additional damage", description: "Unarmed attacks deal 1D8 of resonating force damage against physical defences and you suffer no damage when actively interceptingg attacks(reaction). Not all damage from powerful silver rank attacks or higher will be negated and you will gain an instance of [Momentum]", mana: 0, stamina: 0, cooldown: 0, tags: ["Special Ability", "passive"] },
+          { id: "gertrude-boost", name: "Boost", category: "Dimension", summary: "Enhances the effect of the next 2 abilities", description: "Enhances the effect of the next 2 abilities.", mana: 10, stamina: 0, cooldown: 600, tags: ["Special Ability", "enhancement"] },
+          { id: "gertrude-divinity", name: "Divinity", category: "Dimension", summary: "Channel the power of Hero, the god of... heroes to gain buffs or bestow it to 1 ally within your aura", description: "All your stats get increased by 2D10, your mana recovery is increased by 24, reflexes is increased by 5 and speed is increased by 30.", mana: 90, stamina: 0, cooldown: 99999, tags: ["Special Ability", "Buff", "Boon"] },
+          { id: "gertrude-dimensional-blade", name: "Dimensional Blade", category: "Dimension", summary: "Summon a dimensional sword that adds 2D8 to your higher attack stat.", description: "Summon a sword made of black lightning lined in silver; it can cut through almost anything. Its slash uses whichever is higher, Physical Attack or Magic, and adds 2D8.", mana: 20, stamina: 0, cooldown: 0, tags: ["Dimension", "conjuration", "attack"],
+          attacks: [{ id: "dimensional-blade-slash", name: "Dimensional Slash", stats: ["physicalAttack", "magic"], statMode: "highest", modifier: "2D8" }]},
+          { id: "gertrude-strong-soul", name: "Strong Soul", category: "Dimension", ummary: "Resistances increased and you can physically interact with incorporeal entities.", description: "Disruptive force damage is reduced by a large amount, other damage is reduced by a small amount, increased curse, magic and unholy resistance. You can physically interact with incorporeal entities", mana: 0, stamina: 0, cooldown: 0, tags: ["Special Abiity", "Dimension", "Magic", "passive", "Attribute-Increasing"], statEffects: [
+            { id: "strong-soul-damage-resistance", stat: "damageResistance", bonus: "1D8", target: "self" },
+            { id: "strong-soul-magic-resistance", stat: "magicResistance", bonus: "1D8", target: "self" }
+          ], enhancements: [
+            { stat: "damageResistance", bonus: "+1" },
+            { stat: "magicResistance", bonus: "+1" }
+          ] },
+          { id: "gertrude-radiant-fist", name: "Radiant Fist", category: "Dimension", summary: "Unarmed attacks deal additional damage to magical defences and intangible/incorporeal entities", description: "Unarmed attacks deal additional disruptive-force damage, which is highly effective against magical defences and intangible or incorporeal enemies. Unarmed attacks do not trigger retaliation effects. Negate any non-damage effects from actively intercepted attacks(This uses your reaction). Gain an instance of [Impervious] when intercepting non-physical attacks. Gain mana when intercepting magical projectiles.", mana: 0, stamina: 0, cooldown: 0, tags: ["Special Ability", "passive"] },
+        ],
+        equipment: [
+          { id: "gertrude-sword-cannon", name: "Sword Cannon", summary: "A sword once used by the strongest commissioner.", description: "IDEAS: CAN USE WIND BLADE, enhances wind powers, conjure weapon into it, wind blade is free action"},
+          { id: "gertrude-basic-cape", name: "Badass Cape", summary: "Looks cool.", description: "Doesn't do anything but always moves in the wind to make you look cool plus has Anti-get-stuck-in-things-and-die protection.™ Made and patented by Edna Mode", },
+        ],
+        inventory: [
+          { id: "gertude-plant-awakening-stone", name: "Plant Awakening Stone", description: "An awakening stone that activates an inactive ability related to Plants. Only usable if an eligible race has less than 20 awakened abilities."},
+          { id: "gertrude-money", name: "Money", description: "100 Gold spirit coints, can eat one to temporarily increase power levels for one turn but has debilitating effects on next turn." }
+        ],
+        racialGifts: [
+          { id: "gertrude-holy-affinity", name: "Holy Affinity", summary: "Increased resistance to holy afflictions", description: "Increased resistance to holy afflictions, and Cleanse effects are more effective.", cooldown: 0, duration: 0, tags: ["Holy", "Racial Gift", "passive", "enhancement"] },
+          { id: "gertrude-astral-elementalist", name: "Astral Elementalist", summary: "Dimension, astral and elemental attributes is increased", description: "Dimension, astral and elemental reistances and abilities are significantly increased effects and transcendant damage is also significantly increased.", cooldown: 0, duration: 0, tags: ["Racial Gift", "Elemental", "passive"]},
+          { id: "gertrude-guardian", name: "Guardian", summary: "Your commitment to defending your allies has increased your attributes", description: "Your physical and magical resistances are increased by 1D8 and your physical and magical attack is increased by 2D8 when someone is unconscious.", cooldown: 0, duration: 0, tags: ["Racial Gift", "passive"]},
+          { id: "gertrude-mana-integrity", name: "Mana Integrity", summary: "Mana costs are reduced", description: "Ongoing mana costs for maintained abilities are reduced. Resistance to mana drain effects is increased.", cooldown: 0, duration: 0, tags: ["Racial Gift", "passive"] },
+          { id: "gertrude-celestial-bounty", name: "Celestial Bounty", summary: "Increased mana recovery", description: "Increases mana recovery by +1.", cooldown: 0, duration: 0, tags: ["Racial Gift", "passive"], statEffects: [{ id: "celetial-mana-recovery", stat: "manaRecovery", bonus: "+1", target: "self" } ] },
+          { id: "gertrude-celestial-swiftness", name: "Celestial Swiftness", summary: "Speed is increased", description: "Your speed is increased by 17 spaces.", cooldown: 0, duration: 0, tags: ["Racial Gift", "Movement", "passive"]},
+        ]
+      },
+      {
+        id: "Izaak", name: "Iron Man", race: "Human", magicspecialty: "Ritual",
+        rank: "Bronze", initials: "IM", color: "#ccdc55", avatarBg: "#54611a",
+        resources: { health: 28, mana: 200, stamina: 200 },
+        stats: { manaRecovery: 12, staminaRecovery: 64, physicalAttack: "2D8", damageResistance: "2D8+2", magic: "2D8+2", magicResistance: "2D8+2", speed: 32, reflexes: 4 },
+        essences: ["Earth", "Iron", "Shield", "Fortress"],
+        abilities: [
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+        ],
+        equipment: [
+          { id: "", name: "", summary: ".", description: ""},
+          { id: "", name: "", summary: ".", description: "", },
+        ],
+        inventory: [
+          { id: "gertude-plant-awakening-stone", name: "Plant Awakening Stone", description: "An awakening stone that activates an inactive ability related to Plants. Only usable if an eligible race has less than 20 awakened abilities."},
+          { id: "gertrude-money", name: "Money", description: "100 Gold spirit coints, can eat one to temporarily increase power levels for one turn but has debilitating effects on next turn." }
+        ],
+        racialGifts: [
+          { id: "", name: "", summary: "", description: ".", cooldown: 0, duration: 0, tags: []},
+          { id: "", name: "", summary: "", description: ".", cooldown: 0, duration: 0, tags: []},
+          { id: "", name: "", summary: "", description: ".", cooldown: 0, duration: 0, tags: []},
+          { id: "", name: "", summary: "", description: ".", cooldown: 0, duration: 0, tags: []},
+          { id: "", name: "", summary: "", description: ".", cooldown: 0, duration: 0, tags: []},
+          { id: "", name: "", summary: "", description: ".", cooldown: 0, duration: 0, tags: []},
+        ]
+      },
+      {
+        id: "Mason", name: "Smelf Smelfmin", race: "Elf", magicspecialty: "Improv",
+        rank: "Bronze", initials: "SS", color: "#d8aa67", avatarBg: "#352b1e",
+        resources: { health: 59, mana: 500, stamina: 500 },
+        stats: { manaRecovery: 12, staminaRecovery: 64, physicalAttack: "2D8", damageResistance: "2D8", magic: "2D8", magicResistance: "2D8", speed: 32, reflexes: 4 },
+        essences: ["Echo", "Song", "Harmonic", "Resonating"],
+        abilities: [
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "", name: "", category: "", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+        ],
+        equipment: [
+          { id: "", name: "", summary: ".", description: ""},
+          { id: "", name: "", summary: ".", description: "", },
+        ],
+        inventory: [
+          { id: "gertude-plant-awakening-stone", name: "Plant Awakening Stone", description: "An awakening stone that activates an inactive ability related to Plants. Only usable if an eligible race has less than 20 awakened abilities."},
+          { id: "gertrude-money", name: "Money", description: "100 Gold spirit coints, can eat one to temporarily increase power levels for one turn but has debilitating effects on next turn." }
+        ],
+        racialGifts: [
+          { id: "", name: "", summary: "", description: ".", cooldown: 0, duration: 0, tags: []},
+          { id: "", name: "", summary: "", description: ".", cooldown: 0, duration: 0, tags: []},
+          { id: "", name: "", summary: "", description: ".", cooldown: 0, duration: 0, tags: []},
+          { id: "", name: "", summary: "", description: ".", cooldown: 0, duration: 0, tags: []},
+          { id: "", name: "", summary: "", description: ".", cooldown: 0, duration: 0, tags: []},
+          { id: "", name: "", summary: "", description: ".", cooldown: 0, duration: 0, tags: []},
         ]
       }
     ];
