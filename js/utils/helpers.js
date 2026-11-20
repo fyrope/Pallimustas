@@ -2,6 +2,10 @@
       return CHARACTERS.find((character) => character.id === id);
     }
 
+    function isCharacterAttending(character) {
+      return !(state.absentCharacterIds || []).includes(character.id);
+    }
+
     function getTurnOrder() {
       const absent = new Set(state.absentCharacterIds || []);
       return CHARACTERS.filter((character) => !absent.has(character.id)).sort((a, b) => {
@@ -73,8 +77,9 @@
           detail: `${activeEffect.remainingTurns} turn${activeEffect.remainingTurns === 1 ? "" : "s"} remaining`
         }];
       });
-      const passiveModifiers = CHARACTERS.flatMap((sourceCharacter) =>
-        allCharacterAbilities(sourceCharacter).flatMap((ability) =>
+      const passiveModifiers = CHARACTERS.flatMap((sourceCharacter) => {
+        if (!isCharacterAttending(sourceCharacter)) return [];
+        return allCharacterAbilities(sourceCharacter).flatMap((ability) =>
           [ability, ...(ability.variants || [])].flatMap((configuration) => {
             if (!isPassiveConfiguration(configuration)) return [];
             return (configuration.statEffects || [])
@@ -85,8 +90,8 @@
                 detail: "Passive effect"
               }));
           })
-        )
-      );
+        );
+      });
       const activeToggleModifiers = CHARACTERS.flatMap((sourceCharacter) => {
         const progress = state.characters[sourceCharacter.id];
         return allCharacterAbilities(sourceCharacter).flatMap((ability) =>
@@ -251,6 +256,7 @@
 
 function isAbilityEnhancedForCharacter(character, ability, configuration) {
   for (const enhancerCharacter of CHARACTERS) {
+    if (!isCharacterAttending(enhancerCharacter)) continue;
     for (const enhancer of allCharacterAbilities(enhancerCharacter)) {
       for (const enhancerConfiguration of [enhancer, ...(enhancer.variants || [])]) {
         const rule = enhancerConfiguration.enhancement;
