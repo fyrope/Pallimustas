@@ -48,8 +48,26 @@
       </article>`;
     }
 
+    function renderInitiativePanel() {
+      const order = getTurnOrder();
+      const attending = order.length;
+      const allRolled = attending > 0 && order.every((character) => Number.isSafeInteger(state.initiativeScores?.[character.id]));
+      const rows = CHARACTERS.map((character) => {
+        const present = !(state.absentCharacterIds || []).includes(character.id);
+        const score = state.initiativeScores?.[character.id];
+        return `<div class="initiative-row ${present ? "" : "is-absent"}">
+          <div class="initiative-player">${avatarStyle(character)}<div><div class="next-name">${escapeHtml(character.name)}</div><div class="next-label">${present ? "Attending" : "Absent this session"}</div></div></div>
+          <label class="initiative-score"><span>Initiative</span><input type="number" min="-999" max="999" step="1" inputmode="numeric" data-initiative="${escapeHtml(character.id)}" value="${Number.isSafeInteger(score) ? score : ""}" ${present ? "" : "disabled"} aria-label="${escapeHtml(character.name)} initiative"></label>
+          <label class="attendance-toggle"><input type="checkbox" data-attendance="${escapeHtml(character.id)}" ${present ? "checked" : ""}><span>Attending</span></label>
+        </div>`;
+      }).join("");
+      const orderSummary = order.map((character, index) => `<span class="initiative-order-chip">${index + 1}. ${escapeHtml(character.name)}${Number.isSafeInteger(state.initiativeScores?.[character.id]) ? ` · ${state.initiativeScores[character.id]}` : ""}</span>`).join("");
+      return `<section class="panel initiative-panel"><div class="initiative-heading"><div><div class="section-title">Session initiative</div><div class="section-helper">Enter each attending player's roll. Highest initiative acts first; tied rolls keep the roster order.</div></div><button class="button" data-action="new-initiative-session">↻ New session</button></div><div class="initiative-list">${rows}</div><div class="initiative-footer"><div><div class="section-helper">${attending} attending · ${CHARACTERS.length - attending} absent</div><div class="initiative-order">${orderSummary || "No players attending"}</div></div><span class="initiative-status ${allRolled ? "ready" : ""}">${allRolled ? "Initiative ready" : "Waiting for initiative rolls"}</span></div></section>`;
+    }
+
     function renderOverview() {
-      return `<div class="page-head"><div><div class="eyebrow">Campaign dashboard</div><h1>The party at a glance</h1><p class="subtitle">A clear view of your adventurers, their resources, and what comes next.</p></div><button class="button" data-action="confirm-reset">↻ <span>Reset session</span></button></div>
+      return `<div class="page-head"><div><div class="eyebrow">Campaign dashboard</div><h1>The party at a glance</h1><p class="subtitle">A clear view of your adventurers, their resources, and what comes next.</p></div><button class="button" data-action="confirm-reset">↻ <span>Reset campaign</span></button></div>
+        ${renderInitiativePanel()}
         ${turnBanner()}
         ${renderSummary()}
         <section>
@@ -87,7 +105,8 @@
 
     function renderSheet() {
       const character = getSelectedCharacter();
-      const next = CHARACTERS[(state.turnIndex + 1) % CHARACTERS.length];
+      const order = getTurnOrder();
+      const next = order.length > 1 ? order[(state.turnIndex + 1) % order.length] : null;
       return `<div class="page-head"><div><div class="eyebrow">Character sheet · ${escapeHtml(character.rank)}</div><h1>${escapeHtml(character.name)}</h1><p class="subtitle">${escapeHtml(characterSummary(character))}</p></div><button class="button" data-action="confirm-reset">↻ <span>Reset session</span></button></div>
         <div class="sheet-layout">
           <div class="sheet-main">
@@ -115,7 +134,7 @@
             <section class="panel aside-panel">
               <div class="aside-heading">Turn order</div>
               <div class="next-turn">${avatarStyle(getCurrentCharacter())}<div><div class="next-name">${escapeHtml(getCurrentCharacter().name)}</div><div class="next-label">Current · Round ${state.turn}</div></div></div>
-              <div class="next-turn" style="margin-top:12px">${avatarStyle(next)}<div><div class="next-name">${escapeHtml(next.name)}</div><div class="next-label">Up next</div></div></div>
+              ${next ? `<div class="next-turn" style="margin-top:12px">${avatarStyle(next)}<div><div class="next-name">${escapeHtml(next.name)}</div><div class="next-label">Up next</div></div></div>` : '<div class="empty-note">No other attending players.</div>'}
               <div class="turn-actions"><button class="button primary" data-action="end-turn">End ${escapeHtml(character.name.split(" ")[0])}'s turn →</button><button class="button subtle" data-action="confirm-reset">↻ Reset session</button></div>
               <div class="regen-note">Ending the current turn restores mana and stamina, then reduces that character’s cooldowns. Active durations count down on the owner’s turns; cooldowns pause until an effect expires.</div>
             </section>
@@ -134,13 +153,10 @@
     }
 
     function turnBanner() {
+      const order = getTurnOrder();
+      const ready = order.length > 0 && order.every((character) => Number.isSafeInteger(state.initiativeScores?.[character.id]));
       const current = getCurrentCharacter();
-      return `<div class="turn-banner">
-        <div class="turn-left"><div class="turn-symbol" aria-hidden="true">◷</div><div>
-          <div class="turn-label">It is their turn</div><div class="turn-player">${escapeHtml(current.name)} <span class="turn-meta">· ${escapeHtml(characterSummary(current))}</span></div>
-        </div></div>
-        <button class="button primary" data-action="end-turn">End turn <span aria-hidden="true">→</span></button>
-      </div>`;
+      return `<div class="turn-banner"><div class="turn-left"><div class="turn-symbol" aria-hidden="true">◷</div><div><div class="turn-label">${ready ? "Current turn" : "Initiative setup"}</div><div class="turn-player">${ready ? escapeHtml(current.name) : "Roll initiative for everyone attending"} <span class="turn-meta">${ready ? `· ${escapeHtml(characterSummary(current))}` : "· Turn rotation unlocks when all rolls are entered"}</span></div></div></div><button class="button primary" data-action="end-turn" ${ready ? "" : "disabled"}>${ready ? "End turn →" : "Awaiting rolls"}</button></div>`;
     }
 
 
