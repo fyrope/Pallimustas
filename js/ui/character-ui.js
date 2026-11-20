@@ -1,10 +1,16 @@
     function renderRoster() {
-      document.getElementById("roster-count").textContent = CHARACTERS.length;
-      document.getElementById("roster").innerHTML = CHARACTERS.map((character) => {
-        const isCurrent = getCurrentCharacter().id === character.id;
-        return `<button class="nav-button ${state.selectedId === character.id && state.view === "sheet" ? "active" : ""}" data-character="${character.id}">
+      const attending = getTurnOrder();
+      const absent = CHARACTERS.filter((character) => (state.absentCharacterIds || []).includes(character.id));
+      const roster = [...attending, ...absent];
+      document.getElementById("roster-count").textContent = `${attending.length}/${CHARACTERS.length}`;
+      document.getElementById("roster").innerHTML = roster.map((character) => {
+        const isAbsent = absent.includes(character);
+        const isCurrent = !isAbsent && getCurrentCharacter().id === character.id;
+        const initiative = state.initiativeScores?.[character.id];
+        return `<button class="nav-button ${state.selectedId === character.id && state.view === "sheet" ? "active" : ""} ${isAbsent ? "is-absent" : ""}" data-character="${character.id}" ${isAbsent ? 'aria-label="' + escapeHtml(character.name) + ', absent this session"' : ""}>
           ${avatarStyle(character)}
           <span class="roster-person"><span class="roster-name">${escapeHtml(character.name)}</span><span class="roster-class">${escapeHtml(characterSummary(character))}</span></span>
+          ${isAbsent ? '<span class="roster-status">Absent</span>' : Number.isSafeInteger(initiative) ? `<span class="roster-initiative">${initiative}</span>` : ""}
           ${isCurrent ? '<span class="turn-indicator">Turn</span>' : ""}
         </button>`;
       }).join("");
@@ -67,7 +73,6 @@
 
     function renderOverview() {
       return `<div class="page-head"><div><div class="eyebrow">Campaign dashboard</div><h1>The party at a glance</h1><p class="subtitle">A clear view of your adventurers, their resources, and what comes next.</p></div><button class="button" data-action="confirm-reset">↻ <span>Reset campaign</span></button></div>
-        ${renderInitiativePanel()}
         ${turnBanner()}
         ${renderSummary()}
         <section>
@@ -140,8 +145,9 @@
             </section>
             <section class="panel aside-panel">
               <div class="aside-heading">Session</div>
-              <div class="next-turn"><div class="turn-symbol" style="width:32px;height:32px">◷</div><div><div class="next-name">Round ${state.turn}</div><div class="next-label">Full party rotation counter</div></div></div>
-              <div class="regen-note">Progress is saved in this browser automatically. Reset restores the party’s configured starting resources.</div>
+              <div class="next-turn"><div class="turn-symbol" style="width:32px;height:32px">◷</div><div><div class="next-name">Round ${state.turn}</div><div class="next-label">Full attending-party rotation counter</div></div></div>
+              ${renderInitiativePanel()}
+              <div class="regen-note">Progress is saved automatically. Starting a new session clears initiative and attendance, but keeps character progress.</div>
             </section>
           </aside>
         </div>
