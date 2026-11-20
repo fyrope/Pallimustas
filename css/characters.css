@@ -100,3 +100,41 @@
     .turn-actions { display: grid; gap: 8px; margin-top: 14px; }
     .turn-actions .button { width: 100%; }
     .regen-note { margin-top: 10px; color: var(--faint); font-size: 9px; line-height: 1.6; }
+
+
+/* Keep the Session card compact on desktop so it finishes level with Turn order. */
+@media (min-width: 931px) {
+  .aside-panel .initiative-panel { margin-top: 9px; }
+  .aside-panel .initiative-heading {
+    align-items: center;
+    flex-direction: row;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .aside-panel .initiative-heading > div { min-width: 0; }
+  .aside-panel .initiative-heading .section-helper { display: none; }
+  .aside-panel .initiative-heading .button {
+    flex: 0 0 auto;
+    min-height: 28px;
+    padding: 0 8px;
+    font-size: 9px;
+  }
+  .aside-panel .initiative-row {
+    grid-template-columns: minmax(0, 1fr) 66px auto;
+    gap: 6px;
+    padding: 6px;
+  }
+  .aside-panel .attendance-toggle {
+    grid-column: auto;
+    gap: 4px;
+    white-space: nowrap;
+  }
+  .aside-panel .initiative-footer {
+    align-items: center;
+    flex-direction: row;
+    margin-top: 8px;
+    padding-top: 8px;
+  }
+  .aside-panel .initiative-status { align-self: auto; }
+  .aside-panel .initiative-footer > div > .section-helper { display: none; }
+}
