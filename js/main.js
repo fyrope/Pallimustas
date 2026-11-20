@@ -20,6 +20,8 @@
       return {
         turn: 1,
         turnIndex: 0,
+        initiativeScores: Object.fromEntries(CHARACTERS.map((character) => [character.id, null])),
+        absentCharacterIds: [],
         selectedId: CHARACTERS[0].id,
         view: "overview",
         variantSelection: {},
@@ -267,7 +269,17 @@
         }).slice(-10);
       }
       initial.turn = Number.isInteger(parsed.turn) && parsed.turn > 0 ? parsed.turn : 1;
-      initial.turnIndex = Number.isInteger(parsed.turnIndex) ? Math.max(0, parsed.turnIndex) % CHARACTERS.length : 0;
+      if (parsed.initiativeScores && typeof parsed.initiativeScores === "object") {
+        for (const character of CHARACTERS) {
+          const score = parsed.initiativeScores[character.id];
+          if (Number.isSafeInteger(score) && score >= -999 && score <= 999) initial.initiativeScores[character.id] = score;
+        }
+      }
+      initial.absentCharacterIds = Array.isArray(parsed.absentCharacterIds)
+        ? [...new Set(parsed.absentCharacterIds.filter((id) => CHARACTERS.some((character) => character.id === id)))]
+        : [];
+      const activeCount = CHARACTERS.filter((character) => !initial.absentCharacterIds.includes(character.id)).length;
+      initial.turnIndex = Number.isInteger(parsed.turnIndex) ? Math.max(0, parsed.turnIndex) % Math.max(1, activeCount) : 0;
       initial.selectedId = CHARACTERS.some((character) => character.id === parsed.selectedId) ? parsed.selectedId : CHARACTERS[0].id;
       initial.view = ["sheet", "buffs"].includes(parsed.view) ? parsed.view : "overview";
       if (parsed.variantSelection && typeof parsed.variantSelection === "object") {
@@ -420,6 +432,16 @@ function setResource(characterId, key, delta) {
   render();
 }
 
+    function resetInitiativeSession() {
+      state.initiativeScores = Object.fromEntries(CHARACTERS.map((character) => [character.id, null]));
+      state.absentCharacterIds = [];
+      state.turn = 1;
+      state.turnIndex = 0;
+      saveCampaign();
+      render();
+      notify("New session ready. Enter initiative rolls and mark anyone who is absent.");
+    }
+
     function resetCampaign() {
       // Restore initial resources and clear turn, ability, and Mana Tide progress.
       for (const character of CHARACTERS) {
@@ -450,6 +472,8 @@ function setResource(characterId, key, delta) {
       state.variantSelection = {};
       state.turn = 1;
       state.turnIndex = 0;
+      state.initiativeScores = Object.fromEntries(CHARACTERS.map((character) => [character.id, null]));
+      state.absentCharacterIds = [];
       saveCampaign();
       render();
       notify("Session reset. Resources, ability uses, active abilities, stat effects, afflictions, Mana Tide, and turn order are back at their defaults.");
@@ -487,6 +511,8 @@ function setResource(characterId, key, delta) {
       return {
         turn: state.turn,
         turnIndex: state.turnIndex,
+        initiativeScores: state.initiativeScores,
+        absentCharacterIds: state.absentCharacterIds,
         activeStatEffects: state.activeStatEffects,
         activeAfflictions: state.activeAfflictions,
         afflictionSequence: state.afflictionSequence,
@@ -618,6 +644,7 @@ function setResource(characterId, key, delta) {
 
       const action = target.closest("[data-action]")?.dataset.action;
       if (action === "end-turn") endTurn();
+      if (action === "new-initiative-session") resetInitiativeSession();
       if (action === "confirm-reset") showResetConfirmation();
       if (action === "cancel-reset") document.getElementById("modal-root").innerHTML = "";
       if (action === "close-glossary") document.getElementById("modal-root").innerHTML = "";
@@ -677,6 +704,26 @@ function setResource(characterId, key, delta) {
       if (target instanceof HTMLInputElement && target.matches("[data-resource-adjustment]")) {
         resourceAdjustmentAmount = target.value;
         return;
+      }
+      if (target instanceof HTMLInputElement && target.matches("[data-initiative]")) {
+        const currentId = getCurrentCharacter()?.id;
+        const rawValue = target.value.trim();
+        const score = rawValue === "" ? null : Number(rawValue);
+        if (score !== null && (!Number.isSafeInteger(score) || score < -999 || score > 999)) return;
+        state.initiativeScores[target.dataset.initiative] = score;
+        const nextOrder = getTurnOrder();
+        const currentIndex = nextOrder.findIndex((character) => character.id === currentId);
+        state.turnIndex = currentIndex >= 0 ? currentIndex : 0;
+        saveCampaign(); render(); return;
+      }
+      if (target instanceof HTMLInputElement && target.matches("[data-attendance]")) {
+        const currentId = getCurrentCharacter()?.id;
+        const characterId = target.dataset.attendance;
+        state.absentCharacterIds = target.checked ? state.absentCharacterIds.filter((id) => id !== characterId) : [...new Set([...state.absentCharacterIds, characterId])];
+        const nextOrder = getTurnOrder();
+        const currentIndex = nextOrder.findIndex((character) => character.id === currentId);
+        state.turnIndex = currentIndex >= 0 ? currentIndex : 0;
+        saveCampaign(); render(); return;
       }
       if (!(target instanceof HTMLSelectElement) || !target.matches("[data-variant-character]")) return;
       selectAbilityVariant(target.dataset.variantCharacter, target.dataset.variantAbility, target.value);
