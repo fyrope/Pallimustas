@@ -489,7 +489,7 @@
       {
         id: "Izaak", name: "Iron Man", race: "Human", magicspecialty: "Ritual",
         rank: "Bronze", initials: "IM", color: "#ccdc55", avatarBg: "#54611a",
-        resources: { health: 28, mana: 200, stamina: 200 },
+        resources: { health: 74, mana: 200, stamina: 200 },
         stats: { manaRecovery: 12, staminaRecovery: 64, physicalAttack: "2D8", damageResistance: "2D8+2", magic: "2D8+2", magicResistance: "2D8+2", speed: 32, reflexes: 4 },
         essences: ["Earth", "Magic", "Shield", "Fortress"],
         abilities: [
@@ -542,7 +542,7 @@
       {
         id: "Mason", name: "Smelf Smelfmin", race: "Elf", magicspecialty: "Improv",
         rank: "Bronze", initials: "SS", color: "#d8aa67", avatarBg: "#352b1e",
-        resources: { health: 1, mana: 300, stamina: 300 },
+        resources: { health: 32, mana: 300, stamina: 300 },
         stats: { manaRecovery: 12, staminaRecovery: 64, physicalAttack: "2D8", damageResistance: "2D8", magic: "2D8", magicResistance: "2D8", speed: 32, reflexes: 4 },
         essences: ["Echo", "Song", "Harmonic", "Resonating"],
         abilities: [
@@ -576,7 +576,7 @@
           { id: "smelf-magical-amp", name: "The Troubadour's Amp", summary: ".", description: "", },
         ],
         inventory: [
-          { id: "smelf-money", name: "Money", description: "500 Gold spirit coints, can eat one to temporarily increase power levels for one turn but has debilitating effects on next turn." },
+          { id: "smelf-money", name: "Money", description: "695 Gold spirit coints, can eat one to temporarily increase power levels for one turn but has debilitating effects on next turn." },
           { id: "smelf-debt", name: "Debt", description: "You are in debt 2,147,483,647 gold spirit coins to various tax brokers, loan sharks and corporations around pallimustas." }
         ],
         racialGifts: [
