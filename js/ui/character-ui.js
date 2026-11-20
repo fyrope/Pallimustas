@@ -57,18 +57,18 @@
     function renderInitiativePanel() {
       const order = getTurnOrder();
       const attending = order.length;
-      const allRolled = attending > 0 && order.every((character) => Number.isSafeInteger(state.initiativeScores?.[character.id]));
-      const rows = CHARACTERS.map((character) => {
-        const present = !(state.absentCharacterIds || []).includes(character.id);
-        const score = state.initiativeScores?.[character.id];
-        return `<div class="initiative-row ${present ? "" : "is-absent"}">
-          <div class="initiative-player">${avatarStyle(character)}<div><div class="next-name">${escapeHtml(character.name)}</div><div class="next-label">${present ? "Attending" : "Absent this session"}</div></div></div>
-          <label class="initiative-score"><span>Initiative</span><input type="number" min="-999" max="999" step="1" inputmode="numeric" data-initiative="${escapeHtml(character.id)}" value="${Number.isSafeInteger(score) ? score : ""}" ${present ? "" : "disabled"} aria-label="${escapeHtml(character.name)} initiative"></label>
-          <label class="attendance-toggle"><input type="checkbox" data-attendance="${escapeHtml(character.id)}" ${present ? "checked" : ""}><span>Attending</span></label>
-        </div>`;
-      }).join("");
-      const orderSummary = order.map((character, index) => `<span class="initiative-order-chip">${index + 1}. ${escapeHtml(character.name)}${Number.isSafeInteger(state.initiativeScores?.[character.id]) ? ` · ${state.initiativeScores[character.id]}` : ""}</span>`).join("");
-      return `<section class="panel initiative-panel"><div class="initiative-heading"><div><div class="section-title">Session initiative</div><div class="section-helper">Enter each attending player's roll. Highest initiative acts first; tied rolls keep the roster order.</div></div><button class="button" data-action="new-initiative-session">↻ New session</button></div><div class="initiative-list">${rows}</div><div class="initiative-footer"><div><div class="section-helper">${attending} attending · ${CHARACTERS.length - attending} absent</div><div class="initiative-order">${orderSummary || "No players attending"}</div></div><span class="initiative-status ${allRolled ? "ready" : ""}">${allRolled ? "Initiative ready" : "Waiting for initiative rolls"}</span></div></section>`;
+      const allRolled = attending > 0 && order.every((player) => Number.isSafeInteger(state.initiativeScores?.[player.id]));
+      // Each sheet exposes controls for its own character only; the order summary remains party-wide.
+      const character = getSelectedCharacter();
+      const present = !(state.absentCharacterIds || []).includes(character.id);
+      const score = state.initiativeScores?.[character.id];
+      const row = `<div class="initiative-row ${present ? "" : "is-absent"}">
+        <div class="initiative-player">${avatarStyle(character)}<div><div class="next-name">${escapeHtml(character.name)}</div><div class="next-label">${present ? "Attending" : "Absent this session"}</div></div></div>
+        <label class="initiative-score"><span>Initiative</span><input type="number" min="-999" max="999" step="1" inputmode="numeric" data-initiative="${escapeHtml(character.id)}" value="${Number.isSafeInteger(score) ? score : ""}" ${present ? "" : "disabled"} aria-label="${escapeHtml(character.name)} initiative"></label>
+        <label class="attendance-toggle"><input type="checkbox" data-attendance="${escapeHtml(character.id)}" ${present ? "checked" : ""}><span>Attending</span></label>
+      </div>`;
+      const orderSummary = order.map((player, index) => `<span class="initiative-order-chip">${index + 1}. ${escapeHtml(player.name)}${Number.isSafeInteger(state.initiativeScores?.[player.id]) ? ` · ${state.initiativeScores[player.id]}` : ""}</span>`).join("");
+      return `<section class="panel initiative-panel"><div class="initiative-heading"><div><div class="section-title">Session initiative</div><div class="section-helper">Set ${escapeHtml(character.name)}'s initiative and attendance here. Highest initiative acts first; tied rolls keep the roster order.</div></div><button class="button" data-action="new-initiative-session">↻ New session</button></div><div class="initiative-list">${row}</div><div class="initiative-footer"><div><div class="section-helper">${attending} attending · ${CHARACTERS.length - attending} absent</div><div class="initiative-order">${orderSummary || "No players attending"}</div></div><span class="initiative-status ${allRolled ? "ready" : ""}">${allRolled ? "Initiative ready" : "Waiting for initiative rolls"}</span></div></section>`;
     }
 
     function renderOverview() {
