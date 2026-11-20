@@ -546,26 +546,30 @@
         stats: { manaRecovery: 12, staminaRecovery: 64, physicalAttack: "2D8", damageResistance: "2D8", magic: "2D8", magicResistance: "2D8", speed: 32, reflexes: 4 },
         essences: ["Echo", "Song", "Harmonic", "Resonating"],
         abilities: [
-          { id: "smelf-misses-his-wife", name: "Smelf misses his Wife", category: "Echo", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
-          { id: "smelf-gamble", name: "Gamble", category: "Echo", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
-          { id: "smelf-rock-and-roll", name: "Rock and Roll", category: "Echo", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
-          { id: "smelf-anger-issues", name: "Anger Issues", category: "Echo", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
-          { id: "smelf-light-snack", name: "Light Snack", category: "Echo", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
-          { id: "smelf-solo", name: "Solo", category: "Song", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
-          { id: "smelf-drinking-from-the-bottle", name: "Drinking from the Bottle", category: "Song", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
-          { id: "smelf-background-music", name: "Background Music", category: "Song", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
-          { id: "smelf-daft-punk", name: "Daft Punk", category: "Song", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
-          { id: "smelf-song-of-healing", name: "Song of Healing", category: "Song", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
-          { id: "smelf-lullaby", name: "Lullaby", category: "Harmonic", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
-          { id: "smelf-the-5th", name: "The 5th", category: "Harmonic", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
-          { id: "smelf-secret-of-smelf", name: "Secret of Smelf", category: "Harmonic", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
-          { id: "smelf-special-sugar", name: "Special Sugar", category: "Harmonic", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
-          { id: "smelf-song-of-harmony", name: "Song of Harmony", category: "Harmonic", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
-          { id: "smelf-not-quite-my-tempo", name: "Not quite my tempo", category: "Resonating", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
-          { id: "smelf-time-to-practice", name: "Time to Practice", category: "Resonating", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
-          { id: "smelf-out-of-tune", name: "Out of tune", category: "Resonating", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
-          { id: "smelf-bad-moonwalk", name: "Bad Moonwalk", category: "Resonating", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
-          { id: "smelf-secret-weapon", name: "Secret Weapon", category: "Resonating", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "smelf-misses-his-wife", name: "Smelf misses his Wife", category: "Echo", summary: "Smelf cries to make the enemies feel bad for him.", description: "The next enemy that attacks Smelf has disadvantage.", mana: 20, stamina: 20, cooldown: 3, tags: ["Special Ability", "Debuff"] },
+          { id: "smelf-gamble", name: "Gamble", category: "Echo", summary: "Smelf gambles a spirit coint to inflict effects.", description: "Smelf can gamble a spirit coin to inflict a positive/negative effect on himself/allies/enemies. https://wheelofnames.com/vun-r9u", mana: 40, stamina: 0, cooldown: 0, tags: ["Spell", "Magic"] },
+          { id: "smelf-rock-and-roll", name: "Rock and Roll", category: "Echo", summary: "Smelf throws a rock then rolls away", description: "Deals 1D8 damage then freely disengages.", mana: 0, stamina: 40, cooldown: 0, tags: ["Special Attack"] },
+          { id: "smelf-anger-issues", name: "Anger Issues", category: "Echo", summary: "You get extremely angry", description: "You may use this as a bonus action to start raging, You have advantage on strength based checks, when you make a melee attack, you get +4 to the damage. You are resistant(take half damage) to bludgeoning, piercing and slashing damage and you are unable to cast or concentrate on spells while raging. It lasts for 10 turns but it'll end early if you are knocked unconscious, you haven't attacked an hostile creature during your turn or taken damage or if you end it as a bonus action", mana: 40, stamina: 100, duration: 10, cooldown: 600, tags: ["Special Ability", "Buff"], statEffects: [{ id: "rage-physical", stat: "physicalAttack", bonus: "+4", duration: 10, target: "self" }] },
+          { id: "smelf-light-snack", name: "Light Snack", category: "Echo", summary: "Smelf takes out a sandwich and eats it", description: "Smelf takes out a sandwich from his pant pocket and eats it to gain his magic in health.", mana: 40, stamina: 0, cooldown: 600, tags: ["Special Ability", "Healing"] },
+          { id: "smelf-solo", name: "Solo", category: "Song", summary: "Heals a bunch of people", description: "You can heal up to 4 people by your magic, this can damage various forms of undead that are inimical to life force.", mana: 140, stamina: 0, cooldown: 3600, tags: ["Spell", "Healing", "Music"] },
+          { id: "smelf-drinking-from-the-bottle", name: "Drinking from the Bottle", category: "Song", summary: "Smelf resorts to his old friend: Alcohol", description: "Smelf gains his magic in temporary health that increases his maximum but it wears off after 10 turns.", mana: 20, stamina: 0, cooldown: 600, tags: ["Special Ability", "Healing", "Buff"] },
+          { id: "smelf-background-music", name: "Background Music", category: "Song", summary: "Plays music to support his team members", description: "Gives all party members a +2 to damage, damage resist, magic and magic resist until he loses concentration. Whenever Smelf gets hit, he must roll above an 11 or loses concentration", mana: 24, stamina: 0, activeMode: "toggle", upkeep: { mana: 24 }, cooldown: 0, tags: ["Spell", "Buff", "Concentration", "Music"], statEffects: [
+            { id: "background-music-physical", stat: "physicalAttack", bonus: "+2", target: "party" }, { id: "background-music-magic", stat: "magic", bonus: "+2", target: "party" }, { id: "background-music-resistance", stat: "damageResistance", bonus: "+2", target: "party" }, { id: "background-music-magic-resistance", stat: "magicResistance", bonus: "+2", target: "party" }
+          ] },
+          { id: "smelf-daft-punk", name: "Daft Punk", category: "Song", summary: "Dances to grab attention", description: "Dances to grab the enemies attention, roll a D20 to determine how many enemies are taunted.", mana: 0, stamina: 20, cooldown: 0, tags: ["Special Ability", "Taunt"] },
+          { id: "smelf-song-of-healing", name: "Song of Healing", category: "Song", summary: "Play a melody to heal someone", description: "Heals one person by your magic +2D8.", mana: 90, stamina: 0, cooldown: 5, tags: ["Spell", "Healing", "Music"] },
+          { id: "smelf-lullaby", name: "Lullaby", category: "Harmonic", summary: "A song used to energise party members", description: "Gives advantage to one person on their next roll.", mana: 40, stamina: 0, cooldown: 2, tags: ["Spell", "Buff", "Music"] },
+          { id: "smelf-the-5th", name: "The 5th", category: "Harmonic", summary: "A Smelf original(And totally not beetoven) which makes the enemies fall asleep.", description: "Enemies must roll above a 13 or fall asleep, if they fall asleep then they'll wake up once disturbed.", mana: 20, stamina: 0, cooldown: 2, tags: ["Special Ability", "Music"] },
+          { id: "smelf-secret-of-smelf", name: "Secret of Smelf", category: "Harmonic", summary: "Plays a song so depressing that EVERYONE cries.", description: "Smelf gets an extra turn while everyone is crying.", mana: 40, stamina: 0, cooldown: 9999, tags: ["Spell", "Music"] },
+          { id: "smelf-special-sugar", name: "Special Sugar", category: "Harmonic", summary: "Smelf snorts his special sugar", description: "Smelf takes 1D6 damage but gets a +4 to damage, damage resist, magic and magic resist.", mana: 40, stamina: 0, cooldown: 600, tags: ["Special Ability", "Buff"], statEffects: [
+            { id: "sugar-physical", stat: "physicalAttack", bonus: "+4", target: "self" }, { id: "sugar-magic", stat: "magic", bonus: "+4", target: "self" }, { id: "sugar-resistance", stat: "damageResistance", bonus: "+4", target: "self" }, { id: "sugar-magic-resistance", stat: "magicResistance", bonus: "+4", target: "self" }
+          ] },
+          { id: "smelf-juxtapose", name: "Juxtapose", category: "Harmonic", summary: "Swap the location of two entities.", description: "Swap the location of two allies and/or enemies. You must be able to see both subjects. If an ally resists or prevents it, it is negated.Enemies affected by this ability take +10% from all sources for 1 turn.", mana: 40, stamina: 0, cooldown: 10, tags: ["Special Ability", "Magic", "Teleport"] },
+          { id: "smelf-not-quite-my-tempo", name: "Not quite my tempo", category: "Resonating", summary: "A 4 hit multi attack representing the standard four beats per bar.", description: "A 4 hit multiattack where every hit must be rolled for and stops as soon as one misses, each hit does 4 damage + magic bonuses.", mana: 20, stamina: 0, cooldown: 0, tags: ["Spell", "Multihit", "Magic", "Music"] },
+          { id: "smelf-time-to-practice", name: "Time to Practice", category: "Resonating", summary: "Smashes the instrument against the enemies head", description: "Smashes the instrument against the enemies head to deal Physical damage +1D8.", mana: 0, stamina: 20, cooldown: 0, tags: ["Special Attack"] },
+          { id: "smelf-out-of-tune", name: "Out of tune", category: "Resonating", summary: "You play a melody so bad that an enemies ears bleed", description: "One enemy takes your magic damage +1D8.", mana: 10, stamina: 0, cooldown: 0, tags: ["Spell", "Magic", "Music"] },
+          { id: "smelf-moonwalk", name: "Moonwalk", category: "Resonating", summary: "Moonwalks so perfectly that the enemies are [Stunned]", description: "Enemies are [Stunned] for 1 turn.", mana: 90, stamina: 0, cooldown: 600, tags: ["Special Ability"] },
+          { id: "smelf-secret-weapon", name: "Secret Weapon", category: "Resonating", summary: "Smelf gives up being a good boy", description: "Smelf gives up being a good boy. Does 10D10 damage without bonuses but can only be used once a week", mana: 180, stamina: 180, cooldown: 99999, tags: ["REDACTED", "REDACTED", "REDACTED"] },
         ],
         equipment: [
           { id: "smelf-magical-keytar", name: "The Troubadour's Keytar", summary: ".", description: ""},
@@ -576,13 +580,13 @@
           { id: "smelf-debt", name: "Debt", description: "You are in debt 2,147,483,647 gold spirit coins to various tax brokers, loan sharks and corporations around pallimustas." }
         ],
         racialGifts: [
-          { id: "smelf-spell-aptitude", name: "Spell Aptitude", summary: "", description: ".", cooldown: 0, duration: 0, tags: []},
-          { id: "smelf-nature-affinity", name: "Nature Affinity", summary: "", description: ".", cooldown: 0, duration: 0, tags: []},
-          { id: "smelf-life-affinity", name: "Life Affinity", summary: "", description: ".", cooldown: 0, duration: 0, tags: []},
+          { id: "smelf-spell-aptitude", name: "Spell Aptitude", summary: "You are more likely to awaken spells", description: "You are more likely to awaken spells over other abilities.", cooldown: 0, duration: 0, tags: []},
+          { id: "smelf-nature-affinity", name: "Nature Affinity", summary: "Your nature type abilities are enhanced", description: "You have greater proficiency with Nature-type abilities, and they will have a greater effect.", cooldown: 0, duration: 0, tags: []},
+          { id: "smelf-life-affinity", name: "Life Affinity", summary: "Effects that have a positive effect on life have a greater effect", description: "Effects used or received with a positive effect on life have greater effect.", cooldown: 0, duration: 0, tags: []},
           { id: "smelf-magic-affinity", name: "Magic Affinity", summary: "Enhanced magical abilities.", description: "Increases magic damage by 1D8", cooldown: 0, duration: 0, tags: ["Racial Gift", "Buff", "passive"], statEffects: [
             { id: "magic-affinity-magic", stat: "magic", bonus: "1D8", target: "self" } ] },
-          { id: "smelf-mystic-bloodline", name: "Mystic Bloodline", summary: "", description: ".", cooldown: 0, duration: 0, tags: []},
-          { id: "smelf-Grace", name: "Grace", summary: "", description: ".", cooldown: 0, duration: 0, tags: []},
+          { id: "smelf-mystic-bloodline", name: "Mystic Bloodline", summary: "Expanded Mana Pool", description: "Your mana pool is increased by 100.", cooldown: 0, duration: 0, tags: []},
+          { id: "smelf-Grace", name: "Grace", summary: "Enhanced Agility", description: "You have +1 Reflexes.", cooldown: 0, duration: 0, tags: []},
         ]
       }
     ];
