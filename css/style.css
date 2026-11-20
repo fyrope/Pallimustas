@@ -145,3 +145,24 @@ button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
     .next-turn { margin-top: 13px; display: flex; align-items: center; gap: 10px; }
     .next-name { font-size: 12px; }
     .next-label { margin-top: 4px; color: var(--faint); font-size: 9px; }
+
+/* Session initiative and attendance */
+.initiative-panel { margin: 18px 0 20px; padding: 18px; }
+.initiative-heading, .initiative-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.initiative-heading { margin-bottom: 12px; }
+.initiative-heading .section-helper { margin-top: 5px; line-height: 1.5; }
+.initiative-list { display: grid; gap: 7px; }
+.initiative-row { display: grid; grid-template-columns: minmax(0, 1fr) 130px 112px; align-items: center; gap: 14px; padding: 9px 11px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel-raised); }
+.initiative-row.is-absent { opacity: .58; }
+.initiative-player { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.initiative-score { display: grid; gap: 4px; color: var(--muted); font-size: 9px; }
+.initiative-score input { width: 100%; min-height: 34px; box-sizing: border-box; padding: 5px 9px; border: 1px solid var(--line-bright); border-radius: 6px; background: #171918; color: var(--text); font: inherit; font-size: 13px; }
+.initiative-score input:disabled { opacity: .45; }
+.attendance-toggle { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 10px; cursor: pointer; }
+.attendance-toggle input { accent-color: var(--gold); }
+.initiative-footer { align-items: flex-end; margin-top: 13px; padding-top: 12px; border-top: 1px solid var(--line); }
+.initiative-order { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 7px; }
+.initiative-order-chip { padding: 5px 8px; border: 1px solid var(--line); border-radius: 6px; color: var(--text); font-size: 9px; }
+.initiative-status { flex: 0 0 auto; color: var(--muted); font-size: 10px; }
+.initiative-status.ready { color: var(--green); }
+@media (max-width: 650px) { .initiative-panel { padding: 12px; } .initiative-heading, .initiative-footer { align-items: flex-start; flex-direction: column; } .initiative-heading { gap: 10px; } .initiative-row { grid-template-columns: minmax(0, 1fr) 94px; gap: 9px; } .attendance-toggle { grid-column: 1 / -1; } .initiative-status { align-self: flex-end; } }
