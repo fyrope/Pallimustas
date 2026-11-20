@@ -2,8 +2,20 @@
       return CHARACTERS.find((character) => character.id === id);
     }
 
+    function getTurnOrder() {
+      const absent = new Set(state.absentCharacterIds || []);
+      return CHARACTERS.filter((character) => !absent.has(character.id)).sort((a, b) => {
+        const aScore = state.initiativeScores?.[a.id], bScore = state.initiativeScores?.[b.id];
+        const aHasScore = Number.isSafeInteger(aScore), bHasScore = Number.isSafeInteger(bScore);
+        if (aHasScore && bHasScore && aScore !== bScore) return bScore - aScore;
+        if (aHasScore !== bHasScore) return aHasScore ? -1 : 1;
+        return CHARACTERS.indexOf(a) - CHARACTERS.indexOf(b);
+      });
+    }
+
     function getCurrentCharacter() {
-      return CHARACTERS[state.turnIndex];
+      const order = getTurnOrder();
+      return order.length ? order[state.turnIndex % order.length] : CHARACTERS[0];
     }
 
     function getSelectedCharacter() {
