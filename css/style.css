@@ -166,3 +166,26 @@ button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 .initiative-status { flex: 0 0 auto; color: var(--muted); font-size: 10px; }
 .initiative-status.ready { color: var(--green); }
 @media (max-width: 650px) { .initiative-panel { padding: 12px; } .initiative-heading, .initiative-footer { align-items: flex-start; flex-direction: column; } .initiative-heading { gap: 10px; } .initiative-row { grid-template-columns: minmax(0, 1fr) 94px; gap: 9px; } .attendance-toggle { grid-column: 1 / -1; } .initiative-status { align-self: flex-end; } }
+
+
+/* Initiative-ordered sidebar roster */
+#roster { display: flex; flex-direction: column; gap: 3px; }
+#roster .nav-button { min-width: 0; }
+#roster .nav-button.is-absent { opacity: .38; filter: grayscale(1); }
+#roster .roster-initiative, #roster .roster-status { margin-left: auto; flex: 0 0 auto; color: var(--gold); font-size: 9px; font-variant-numeric: tabular-nums; }
+#roster .roster-status { color: var(--faint); text-transform: uppercase; letter-spacing: .06em; }
+#roster .nav-button.is-absent .roster-name, #roster .nav-button.is-absent .roster-class { color: var(--faint); }
+.aside-panel .initiative-panel { margin: 14px 0 0; padding: 0; border: 0; background: transparent; box-shadow: none; }
+.aside-panel .initiative-heading { align-items: flex-start; flex-direction: column; gap: 9px; }
+.aside-panel .initiative-heading .section-title { font-size: 12px; }
+.aside-panel .initiative-heading .section-helper { font-size: 10px; }
+.aside-panel .initiative-row { grid-template-columns: minmax(0,1fr) 76px; gap: 7px; padding: 7px; }
+.aside-panel .initiative-player .avatar { width: 27px; height: 27px; font-size: 10px; }
+.aside-panel .initiative-player .next-name { font-size: 10px; }
+.aside-panel .initiative-player .next-label { font-size: 8px; }
+.aside-panel .initiative-score { font-size: 8px; }
+.aside-panel .initiative-score input { min-height: 30px; padding: 4px 6px; font-size: 11px; }
+.aside-panel .attendance-toggle { grid-column: 1 / -1; font-size: 9px; }
+.aside-panel .initiative-footer { align-items: flex-start; flex-direction: column; }
+.aside-panel .initiative-order { display: none; }
+.aside-panel .initiative-status { align-self: flex-start; }
