@@ -107,7 +107,7 @@
       const character = getSelectedCharacter();
       const order = getTurnOrder();
       const next = order.length > 1 ? order[(state.turnIndex + 1) % order.length] : null;
-      return `<div class="page-head"><div><div class="eyebrow">Character sheet · ${escapeHtml(character.rank)}</div><h1>${escapeHtml(character.name)}</h1><p class="subtitle">${escapeHtml(characterSummary(character))}</p></div><button class="button" data-action="confirm-reset">↻ <span>Reset session</span></button></div>
+      return `<div class="page-head"><div><div class="eyebrow">Character sheet · ${escapeHtml(character.rank)}</div><h1>${escapeHtml(character.name)}</h1><p class="subtitle">${escapeHtml(characterSummary(character))}</p></div><button class="button" data-action="confirm-reset">↻ <span>Reset campaign</span></button></div>
         <div class="sheet-layout">
           <div class="sheet-main">
             <div class="identity-card">
@@ -135,7 +135,7 @@
               <div class="aside-heading">Turn order</div>
               <div class="next-turn">${avatarStyle(getCurrentCharacter())}<div><div class="next-name">${escapeHtml(getCurrentCharacter().name)}</div><div class="next-label">Current · Round ${state.turn}</div></div></div>
               ${next ? `<div class="next-turn" style="margin-top:12px">${avatarStyle(next)}<div><div class="next-name">${escapeHtml(next.name)}</div><div class="next-label">Up next</div></div></div>` : '<div class="empty-note">No other attending players.</div>'}
-              <div class="turn-actions"><button class="button primary" data-action="end-turn">End ${escapeHtml(character.name.split(" ")[0])}'s turn →</button><button class="button subtle" data-action="confirm-reset">↻ Reset session</button></div>
+              <div class="turn-actions"><button class="button primary" data-action="end-turn">End ${escapeHtml(getCurrentCharacter().name.split(" ")[0])}'s turn →</button><button class="button subtle" data-action="confirm-reset">↻ Reset session</button></div>
               <div class="regen-note">Ending the current turn restores mana and stamina, then reduces that character’s cooldowns. Active durations count down on the owner’s turns; cooldowns pause until an effect expires.</div>
             </section>
             <section class="panel aside-panel">
