@@ -436,6 +436,7 @@
       }
       let isEnhanced = false;
       for (const enhancerCharacter of CHARACTERS) {
+        if (!isCharacterAttending(enhancerCharacter)) continue;
         for (const enhancer of allCharacterAbilities(enhancerCharacter)) {
           for (const enhancerConfiguration of [enhancer, ...(enhancer.variants || [])]) {
             const rule = enhancerConfiguration.enhancement;
@@ -473,8 +474,9 @@
     }
 
     function getAbilityCostModifiers(character, resource, targetAbility = null) {
-      return CHARACTERS.flatMap((sourceCharacter) =>
-        allCharacterAbilities(sourceCharacter).flatMap((ability) =>
+      return CHARACTERS.flatMap((sourceCharacter) => {
+        if (!isCharacterAttending(sourceCharacter)) return [];
+        return allCharacterAbilities(sourceCharacter).flatMap((ability) =>
           [ability, ...(ability.variants || [])].flatMap((configuration) => {
             if (!isPassiveConfiguration(configuration)) return [];
             return (configuration.costEffects || [])
@@ -486,8 +488,8 @@
               )
               .map((effect) => ({ amount: effect[resource], source: ability.name }));
           })
-        )
-      );
+        );
+      });
     }
 
 
