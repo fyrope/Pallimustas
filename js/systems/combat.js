@@ -77,6 +77,11 @@
     }
 
     function endTurn() {
+      const activeOrder = getTurnOrder();
+      if (!activeOrder.length) { notify("Mark at least one player as attending before starting the session."); return; }
+      if (!activeOrder.every((player) => Number.isSafeInteger(state.initiativeScores?.[player.id]))) {
+        notify("Enter an initiative roll for every attending player before ending turns."); return;
+      }
       const character = getCurrentCharacter();
       const progress = state.characters[character.id];
       let manaTideEnded = false;
@@ -157,8 +162,8 @@
           ? [{ ...entry, remainingTurns: entry.remainingTurns - 1 }]
           : [];
       });
-      state.turnIndex = (state.turnIndex + 1) % CHARACTERS.length;
-      // Round counter advances only when turn order wraps back to the first character.
+      state.turnIndex = (state.turnIndex + 1) % activeOrder.length;
+      // Round counter advances only after every attending player has taken a turn.
       if (state.turnIndex === 0) {
         state.turn += 1;
         if (state.manaTide?.active) {
