@@ -489,7 +489,7 @@
       {
         id: "Izaak", name: "Iron Man", race: "Human", magicspecialty: "Ritual",
         rank: "Bronze", initials: "IM", color: "#ccdc55", avatarBg: "#54611a",
-        resources: { health: 74, mana: 200, stamina: 200 },
+        resources: { health: 74, mana: 300, stamina: 300 },
         stats: { manaRecovery: 12, staminaRecovery: 64, physicalAttack: "2D8", damageResistance: "2D8+2", magic: "2D8+2", magicResistance: "2D8+2", speed: 32, reflexes: 4 },
         essences: ["Earth", "Magic", "Shield", "Fortress"],
         abilities: [
@@ -499,10 +499,10 @@
           { id: "man-lava-cannon", name: "Lava Cannon", category: "Earth", summary: "Shoot out a stream of hot magma from your hands", description: "Shoot out lava from your hands that does your magic damage in a line of 5 spaces. Lava on things do 1D8 damage every turn", mana: 40, stamina: 0, cooldown: 1, tags: ["Special Ability", "Projectile", "Elemental"] },
           { id: "man-earth-strength", name: "Strength of the Earth", category: "Earth", summary: "Your power attribute is significantly increased", description: "Your power attribute is significantly increased and you gain +1D12 to Damage and Damage Resistance.", mana: 0, stamina: 0, cooldown: 0, tags: ["Special Ability", "Attribute Increasing", "passive"] },
           { id: "man-crystalize-mana", name: "Crystalize Mana", category: "Magic", summary: "Create up to three crystals that accelerate mana recovery.", description: "Create a crystal that floats around you, accelerating your mana recovery. The crystal is impervious to damage, but vulnerable to dispel effects and can intercept projectiles, negating the effect then it becomes inactive for 3 turns. If dispelled, crystals grant an immediate burst of 50 mana. You can have up to three mana crystals at a time.", mana: 10, stamina: 0, cooldown: 0, charges: 3, recharge: 3, crystalSummon: { max: 3, disableTurns: 3 }, tags: ["Conjuration", "Restoration", "Buff"] },
-          { id: "man-imbue-magic", name: "Imbue with Magic", category: "Magic", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
-          { id: "man-magic-shield", name: "Magic Shield", category: "Magic", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
-          { id: "man-earth-bending", name: "Earth Bending", category: "Magic", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
-          { id: "man-enlargement", name: "Enlargement", category: "Magic", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
+          { id: "man-imbue-magic", name: "Imbue with Magic", category: "Magic", summary: "Imbue an object with magic", description: "Imbuing an object with magic will make it absorb or deal more disruptive damage or you can imbue it with a more esoteric ability using an essence/awakening stone.", mana: 180, stamina: 0, cooldown: 10, tags: ["Special Ability", "Magic"] },
+          { id: "man-magic-shield", name: "Magic Shield", category: "Magic", summary: "Create a magical shield that increases your damage resistance", description: "Create a magical shield that increases your damage resistance by 1D8 but makes gives you a -1 to reflexes.", mana: 40, stamina: 0, cooldown: 0, activeMode: "toggle", tags: ["Special Ability", "Conjuration", "Magic"] },
+          { id: "man-earth-bending", name: "Earth Bending", category: "Magic", summary: "You are an earthbender", description: "You can morph earth as if it was playdough using your hands or your mind. You are also able to morph Obsidian wall.", mana: 20, stamina: 0, cooldown: 1, tags: ["Special Ability", "EarthShape", "Magic"] },
+          { id: "man-enlargement", name: "Enlargement", category: "Magic", summary: "You grow to a huge size", description: "You grow to a huge size, taking up a 3x3 space and you deal an extra 2D10 physical damage.", mana: 40, stamina: 0, cooldown: 1200, tags: ["Special Ability", "Magic", "Shapeshift"] },
           { id: "man-absorbing-shield", name: "Absorbing Shield", category: "Shield", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
           { id: "man-burst-shield", name: "Burst Shield", category: "Shield", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
           { id: "man-reapers-redoubt", name: "Reaper's Redoubt", category: "Shield", summary: "", description: ".", mana: 80, stamina: 0, cooldown: 9999, tags: [] },
