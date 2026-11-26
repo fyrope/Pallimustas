@@ -109,10 +109,6 @@
         usesPerTurn > 1 ? `<span class="cost-chip cooldown">↻ ${usesPerTurn} uses per turn</span>` : "",
         resourceEffectChips
       ].filter(Boolean).join("");
-      const summons = progress.summons || [];
-      const summonControls = abilityHasAnyTag(selectedAbility, ["Summon"]) && summons.some((entry) => entry.abilityId === ability.id)
-        ? `<div class="summon-list">${summons.filter((entry) => entry.abilityId === ability.id).map((entry) => `<div class="summon-card"><div class="summon-head"><strong>${escapeHtml(entry.name)}</strong><button class="button subtle" data-remove-summon="${escapeHtml(entry.id)}">Dismiss</button></div><div class="summon-health"><label>Health <input type="number" min="0" step="1" data-summon-value="health" value="${entry.health}"></label><label>Max <input type="number" min="0" step="1" data-summon-value="maxHealth" value="${entry.maxHealth}"></label><button class="button subtle" data-summon-health="${escapeHtml(entry.id)}" data-field="health">Set HP</button><button class="button subtle" data-summon-health="${escapeHtml(entry.id)}" data-field="maxHealth">Set max</button></div></div>`).join("")}</div>`
-        : "";
       const orbControls = selectedAbility.orbSummon ? `<div class="orb-list">${(progress.burningOrbs || []).map((orb, index) => `<div class="orb-item"><span>Burning Orb ${index + 1}</span><button class="button subtle" data-burning-orb-attack="${escapeHtml(orb.id)}">Attack · 2D10 + Magic dice</button></div>`).join("") || '<span class="section-helper">Use Burning Orbs to summon three attack orbs.</span>'}</div>` : "";
       const shieldTargetControl = selectedAbility.shieldTarget === "any" ? `<label class="shield-target"><span class="section-helper">Shield target</span><select data-shield-target="${escapeHtml(ability.id)}">${CHARACTERS.map((target) => `<option value="${escapeHtml(target.id)}" ${target.id === character.id ? "selected" : ""}>${escapeHtml(target.name)}</option>`).join("")}</select></label>` : "";
       const darknessControl = selectedAbility.proximityToggle ? `<div class="darkness-control"><span class="section-helper">Ally adjacent: ${state.characters[character.id].adjacentAlly ? "Yes (−1D8)" : "No (+1D8)"}</span><button class="button subtle" data-proximity-toggle>${state.characters[character.id].adjacentAlly ? "Set no ally adjacent" : "Set ally adjacent"}</button></div>` : "";
@@ -139,7 +135,7 @@
         return `<button class="button subtle" title="${escapeHtml(stats)}" data-ability-attack="${escapeHtml(ability.id)}" data-ability-attack-id="${escapeHtml(attack.id)}" ${validConfiguration ? "" : "disabled"}>${escapeHtml(attack.name)}</button>`;
       }).join("");
       return `<div class="ability-row">
-        <div>${variantControl}<div class="ability-name">${escapeHtml(ability.name)}</div>${renderAbilityDescription(selectedAbility)}<div class="ability-costs">${costs}</div><div class="ability-tags">${tags}</div>${crystalControls}${summonControls}${orbControls}${shieldTargetControl}${darknessControl}${shieldRemoveControls}</div>
+        <div>${variantControl}<div class="ability-name">${escapeHtml(ability.name)}</div>${renderAbilityDescription(selectedAbility)}<div class="ability-costs">${costs}</div><div class="ability-tags">${tags}</div>${crystalControls}${orbControls}${shieldTargetControl}${darknessControl}${shieldRemoveControls}</div>
         <div class="ability-action">${attackButtons}${passive ? '<span class="passive-label">PASSIVE</span>' : `${abilityButton}${reason ? `<span class="disabled-reason">${reason}</span>` : ""}`}</div>
       </div>`;
     }
