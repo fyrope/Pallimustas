@@ -149,6 +149,7 @@
       progress.abilityUsesThisTurn = Object.fromEntries(
         allCharacterAbilities(character).map((ability) => [ability.id, 0])
       );
+      for (const orb of progress.burningOrbs || []) orb.usedThisTurn = false;
       progress.afflictionApplicationsThisTurn = {};
       state.activeStatEffects = state.activeStatEffects.flatMap((effect) => {
         if (effect.targetCharacterId !== character.id) return [effect];
