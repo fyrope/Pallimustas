@@ -32,7 +32,7 @@
       const selectedAbility = selectedAbilityFor(character, ability);
       const variantId = selectedAbility.id === ability.id ? null : selectedAbility.id;
       const stateKey = variantId ? `${ability.id}::${variantId}` : ability.id;
-      const passive = isPassiveConfiguration(selectedAbility) && !abilityHasAnyTag(selectedAbility, ["Summon"]);
+      const passive = isPassiveConfiguration(selectedAbility) && !abilityHasAnyTag(selectedAbility, ["Summon", "Familiar"]);
       const isManaTide = Boolean(selectedAbility.manaTide);
       const manaTideActive = isManaTide && state.manaTide?.active === true;
       const toggleable = selectedAbility.activeMode === "toggle";
@@ -107,9 +107,11 @@
         hasCharges ? `<span class="cost-chip cooldown">↻ ${availableCharges}/${selectedAbility.charges} uses${chargeRecharges.length ? ` · next in ${Math.min(...chargeRecharges)} turn${Math.min(...chargeRecharges) === 1 ? "" : "s"}` : ""}</span>` : "",
         crystalSummon ? `<span class="cost-chip active-chip">✧ ${crystals.length}/${crystalSummon.max} crystals</span>` : "",
         usesPerTurn > 1 ? `<span class="cost-chip cooldown">↻ ${usesPerTurn} uses per turn</span>` : "",
-        resourceEffectChips
+        resourceEffectChips,
+        selectedAbility.boostEnhancement ? `<span class="cost-chip active-chip">Boost ready · ${progress.boostUses || 0}/2</span>` : "",
+        (progress.boostedAbilityUses?.[selectedAbility.id] || 0) > 0 ? `<span class="cost-chip active-chip">Boost applied</span>` : ""
       ].filter(Boolean).join("");
-      const orbControls = selectedAbility.orbSummon ? `<div class="orb-list">${(progress.burningOrbs || []).map((orb, index) => `<div class="orb-item"><span>Burning Orb ${index + 1}</span><button class="button subtle" data-burning-orb-attack="${escapeHtml(orb.id)}">Attack · 2D10 + Magic dice</button></div>`).join("") || '<span class="section-helper">Use Burning Orbs to summon three attack orbs.</span>'}</div>` : "";
+      const orbControls = selectedAbility.orbSummon ? `<div class="orb-list">${(progress.burningOrbs || []).map((orb, index) => `<div class="orb-item"><span>Burning Orb ${index + 1}</span><button class="button subtle" data-burning-orb-attack="${escapeHtml(orb.id)}" ${orb.usedThisTurn ? "disabled" : ""}>${orb.usedThisTurn ? "Attacked this turn" : "Attack · 2D10 + Magic dice"}</button></div>`).join("") || '<span class="section-helper">Use Burning Orbs to summon three attack orbs.</span>'}</div>` : "";
       const shieldTargetControl = selectedAbility.shieldTarget === "any" ? `<label class="shield-target"><span class="section-helper">Shield target</span><select data-shield-target="${escapeHtml(ability.id)}">${CHARACTERS.map((target) => `<option value="${escapeHtml(target.id)}" ${target.id === character.id ? "selected" : ""}>${escapeHtml(target.name)}</option>`).join("")}</select></label>` : "";
       const darknessControl = selectedAbility.proximityToggle ? `<div class="darkness-control"><span class="section-helper">Ally adjacent: ${state.characters[character.id].adjacentAlly ? "Yes (−1D8)" : "No (+1D8)"}</span><button class="button subtle" data-proximity-toggle>${state.characters[character.id].adjacentAlly ? "Set no ally adjacent" : "Set ally adjacent"}</button></div>` : "";
       const shieldRemoveControls = (progress.shields || []).filter((entry) => entry.abilityId === ability.id).map((entry) => `<button class="button subtle" data-remove-shield="${escapeHtml(entry.id)}">Remove shield from ${escapeHtml(characterById(entry.targetCharacterId)?.name || "target")}</button>`).join("");

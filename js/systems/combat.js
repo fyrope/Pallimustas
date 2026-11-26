@@ -66,6 +66,13 @@
       const ability = allCharacterAbilities(character).find((entry) => entry.id === abilityId);
       if (!ability || !abilityHasAnyTag(ability, ["attack"])) return;
       const selectedAbility = selectedAbilityFor(character, ability);
+      const progress = state.characters[character.id];
+      if (abilityHasAnyTag(selectedAbility, ["Boostable"]) && progress.boostUses > 0 && !(progress.boostedAbilityUses?.[selectedAbility.id] > 0)) {
+        progress.boostedAbilityUses ??= {};
+        progress.boostedAbilityUses[selectedAbility.id] = 1;
+        progress.boostUses -= 1;
+        saveCampaign();
+      }
       const attack = abilityAttacks(selectedAbility).find((entry) => entry.id === attackId);
       if (!attack || !isValidAttackConfiguration(character, selectedAbility, attack)) {
         console.error(`Invalid ability attack configuration for ${character.name}'s ${ability.name}.`, attack);
@@ -149,6 +156,8 @@
       progress.abilityUsesThisTurn = Object.fromEntries(
         allCharacterAbilities(character).map((ability) => [ability.id, 0])
       );
+      for (const orb of progress.burningOrbs || []) orb.usedThisTurn = false;
+      progress.boostedAbilityUses = {};
       progress.afflictionApplicationsThisTurn = {};
       state.activeStatEffects = state.activeStatEffects.flatMap((effect) => {
         if (effect.targetCharacterId !== character.id) return [effect];
@@ -239,6 +248,15 @@
             totalStatFormula.dice.set(sides, (totalStatFormula.dice.get(sides) || 0) + count);
           }
           totalStatFormula.flat += parsed.flat;
+        }
+        if (Array.isArray(item.enhancements) && abilityHasAnyTag(item, ["attack"])) {
+          const enhancementFormula = enhancedAbilityEffectBonus(character, item, item, stat, "0");
+          const parsedEnhancement = parseDiceFormula(enhancementFormula);
+          if (!parsedEnhancement) return null;
+          for (const [sides, count] of parsedEnhancement.dice) {
+            totalStatFormula.dice.set(sides, (totalStatFormula.dice.get(sides) || 0) + count);
+          }
+          totalStatFormula.flat += parsedEnhancement.flat;
         }
         statFormulas.push({ stat, formula: totalStatFormula });
       }

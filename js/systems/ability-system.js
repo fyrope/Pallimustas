@@ -4,7 +4,7 @@
       const configuredAbility = allCharacterAbilities(character).find((entry) => entry.id === abilityId);
       if (!configuredAbility) return;
       const ability = selectedAbilityFor(character, configuredAbility);
-      if (isPassiveConfiguration(ability) && !abilityHasAnyTag(ability, ["Summon"])) return;
+      if (isPassiveConfiguration(ability) && !abilityHasAnyTag(ability, ["Summon", "Familiar"])) return;
       if (ability.crystalSummon && (
         !Number.isSafeInteger(ability.crystalSummon.max) ||
         ability.crystalSummon.max < 1 ||
@@ -167,18 +167,22 @@
           disabledTurns: 0
         });
       }
-      if (abilityHasAnyTag(ability, ["Summon"])) {
+      if (abilityHasAnyTag(ability, ["Summon", "Familiar"])) {
         progress.summons ??= [];
-        const count = Number.isSafeInteger(ability.summonCount) && ability.summonCount > 0 ? ability.summonCount : 1;
-        for (let index = 0; index < count; index += 1) {
-          state.summonSequence = (state.summonSequence || 0) + 1;
-          progress.summons.push({
-            id: `summon-${state.summonSequence}`,
-            abilityId: configuredAbility.id,
-            name: count > 1 ? `${ability.name} ${index + 1}` : ability.name,
-            health: 0,
-            maxHealth: 0
-          });
+        const alreadySummonedFamiliar = abilityHasAnyTag(ability, ["Familiar"]) &&
+          progress.summons.some((entry) => entry.abilityId === configuredAbility.id);
+        if (!alreadySummonedFamiliar) {
+          const count = Number.isSafeInteger(ability.summonCount) && ability.summonCount > 0 ? ability.summonCount : 1;
+          for (let index = 0; index < count; index += 1) {
+            state.summonSequence = (state.summonSequence || 0) + 1;
+            progress.summons.push({
+              id: `summon-${state.summonSequence}`,
+              abilityId: configuredAbility.id,
+              name: count > 1 ? `${ability.name} ${index + 1}` : ability.name,
+              health: 0,
+              maxHealth: 0
+            });
+          }
         }
       }
       if (ability.orbSummon) {
@@ -299,6 +303,11 @@
           });
         }
       }
+      if (abilityHasAnyTag(ability, ["Boostable"]) && progress.boostUses > 0) {
+        progress.boostedAbilityUses ??= {};
+        progress.boostedAbilityUses[ability.id] = (progress.boostedAbilityUses[ability.id] || 0) + 1;
+        progress.boostUses -= 1;
+      }
       saveCampaign();
       render();
       notify(`${ability.name} ${toggleable ? "activated" : "used"}${ability.duration && !toggleable ? ` for ${ability.duration} turns` : ""} — ${character.name}'s resources updated.${deactivatedAbilities.length ? ` Active abilities turned off: ${deactivatedAbilities.join(", ")}.` : ""}`);
@@ -318,6 +327,7 @@
         return;
       }
       progress.activeAbilities[stateKey] = false;
+      if (ability.shieldTarget) progress.shields = (progress.shields || []).filter((entry) => entry.abilityId !== configuredAbility.id);
       saveCampaign();
       render();
       notify(`${ability.name} turned off.`);
@@ -490,7 +500,7 @@
           }
         }
       }
-      if (state.characters[character.id]?.boostUses > 0 && abilityHasAnyTag(ability, ["Boostable"], configuration)) isEnhanced = true;
+      if ((state.characters[character.id]?.boostUses > 0 || (state.characters[character.id]?.boostedAbilityUses?.[ability.id] > 0 || state.characters[character.id]?.boostedAbilityUses?.[configuration.id] > 0)) && abilityHasAnyTag(ability, ["Boostable"], configuration)) isEnhanced = true;
       if (!isEnhanced) return bonus;
       for (const addition of additions) {
         for (const [sides, count] of addition.dice) {

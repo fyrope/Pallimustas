@@ -51,6 +51,7 @@
             burningOrbs: [],
             shields: [],
             boostUses: 0,
+            boostedAbilityUses: {},
             adjacentAlly: false,
             abilityUsesThisTurn: Object.fromEntries(allCharacterAbilities(character).map((ability) => [ability.id, 0])),
             afflictionApplicationsThisTurn: {},
@@ -238,16 +239,21 @@
         if (!saved) continue;
         progress.summons = Array.isArray(saved.summons) ? saved.summons.filter((entry) =>
           entry && typeof entry.id === "string" && typeof entry.name === "string" &&
-          typeof entry.abilityId === "string" && allCharacterAbilities(character).some((ability) => ability.id === entry.abilityId && abilityHasAnyTag(ability, ["Summon"])) &&
+          typeof entry.abilityId === "string" && allCharacterAbilities(character).some((ability) => ability.id === entry.abilityId && abilityHasAnyTag(ability, ["Summon", "Familiar"])) &&
           Number.isFinite(entry.health) && entry.health >= 0 && Number.isFinite(entry.maxHealth) && entry.maxHealth >= 0
         ).map((entry) => ({ id: entry.id, abilityId: entry.abilityId, name: entry.name.slice(0, 100), health: Math.min(entry.health, entry.maxHealth), maxHealth: entry.maxHealth })) : [];
-        progress.burningOrbs = Array.isArray(saved.burningOrbs) ? saved.burningOrbs.filter((entry) => entry && typeof entry.id === "string").slice(0, 3).map((entry) => ({ id: entry.id })) : [];
+        for (const summon of progress.summons) {
+          const match = /^summon-(\d+)$/.exec(summon.id);
+          if (match) initial.summonSequence = Math.max(initial.summonSequence, Number(match[1]));
+        }
+        progress.burningOrbs = Array.isArray(saved.burningOrbs) ? saved.burningOrbs.filter((entry) => entry && typeof entry.id === "string").slice(0, 3).map((entry) => ({ id: entry.id, usedThisTurn: entry.usedThisTurn === true })) : [];
         progress.shields = Array.isArray(saved.shields) ? saved.shields.filter((entry) =>
           entry && typeof entry.id === "string" && typeof entry.name === "string" &&
-          allCharacterAbilities(character).some((ability) => ability.id === entry.abilityId && ability.shieldTarget) &&
+          CHARACTERS.some((source) => allCharacterAbilities(source).some((ability) => ability.id === entry.abilityId && ability.shieldTarget)) &&
           CHARACTERS.some((target) => target.id === entry.targetCharacterId)
         ).map((entry) => ({ id: entry.id, abilityId: entry.abilityId, name: entry.name.slice(0, 100), targetCharacterId: entry.targetCharacterId })) : [];
         progress.boostUses = Number.isSafeInteger(saved.boostUses) ? Math.max(0, Math.min(2, saved.boostUses)) : 0;
+        progress.boostedAbilityUses = saved.boostedAbilityUses && typeof saved.boostedAbilityUses === "object" ? Object.fromEntries(Object.entries(saved.boostedAbilityUses).filter(([id, count]) => allCharacterAbilities(character).some((ability) => [ability, ...(ability.variants || [])].some((configuration) => configuration.id === id && abilityHasAnyTag(ability, ["Boostable"], configuration))) && Number.isSafeInteger(count) && count > 0).map(([id, count]) => [id, Math.min(count, 2)])) : {};
         progress.adjacentAlly = saved.adjacentAlly === true;
       }
       const savedManaTide = parsed.manaTide;
@@ -471,7 +477,8 @@ function toggleDarknessEmbrace() {
 function attackWithBurningOrb(orbId) {
   const character = getSelectedCharacter();
   const progress = state.characters[character.id];
-  if (!progress.burningOrbs?.some((orb) => orb.id === orbId)) return;
+  const orb = progress.burningOrbs?.find((entry) => entry.id === orbId);
+  if (!orb || orb.usedThisTurn) return;
   const magic = parseDiceFormula(character.stats.magic);
   if (!magic || [...magic.dice.values()].some((count) => count < 0)) { notify("Magic stat has an invalid dice formula."); return; }
   let diceCount = [...magic.dice.values()].reduce((total, count) => total + count, 0);
@@ -480,9 +487,12 @@ function attackWithBurningOrb(orbId) {
     if (!parsed || [...parsed.dice.values()].some((count) => count < 0)) continue;
     diceCount += [...parsed.dice.values()].reduce((total, count) => total + count, 0);
   }
+  orb.usedThisTurn = true;
+  saveCampaign(); render();
   notify(`${character.name} attacks with ${orbId.replace("burning-orb-", "Burning Orb ")} — 2D10 + ${diceCount} damage.`);
 }
-\n    function setResource(characterId, key, delta) {
+
+    function setResource(characterId, key, delta) {
   const character = characterById(characterId);
   const resources = state.characters[characterId].resources;
   const maximum = getResourceMaximum(character, key);
@@ -528,7 +538,7 @@ function attackWithBurningOrb(orbId) {
           abilityUsesThisTurn: Object.fromEntries(allCharacterAbilities(character).map((ability) => [ability.id, 0])),
           afflictionApplicationsThisTurn: {},
           equippedEquipment: [...(state.characters[character.id].equippedEquipment || [])],
-          summons: [], burningOrbs: [], shields: [], boostUses: 0, adjacentAlly: false
+          summons: [], burningOrbs: [], shields: [], boostUses: 0, boostedAbilityUses: {}, adjacentAlly: false
         };
       }
       state.activeStatEffects = [];
@@ -685,19 +695,6 @@ function attackWithBurningOrb(orbId) {
         return;
       }
 
-      const summonHealth = target.closest("[data-summon-health]");
-      if (summonHealth) {
-        updateSummonHealth(summonHealth.dataset.summonHealth, summonHealth.dataset.field, summonHealth.closest(".summon-card")?.querySelector(`[data-summon-value="${summonHealth.dataset.field}"]`)?.value);
-        return;
-      }
-      const removeSummon = target.closest("[data-remove-summon]");
-      if (removeSummon) { removeSummonInstance(removeSummon.dataset.removeSummon); return; }
-      const orbAttack = target.closest("[data-burning-orb-attack]");
-      if (orbAttack) { attackWithBurningOrb(orbAttack.dataset.burningOrbAttack); return; }
-      const shieldRemove = target.closest("[data-remove-shield]");
-      if (shieldRemove) { removeShield(shieldRemove.dataset.removeShield); return; }
-      const proximityToggle = target.closest("[data-proximity-toggle]");
-      if (proximityToggle) { toggleDarknessEmbrace(); return; }
       const summonHealth = target.closest("[data-summon-health]");
       if (summonHealth) {
         const card = summonHealth.closest(".summon-card");
