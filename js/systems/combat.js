@@ -67,9 +67,9 @@
       if (!ability || !abilityHasAnyTag(ability, ["attack"])) return;
       const selectedAbility = selectedAbilityFor(character, ability);
       const progress = state.characters[character.id];
-      if (abilityHasAnyTag(selectedAbility, ["Boostable"]) && progress.boostUses > 0 && !(progress.boostedAbilityUses?.[ability.id] > 0)) {
+      if (abilityHasAnyTag(selectedAbility, ["Boostable"]) && progress.boostUses > 0 && !(progress.boostedAbilityUses?.[selectedAbility.id] > 0)) {
         progress.boostedAbilityUses ??= {};
-        progress.boostedAbilityUses[ability.id] = 1;
+        progress.boostedAbilityUses[selectedAbility.id] = 1;
         progress.boostUses -= 1;
         saveCampaign();
       }
