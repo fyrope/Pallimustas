@@ -29,6 +29,7 @@
         activeAfflictions: [],
         afflictionSequence: 0,
         crystalSequence: 0,
+        summonSequence: 0,
         equipmentAttackLog: [],
         manaTide: { active: false, roundsElapsed: 0, spentByCharacter: {} },
         characters: Object.fromEntries(CHARACTERS.map((character) => [
@@ -46,6 +47,11 @@
             crystals: Object.fromEntries(allCharacterAbilities(character)
               .filter((ability) => ability.crystalSummon)
               .map((ability) => [ability.id, []])),
+            summons: [],
+            burningOrbs: [],
+            shields: [],
+            boostUses: 0,
+            adjacentAlly: false,
             abilityUsesThisTurn: Object.fromEntries(allCharacterAbilities(character).map((ability) => [ability.id, 0])),
             afflictionApplicationsThisTurn: {},
             equippedEquipment: []
@@ -195,6 +201,7 @@
       if (Number.isSafeInteger(parsed.crystalSequence) && parsed.crystalSequence >= 0) {
         initial.crystalSequence = parsed.crystalSequence;
       }
+      if (Number.isSafeInteger(parsed.summonSequence) && parsed.summonSequence >= 0) initial.summonSequence = parsed.summonSequence;
       for (const character of CHARACTERS) {
         const savedCharacter = parsed.characters?.[character.id];
         if (!savedCharacter?.crystals || typeof savedCharacter.crystals !== "object") continue;
@@ -224,6 +231,24 @@
             if (match) initial.crystalSequence = Math.max(initial.crystalSequence, Number(match[1]));
           }
         }
+      }
+      for (const character of CHARACTERS) {
+        const saved = parsed.characters?.[character.id];
+        const progress = initial.characters[character.id];
+        if (!saved) continue;
+        progress.summons = Array.isArray(saved.summons) ? saved.summons.filter((entry) =>
+          entry && typeof entry.id === "string" && typeof entry.name === "string" &&
+          typeof entry.abilityId === "string" && allCharacterAbilities(character).some((ability) => ability.id === entry.abilityId && abilityHasAnyTag(ability, ["Summon"])) &&
+          Number.isFinite(entry.health) && entry.health >= 0 && Number.isFinite(entry.maxHealth) && entry.maxHealth >= 0
+        ).map((entry) => ({ id: entry.id, abilityId: entry.abilityId, name: entry.name.slice(0, 100), health: Math.min(entry.health, entry.maxHealth), maxHealth: entry.maxHealth })) : [];
+        progress.burningOrbs = Array.isArray(saved.burningOrbs) ? saved.burningOrbs.filter((entry) => entry && typeof entry.id === "string").slice(0, 3).map((entry) => ({ id: entry.id })) : [];
+        progress.shields = Array.isArray(saved.shields) ? saved.shields.filter((entry) =>
+          entry && typeof entry.id === "string" && typeof entry.name === "string" &&
+          allCharacterAbilities(character).some((ability) => ability.id === entry.abilityId && ability.shieldTarget) &&
+          CHARACTERS.some((target) => target.id === entry.targetCharacterId)
+        ).map((entry) => ({ id: entry.id, abilityId: entry.abilityId, name: entry.name.slice(0, 100), targetCharacterId: entry.targetCharacterId })) : [];
+        progress.boostUses = Number.isSafeInteger(saved.boostUses) ? Math.max(0, Math.min(2, saved.boostUses)) : 0;
+        progress.adjacentAlly = saved.adjacentAlly === true;
       }
       const savedManaTide = parsed.manaTide;
       const configuredManaTide = manaTideAbility();
@@ -415,7 +440,49 @@
 
 
 
-function setResource(characterId, key, delta) {
+function updateSummonHealth(summonId, field, rawValue) {
+  const character = getSelectedCharacter();
+  const summon = state.characters[character.id].summons.find((entry) => entry.id === summonId);
+  const value = Number(rawValue);
+  if (!summon || !["health", "maxHealth"].includes(field) || !Number.isSafeInteger(value) || value < 0) return;
+  if (field === "maxHealth") {
+    summon.maxHealth = value;
+    summon.health = Math.min(summon.health, value);
+  } else summon.health = Math.min(value, summon.maxHealth);
+  saveCampaign(); render();
+}
+function removeSummonInstance(summonId) {
+  const progress = state.characters[getSelectedCharacter().id];
+  progress.summons = (progress.summons || []).filter((entry) => entry.id !== summonId);
+  saveCampaign(); render();
+}
+function removeShield(shieldId) {
+  const progress = state.characters[getSelectedCharacter().id];
+  progress.shields = (progress.shields || []).filter((entry) => entry.id !== shieldId);
+  saveCampaign(); render();
+}
+function toggleDarknessEmbrace() {
+  const progress = state.characters["Izaak"];
+  if (!progress) return;
+  progress.adjacentAlly = !progress.adjacentAlly;
+  saveCampaign(); render();
+  notify(progress.adjacentAlly ? "Darkness Embrace: ally adjacent (−1D8)." : "Darkness Embrace: no ally adjacent (+1D8).");
+}
+function attackWithBurningOrb(orbId) {
+  const character = getSelectedCharacter();
+  const progress = state.characters[character.id];
+  if (!progress.burningOrbs?.some((orb) => orb.id === orbId)) return;
+  const magic = parseDiceFormula(character.stats.magic);
+  if (!magic || [...magic.dice.values()].some((count) => count < 0)) { notify("Magic stat has an invalid dice formula."); return; }
+  let diceCount = [...magic.dice.values()].reduce((total, count) => total + count, 0);
+  for (const modifier of getStatModifiers(character, "magic", false)) {
+    const parsed = parseDiceFormula(modifier.bonus);
+    if (!parsed || [...parsed.dice.values()].some((count) => count < 0)) continue;
+    diceCount += [...parsed.dice.values()].reduce((total, count) => total + count, 0);
+  }
+  notify(`${character.name} attacks with ${orbId.replace("burning-orb-", "Burning Orb ")} — 2D10 + ${diceCount} damage.`);
+}
+\n    function setResource(characterId, key, delta) {
   const character = characterById(characterId);
   const resources = state.characters[characterId].resources;
   const maximum = getResourceMaximum(character, key);
@@ -460,13 +527,15 @@ function setResource(characterId, key, delta) {
             .map((ability) => [ability.id, []])),
           abilityUsesThisTurn: Object.fromEntries(allCharacterAbilities(character).map((ability) => [ability.id, 0])),
           afflictionApplicationsThisTurn: {},
-          equippedEquipment: [...(state.characters[character.id].equippedEquipment || [])]
+          equippedEquipment: [...(state.characters[character.id].equippedEquipment || [])],
+          summons: [], burningOrbs: [], shields: [], boostUses: 0, adjacentAlly: false
         };
       }
       state.activeStatEffects = [];
       state.activeAfflictions = [];
       state.afflictionSequence = 0;
       state.crystalSequence = 0;
+      state.summonSequence = 0;
       state.equipmentAttackLog = [];
       state.manaTide = { active: false, roundsElapsed: 0, spentByCharacter: {} };
       state.variantSelection = {};
@@ -517,6 +586,7 @@ function setResource(characterId, key, delta) {
         activeAfflictions: state.activeAfflictions,
         afflictionSequence: state.afflictionSequence,
         equipmentAttackLog: state.equipmentAttackLog,
+        summonSequence: state.summonSequence,
         manaTide: state.manaTide,
         characters: state.characters
       };
@@ -586,7 +656,8 @@ function setResource(characterId, key, delta) {
 
       const abilityButton = target.closest("[data-use-ability]");
       if (abilityButton) {
-        useAbility(abilityButton.dataset.useAbility);
+        const targetId = abilityButton.closest(".ability-row")?.querySelector("[data-shield-target]")?.value;
+        useAbility(abilityButton.dataset.useAbility, targetId ? { shieldTarget: targetId } : {});
         return;
       }
 
@@ -613,6 +684,35 @@ function setResource(characterId, key, delta) {
         dispelCrystal(crystalDispel.dataset.crystalAbility, crystalDispel.dataset.dispelCrystal);
         return;
       }
+
+      const summonHealth = target.closest("[data-summon-health]");
+      if (summonHealth) {
+        updateSummonHealth(summonHealth.dataset.summonHealth, summonHealth.dataset.field, summonHealth.closest(".summon-card")?.querySelector(`[data-summon-value="${summonHealth.dataset.field}"]`)?.value);
+        return;
+      }
+      const removeSummon = target.closest("[data-remove-summon]");
+      if (removeSummon) { removeSummonInstance(removeSummon.dataset.removeSummon); return; }
+      const orbAttack = target.closest("[data-burning-orb-attack]");
+      if (orbAttack) { attackWithBurningOrb(orbAttack.dataset.burningOrbAttack); return; }
+      const shieldRemove = target.closest("[data-remove-shield]");
+      if (shieldRemove) { removeShield(shieldRemove.dataset.removeShield); return; }
+      const proximityToggle = target.closest("[data-proximity-toggle]");
+      if (proximityToggle) { toggleDarknessEmbrace(); return; }
+      const summonHealth = target.closest("[data-summon-health]");
+      if (summonHealth) {
+        const card = summonHealth.closest(".summon-card");
+        const value = card?.querySelector(`[data-summon-value="${summonHealth.dataset.field}"]`)?.value;
+        updateSummonHealth(summonHealth.dataset.summonHealth, summonHealth.dataset.field, value);
+        return;
+      }
+      const removeSummon = target.closest("[data-remove-summon]");
+      if (removeSummon) { removeSummonInstance(removeSummon.dataset.removeSummon); return; }
+      const orbAttack = target.closest("[data-burning-orb-attack]");
+      if (orbAttack) { attackWithBurningOrb(orbAttack.dataset.burningOrbAttack); return; }
+      const shieldRemove = target.closest("[data-remove-shield]");
+      if (shieldRemove) { removeShield(shieldRemove.dataset.removeShield); return; }
+      const proximityToggle = target.closest("[data-proximity-toggle]");
+      if (proximityToggle) { toggleDarknessEmbrace(); return; }
 
       const equipmentToggle = target.closest("[data-equipment-toggle]");
       if (equipmentToggle) {

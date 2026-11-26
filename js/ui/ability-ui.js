@@ -32,7 +32,7 @@
       const selectedAbility = selectedAbilityFor(character, ability);
       const variantId = selectedAbility.id === ability.id ? null : selectedAbility.id;
       const stateKey = variantId ? `${ability.id}::${variantId}` : ability.id;
-      const passive = isPassiveConfiguration(selectedAbility);
+      const passive = isPassiveConfiguration(selectedAbility) && !abilityHasAnyTag(selectedAbility, ["Summon"]);
       const isManaTide = Boolean(selectedAbility.manaTide);
       const manaTideActive = isManaTide && state.manaTide?.active === true;
       const toggleable = selectedAbility.activeMode === "toggle";
@@ -109,6 +109,10 @@
         usesPerTurn > 1 ? `<span class="cost-chip cooldown">↻ ${usesPerTurn} uses per turn</span>` : "",
         resourceEffectChips
       ].filter(Boolean).join("");
+      const orbControls = selectedAbility.orbSummon ? `<div class="orb-list">${(progress.burningOrbs || []).map((orb, index) => `<div class="orb-item"><span>Burning Orb ${index + 1}</span><button class="button subtle" data-burning-orb-attack="${escapeHtml(orb.id)}">Attack · 2D10 + Magic dice</button></div>`).join("") || '<span class="section-helper">Use Burning Orbs to summon three attack orbs.</span>'}</div>` : "";
+      const shieldTargetControl = selectedAbility.shieldTarget === "any" ? `<label class="shield-target"><span class="section-helper">Shield target</span><select data-shield-target="${escapeHtml(ability.id)}">${CHARACTERS.map((target) => `<option value="${escapeHtml(target.id)}" ${target.id === character.id ? "selected" : ""}>${escapeHtml(target.name)}</option>`).join("")}</select></label>` : "";
+      const darknessControl = selectedAbility.proximityToggle ? `<div class="darkness-control"><span class="section-helper">Ally adjacent: ${state.characters[character.id].adjacentAlly ? "Yes (−1D8)" : "No (+1D8)"}</span><button class="button subtle" data-proximity-toggle>${state.characters[character.id].adjacentAlly ? "Set no ally adjacent" : "Set ally adjacent"}</button></div>` : "";
+      const shieldRemoveControls = (progress.shields || []).filter((entry) => entry.abilityId === ability.id).map((entry) => `<button class="button subtle" data-remove-shield="${escapeHtml(entry.id)}">Remove shield from ${escapeHtml(characterById(entry.targetCharacterId)?.name || "target")}</button>`).join("");
       const crystalControls = crystalSummon ? `<div class="crystal-list">${crystals.map((crystal, index) =>
         `<div class="crystal-item"><span>Crystal ${index + 1} · ${crystal.disabledTurns > 0 ? `disabled (${crystal.disabledTurns} turn${crystal.disabledTurns === 1 ? "" : "s"} left)` : "active"}</span><div class="crystal-actions">${crystal.disabledTurns > 0
           ? ""
@@ -131,7 +135,7 @@
         return `<button class="button subtle" title="${escapeHtml(stats)}" data-ability-attack="${escapeHtml(ability.id)}" data-ability-attack-id="${escapeHtml(attack.id)}" ${validConfiguration ? "" : "disabled"}>${escapeHtml(attack.name)}</button>`;
       }).join("");
       return `<div class="ability-row">
-        <div>${variantControl}<div class="ability-name">${escapeHtml(ability.name)}</div>${renderAbilityDescription(selectedAbility)}<div class="ability-costs">${costs}</div><div class="ability-tags">${tags}</div>${crystalControls}</div>
+        <div>${variantControl}<div class="ability-name">${escapeHtml(ability.name)}</div>${renderAbilityDescription(selectedAbility)}<div class="ability-costs">${costs}</div><div class="ability-tags">${tags}</div>${crystalControls}${orbControls}${shieldTargetControl}${darknessControl}${shieldRemoveControls}</div>
         <div class="ability-action">${attackButtons}${passive ? '<span class="passive-label">PASSIVE</span>' : `${abilityButton}${reason ? `<span class="disabled-reason">${reason}</span>` : ""}`}</div>
       </div>`;
     }

@@ -4,7 +4,7 @@
       const configuredAbility = allCharacterAbilities(character).find((entry) => entry.id === abilityId);
       if (!configuredAbility) return;
       const ability = selectedAbilityFor(character, configuredAbility);
-      if (isPassiveConfiguration(ability)) return;
+      if (isPassiveConfiguration(ability) && !abilityHasAnyTag(ability, ["Summon"])) return;
       if (ability.crystalSummon && (
         !Number.isSafeInteger(ability.crystalSummon.max) ||
         ability.crystalSummon.max < 1 ||
@@ -167,6 +167,31 @@
           disabledTurns: 0
         });
       }
+      if (abilityHasAnyTag(ability, ["Summon"])) {
+        progress.summons ??= [];
+        const count = Number.isSafeInteger(ability.summonCount) && ability.summonCount > 0 ? ability.summonCount : 1;
+        for (let index = 0; index < count; index += 1) {
+          state.summonSequence = (state.summonSequence || 0) + 1;
+          progress.summons.push({
+            id: `summon-${state.summonSequence}`,
+            abilityId: configuredAbility.id,
+            name: count > 1 ? `${ability.name} ${index + 1}` : ability.name,
+            health: 0,
+            maxHealth: 0
+          });
+        }
+      }
+      if (ability.orbSummon) {
+        progress.burningOrbs = Array.from({ length: ability.orbSummon.max }, (_, index) => ({ id: `burning-orb-${index + 1}` }));
+      }
+      if (ability.shieldTarget) {
+        const targetId = ability.shieldTarget === "self" ? character.id : (suppliedValues.shieldTarget || character.id);
+        if (!characterById(targetId)) { notify("Choose a valid character to receive the shield."); return false; }
+        const targetProgress = state.characters[targetId];
+        targetProgress.shields ??= [];
+        targetProgress.shields = targetProgress.shields.filter((entry) => entry.abilityId !== configuredAbility.id);
+        targetProgress.shields.push({ id: `shield-${character.id}-${configuredAbility.id}`, abilityId: configuredAbility.id, name: ability.name, targetCharacterId: targetId });
+      }
       const resourceChanges = [];
       for (const effect of resolvedResourceEffects) {
         for (const targetCharacterId of statEffectTargets(effect, character)) {
@@ -241,6 +266,7 @@
       }
       progress.abilityUsesThisTurn ??= {};
       progress.abilityUsesThisTurn[abilityId] = (progress.abilityUsesThisTurn[abilityId] || 0) + 1;
+      if (ability.boostEnhancement) progress.boostUses = 2;
       progress.cooldowns[stateKey] = resolvedValues.cooldown;
       progress.activeTurns[stateKey] = Math.max(0, ability.duration || 0);
       console.error("COUNTERFEIT DEBUG", {
@@ -267,6 +293,7 @@
             sourceConfigurationId: ability.id,
             effectId: effect.id,
             bonus: enhancedAbilityEffectBonus(character, configuredAbility, ability, effect.stat, effect.bonus),
+            boosted: state.characters[character.id].boostUses > 0 && abilityHasAnyTag(configuredAbility, ["Boostable"], ability),
             targetCharacterId,
             remainingTurns: effect.duration
           });
@@ -463,6 +490,7 @@
           }
         }
       }
+      if (state.characters[character.id]?.boostUses > 0 && abilityHasAnyTag(ability, ["Boostable"], configuration)) isEnhanced = true;
       if (!isEnhanced) return bonus;
       for (const addition of additions) {
         for (const [sides, count] of addition.dice) {
