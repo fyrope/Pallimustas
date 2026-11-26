@@ -107,7 +107,8 @@
         hasCharges ? `<span class="cost-chip cooldown">↻ ${availableCharges}/${selectedAbility.charges} uses${chargeRecharges.length ? ` · next in ${Math.min(...chargeRecharges)} turn${Math.min(...chargeRecharges) === 1 ? "" : "s"}` : ""}</span>` : "",
         crystalSummon ? `<span class="cost-chip active-chip">✧ ${crystals.length}/${crystalSummon.max} crystals</span>` : "",
         usesPerTurn > 1 ? `<span class="cost-chip cooldown">↻ ${usesPerTurn} uses per turn</span>` : "",
-        resourceEffectChips
+        resourceEffectChips,
+        selectedAbility.boostEnhancement ? `<span class="cost-chip active-chip">Boost ready · ${progress.boostUses || 0}/2</span>` : ""
       ].filter(Boolean).join("");
       const orbControls = selectedAbility.orbSummon ? `<div class="orb-list">${(progress.burningOrbs || []).map((orb, index) => `<div class="orb-item"><span>Burning Orb ${index + 1}</span><button class="button subtle" data-burning-orb-attack="${escapeHtml(orb.id)}" ${orb.usedThisTurn ? "disabled" : ""}>${orb.usedThisTurn ? "Attacked this turn" : "Attack · 2D10 + Magic dice"}</button></div>`).join("") || '<span class="section-helper">Use Burning Orbs to summon three attack orbs.</span>'}</div>` : "";
       const shieldTargetControl = selectedAbility.shieldTarget === "any" ? `<label class="shield-target"><span class="section-helper">Shield target</span><select data-shield-target="${escapeHtml(ability.id)}">${CHARACTERS.map((target) => `<option value="${escapeHtml(target.id)}" ${target.id === character.id ? "selected" : ""}>${escapeHtml(target.name)}</option>`).join("")}</select></label>` : "";
