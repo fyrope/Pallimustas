@@ -29,6 +29,7 @@
         activeAfflictions: [],
         afflictionSequence: 0,
         crystalSequence: 0,
+        summonSequence: 0,
         equipmentAttackLog: [],
         manaTide: { active: false, roundsElapsed: 0, spentByCharacter: {} },
         characters: Object.fromEntries(CHARACTERS.map((character) => [
@@ -46,6 +47,11 @@
             crystals: Object.fromEntries(allCharacterAbilities(character)
               .filter((ability) => ability.crystalSummon)
               .map((ability) => [ability.id, []])),
+            summons: [],
+            burningOrbs: [],
+            shields: [],
+            boostUses: 0,
+            adjacentAlly: false,
             abilityUsesThisTurn: Object.fromEntries(allCharacterAbilities(character).map((ability) => [ability.id, 0])),
             afflictionApplicationsThisTurn: {},
             equippedEquipment: []
@@ -224,6 +230,24 @@
             if (match) initial.crystalSequence = Math.max(initial.crystalSequence, Number(match[1]));
           }
         }
+      }
+      for (const character of CHARACTERS) {
+        const saved = parsed.characters?.[character.id];
+        const progress = initial.characters[character.id];
+        if (!saved) continue;
+        progress.summons = Array.isArray(saved.summons) ? saved.summons.filter((entry) =>
+          entry && typeof entry.id === "string" && typeof entry.name === "string" &&
+          typeof entry.abilityId === "string" && allCharacterAbilities(character).some((ability) => ability.id === entry.abilityId && abilityHasAnyTag(ability, ["Summon"])) &&
+          Number.isFinite(entry.health) && entry.health >= 0 && Number.isFinite(entry.maxHealth) && entry.maxHealth >= 0
+        ).map((entry) => ({ id: entry.id, abilityId: entry.abilityId, name: entry.name.slice(0, 100), health: Math.min(entry.health, entry.maxHealth), maxHealth: entry.maxHealth })) : [];
+        progress.burningOrbs = Array.isArray(saved.burningOrbs) ? saved.burningOrbs.filter((entry) => entry && typeof entry.id === "string").slice(0, 3).map((entry) => ({ id: entry.id })) : [];
+        progress.shields = Array.isArray(saved.shields) ? saved.shields.filter((entry) =>
+          entry && typeof entry.id === "string" && typeof entry.name === "string" &&
+          allCharacterAbilities(character).some((ability) => ability.id === entry.abilityId && ability.shieldTarget) &&
+          CHARACTERS.some((target) => target.id === entry.targetCharacterId)
+        ).map((entry) => ({ id: entry.id, abilityId: entry.abilityId, name: entry.name.slice(0, 100), targetCharacterId: entry.targetCharacterId })) : [];
+        progress.boostUses = Number.isSafeInteger(saved.boostUses) ? Math.max(0, Math.min(2, saved.boostUses)) : 0;
+        progress.adjacentAlly = saved.adjacentAlly === true;
       }
       const savedManaTide = parsed.manaTide;
       const configuredManaTide = manaTideAbility();
@@ -467,6 +491,7 @@ function setResource(characterId, key, delta) {
       state.activeAfflictions = [];
       state.afflictionSequence = 0;
       state.crystalSequence = 0;
+      state.summonSequence = 0;
       state.equipmentAttackLog = [];
       state.manaTide = { active: false, roundsElapsed: 0, spentByCharacter: {} };
       state.variantSelection = {};
@@ -614,6 +639,19 @@ function setResource(characterId, key, delta) {
         return;
       }
 
+      const summonHealth = target.closest("[data-summon-health]");
+      if (summonHealth) {
+        updateSummonHealth(summonHealth.dataset.summonHealth, summonHealth.dataset.field, summonHealth.closest(".summon-card")?.querySelector(`[data-summon-value="${summonHealth.dataset.field}"]`)?.value);
+        return;
+      }
+      const removeSummon = target.closest("[data-remove-summon]");
+      if (removeSummon) { removeSummonInstance(removeSummon.dataset.removeSummon); return; }
+      const orbAttack = target.closest("[data-burning-orb-attack]");
+      if (orbAttack) { attackWithBurningOrb(orbAttack.dataset.burningOrbAttack); return; }
+      const shieldRemove = target.closest("[data-remove-shield]");
+      if (shieldRemove) { removeShield(shieldRemove.dataset.removeShield); return; }
+      const proximityToggle = target.closest("[data-proximity-toggle]");
+      if (proximityToggle) { toggleDarknessEmbrace(); return; }
       const equipmentToggle = target.closest("[data-equipment-toggle]");
       if (equipmentToggle) {
         toggleEquipment(equipmentToggle.dataset.equipmentToggle);
