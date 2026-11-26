@@ -238,10 +238,14 @@
         if (!saved) continue;
         progress.summons = Array.isArray(saved.summons) ? saved.summons.filter((entry) =>
           entry && typeof entry.id === "string" && typeof entry.name === "string" &&
-          typeof entry.abilityId === "string" && allCharacterAbilities(character).some((ability) => ability.id === entry.abilityId && abilityHasAnyTag(ability, ["Summon"])) &&
+          typeof entry.abilityId === "string" && allCharacterAbilities(character).some((ability) => ability.id === entry.abilityId && abilityHasAnyTag(ability, ["Summon", "Familiar"])) &&
           Number.isFinite(entry.health) && entry.health >= 0 && Number.isFinite(entry.maxHealth) && entry.maxHealth >= 0
         ).map((entry) => ({ id: entry.id, abilityId: entry.abilityId, name: entry.name.slice(0, 100), health: Math.min(entry.health, entry.maxHealth), maxHealth: entry.maxHealth })) : [];
-        progress.burningOrbs = Array.isArray(saved.burningOrbs) ? saved.burningOrbs.filter((entry) => entry && typeof entry.id === "string").slice(0, 3).map((entry) => ({ id: entry.id })) : [];
+        for (const summon of progress.summons) {
+          const match = /^summon-(\d+)$/.exec(summon.id);
+          if (match) initial.summonSequence = Math.max(initial.summonSequence, Number(match[1]));
+        }
+        progress.burningOrbs = Array.isArray(saved.burningOrbs) ? saved.burningOrbs.filter((entry) => entry && typeof entry.id === "string").slice(0, 3).map((entry) => ({ id: entry.id, usedThisTurn: entry.usedThisTurn === true })) : [];
         progress.shields = Array.isArray(saved.shields) ? saved.shields.filter((entry) =>
           entry && typeof entry.id === "string" && typeof entry.name === "string" &&
           allCharacterAbilities(character).some((ability) => ability.id === entry.abilityId && ability.shieldTarget) &&
@@ -471,7 +475,8 @@ function toggleDarknessEmbrace() {
 function attackWithBurningOrb(orbId) {
   const character = getSelectedCharacter();
   const progress = state.characters[character.id];
-  if (!progress.burningOrbs?.some((orb) => orb.id === orbId)) return;
+  const orb = progress.burningOrbs?.find((entry) => entry.id === orbId);
+  if (!orb || orb.usedThisTurn) return;
   const magic = parseDiceFormula(character.stats.magic);
   if (!magic || [...magic.dice.values()].some((count) => count < 0)) { notify("Magic stat has an invalid dice formula."); return; }
   let diceCount = [...magic.dice.values()].reduce((total, count) => total + count, 0);
@@ -480,6 +485,8 @@ function attackWithBurningOrb(orbId) {
     if (!parsed || [...parsed.dice.values()].some((count) => count < 0)) continue;
     diceCount += [...parsed.dice.values()].reduce((total, count) => total + count, 0);
   }
+  orb.usedThisTurn = true;
+  saveCampaign(); render();
   notify(`${character.name} attacks with ${orbId.replace("burning-orb-", "Burning Orb ")} — 2D10 + ${diceCount} damage.`);
 }
 
