@@ -241,7 +241,12 @@
           entry && typeof entry.id === "string" && typeof entry.name === "string" &&
           typeof entry.abilityId === "string" && allCharacterAbilities(character).some((ability) => ability.id === entry.abilityId && abilityHasAnyTag(ability, ["Summon", "Familiar"])) &&
           Number.isFinite(entry.health) && entry.health >= 0 && Number.isFinite(entry.maxHealth) && entry.maxHealth >= 0
-        ).map((entry) => ({ id: entry.id, abilityId: entry.abilityId, name: entry.name.slice(0, 100), health: Math.min(entry.health, entry.maxHealth), maxHealth: entry.maxHealth })) : [];
+        ).map((entry) => ({
+          id: entry.id, abilityId: entry.abilityId, name: entry.name.slice(0, 100),
+          health: Math.min(entry.health, entry.maxHealth), maxHealth: entry.maxHealth,
+          stats: Object.fromEntries(["physicalAttack", "damageResistance", "magic", "magicResistance", "speed", "reflexes"]
+            .map((key) => [key, typeof entry.stats?.[key] === "string" || typeof entry.stats?.[key] === "number" ? String(entry.stats[key]).slice(0, 40) : ""]))
+        })) : [];
         for (const summon of progress.summons) {
           const match = /^summon-(\d+)$/.exec(summon.id);
           if (match) initial.summonSequence = Math.max(initial.summonSequence, Number(match[1]));
@@ -456,6 +461,15 @@ function updateSummonHealth(summonId, field, rawValue) {
     summon.health = Math.min(summon.health, value);
   } else summon.health = Math.min(value, summon.maxHealth);
   saveCampaign(); render();
+}
+function updateSummonStat(summonId, stat, rawValue) {
+  const character = getSelectedCharacter();
+  const summon = state.characters[character.id].summons.find((entry) => entry.id === summonId);
+  const allowedStats = ["physicalAttack", "damageResistance", "magic", "magicResistance", "speed", "reflexes"];
+  if (!summon || !allowedStats.includes(stat)) return;
+  summon.stats ??= {};
+  summon.stats[stat] = String(rawValue).slice(0, 40);
+  saveCampaign();
 }
 function removeSummonInstance(summonId) {
   const progress = state.characters[getSelectedCharacter().id];
@@ -821,6 +835,11 @@ function attackWithBurningOrb(orbId) {
         const currentIndex = nextOrder.findIndex((character) => character.id === currentId);
         state.turnIndex = currentIndex >= 0 ? currentIndex : 0;
         saveCampaign(); render(); return;
+      }
+      if (target instanceof HTMLInputElement && target.matches("[data-summon-stat]")) {
+        const card = target.closest("[data-summon-id]");
+        if (card) updateSummonStat(card.dataset.summonId, target.dataset.summonStat, target.value.trim());
+        return;
       }
       if (!(target instanceof HTMLSelectElement) || !target.matches("[data-variant-character]")) return;
       selectAbilityVariant(target.dataset.variantCharacter, target.dataset.variantAbility, target.value);

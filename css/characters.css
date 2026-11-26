@@ -144,3 +144,10 @@
     .shield-chip { display:inline-flex; align-items:center; gap:4px; padding:5px 7px; border:1px solid #7654a5; border-radius:16px; background:#302440; color:#d9c3f5; font-size:9px; }
     .shield-chip button { border:0; background:transparent; color:inherit; cursor:pointer; font-size:13px; line-height:1; }
     @media (max-width:600px) { .identity-card { flex-wrap:wrap; } .identity-shields { max-width:none; justify-content:flex-start; width:100%; padding-left:64px; } }
+
+/* Summon stat sheets mirror player core stats, without mana/stamina attributes. */
+.summon-stat-heading { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line); color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.summon-stat-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 9px; }
+.summon-stat { min-width: 0; display: grid; gap: 6px; padding: 9px; border: 1px solid #2c322e; border-radius: 8px; background: #171a19; color: var(--muted); font-size: 9px; }
+.summon-stat input { width: 100%; min-width: 0; padding: 5px 6px; border: 1px solid var(--line-bright); border-radius: 6px; background: #222624; color: var(--text); font: inherit; font-size: 12px; }
+@media (max-width: 600px) { .summon-stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

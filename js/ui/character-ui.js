@@ -122,6 +122,12 @@
           </div>
           <div class="summon-track"><div class="summon-fill" style="width:${summon.maxHealth > 0 ? Math.max(0, Math.min(100, summon.health / summon.maxHealth * 100)) : 0}%"></div></div>
           <div class="section-helper">${summon.health} / ${summon.maxHealth} HP</div>
+          <div class="summon-stat-heading">Stats</div>
+          <div class="summon-stat-grid">${[
+            ["physicalAttack", "Physical attack"], ["damageResistance", "Damage resistance"],
+            ["magic", "Magic"], ["magicResistance", "Magic resistance"],
+            ["speed", "Speed"], ["reflexes", "Reflexes"]
+          ].map(([key, label]) => `<label class="summon-stat"><span>${label}</span><input type="text" maxlength="40" placeholder="Not set" data-summon-stat="${key}" value="${escapeHtml(summon.stats?.[key] ?? "")}" aria-label="${escapeHtml(summon.name)} ${label}"></label>`).join("")}</div>
         </article>`).join("")}</div>
       </section>`;
     }
