@@ -500,7 +500,7 @@
           }
         }
       }
-      if ((state.characters[character.id]?.boostUses > 0 || state.characters[character.id]?.boostedAbilityUses?.[ability.id] > 0) && abilityHasAnyTag(ability, ["Boostable"], configuration)) isEnhanced = true;
+      if ((state.characters[character.id]?.boostUses > 0 || (state.characters[character.id]?.boostedAbilityUses?.[ability.id] > 0 || state.characters[character.id]?.boostedAbilityUses?.[configuration.id] > 0)) && abilityHasAnyTag(ability, ["Boostable"], configuration)) isEnhanced = true;
       if (!isEnhanced) return bonus;
       for (const addition of additions) {
         for (const [sides, count] of addition.dice) {
