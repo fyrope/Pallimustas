@@ -167,7 +167,7 @@
           disabledTurns: 0
         });
       }
-      if (abilityHasAnyTag(ability, ["Summon"])) {
+      if (abilityHasAnyTag(ability, ["Summon", "Familiar"])) {
         progress.summons ??= [];
         const count = Number.isSafeInteger(ability.summonCount) && ability.summonCount > 0 ? ability.summonCount : 1;
         for (let index = 0; index < count; index += 1) {
