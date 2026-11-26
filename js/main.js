@@ -688,19 +688,6 @@ function attackWithBurningOrb(orbId) {
 
       const summonHealth = target.closest("[data-summon-health]");
       if (summonHealth) {
-        updateSummonHealth(summonHealth.dataset.summonHealth, summonHealth.dataset.field, summonHealth.closest(".summon-card")?.querySelector(`[data-summon-value="${summonHealth.dataset.field}"]`)?.value);
-        return;
-      }
-      const removeSummon = target.closest("[data-remove-summon]");
-      if (removeSummon) { removeSummonInstance(removeSummon.dataset.removeSummon); return; }
-      const orbAttack = target.closest("[data-burning-orb-attack]");
-      if (orbAttack) { attackWithBurningOrb(orbAttack.dataset.burningOrbAttack); return; }
-      const shieldRemove = target.closest("[data-remove-shield]");
-      if (shieldRemove) { removeShield(shieldRemove.dataset.removeShield); return; }
-      const proximityToggle = target.closest("[data-proximity-toggle]");
-      if (proximityToggle) { toggleDarknessEmbrace(); return; }
-      const summonHealth = target.closest("[data-summon-health]");
-      if (summonHealth) {
         const card = summonHealth.closest(".summon-card");
         const value = card?.querySelector(`[data-summon-value="${summonHealth.dataset.field}"]`)?.value;
         updateSummonHealth(summonHealth.dataset.summonHealth, summonHealth.dataset.field, value);
