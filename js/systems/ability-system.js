@@ -294,6 +294,7 @@
             sourceConfigurationId: ability.id,
             effectId: effect.id,
             bonus: enhancedAbilityEffectBonus(character, configuredAbility, ability, effect.stat, effect.bonus),
+            boosted: state.characters[character.id].boostUses > 0 && abilityHasAnyTag(configuredAbility, ["Boostable"], ability),
             targetCharacterId,
             remainingTurns: effect.duration
           });
@@ -490,6 +491,7 @@
           }
         }
       }
+      if (state.characters[character.id]?.boostUses > 0 && abilityHasAnyTag(ability, ["Boostable"], configuration)) isEnhanced = true;
       if (!isEnhanced) return bonus;
       for (const addition of additions) {
         for (const [sides, count] of addition.dice) {
