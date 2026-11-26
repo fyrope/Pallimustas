@@ -72,7 +72,7 @@
         const configuration = [ability, ...(ability.variants || [])]
           .find((entry) => entry.id === activeEffect.sourceConfigurationId) || ability;
         return [{
-          bonus: enhancedAbilityEffectBonus(character, ability, configuration, stat, effect.bonus),
+          bonus: activeEffect.boosted ? activeEffect.bonus : enhancedAbilityEffectBonus(character, ability, configuration, stat, effect.bonus),
           source: ability.name,
           detail: `${activeEffect.remainingTurns} turn${activeEffect.remainingTurns === 1 ? "" : "s"} remaining`
         }];
@@ -108,6 +108,12 @@
           })
         );
       });
+      const darknessCharacter = CHARACTERS.find((entry) => entry.id === "Izaak");
+      const darknessProgress = darknessCharacter && state.characters[darknessCharacter.id];
+      const darknessStats = ["physicalAttack", "damageResistance", "magic", "magicResistance"];
+      const darknessModifiers = character.id === "Izaak" && darknessProgress && darknessStats.includes(stat)
+        ? [{ bonus: darknessProgress.adjacentAlly ? "-1D8" : "1D8", source: "Darkness Embrace", detail: darknessProgress.adjacentAlly ? "Ally adjacent" : "No ally adjacent" }]
+        : [];
       const tideBonus = stat === "manaRecovery" ? manaTideRecoveryBonus(character) : 0;
       const manaTideModifiers = tideBonus > 0
         ? [{ bonus: String(Number(tideBonus.toFixed(4))), source: "Mana Tide", detail: "Active" }]
@@ -139,7 +145,7 @@
             }];
           });
         });
-      return [...activeModifiers, ...passiveModifiers, ...activeToggleModifiers, ...manaTideModifiers, ...equipmentModifiers, ...afflictionModifiers];
+      return [...activeModifiers, ...passiveModifiers, ...activeToggleModifiers, ...darknessModifiers, ...manaTideModifiers, ...equipmentModifiers, ...afflictionModifiers];
     }
 
     function renderStatValue(character, stat) {
