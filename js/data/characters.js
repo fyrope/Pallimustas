@@ -531,12 +531,12 @@
           { id: "man-debt", name: "Debt", description: "You are in debt 120 gold spirit coins to Bob Smith. To fix your debt, you could try dying."},
         ],
         racialGifts: [
-          { id: "man-attack-aptitude", name: "Special Attack Aptitude", summary: "", description: ".", cooldown: 0, duration: 0, tags: []},
-          { id: "man-moving-fortress", name: "Moving Fortress", summary: "", description: ".", cooldown: 0, duration: 0, tags: []},
-          { id: "man-metallic-skin", name: "Metallic Skin", summary: "", description: ".", cooldown: 0, duration: 0, tags: []},
-          { id: "man-molten-blood", name: "Molten Blood", summary: "", description: ".", cooldown: 0, duration: 0, tags: []},
-          { id: "man-ultimate-shield", name: "Ultimate Shield", summary: "", description: ".", cooldown: 0, duration: 0, tags: []},
-          { id: "man-impenetrable", name: "Impenetrable", summary: "", description: ".", cooldown: 0, duration: 0, tags: []},
+          { id: "man-attack-aptitude", name: "Special Attack Aptitude", summary: "Your special attacks are enhanced", description: "You are more likely to awaken special attacks than other ability types. Your special attacks have an increased effect..", cooldown: 0, duration: 0, tags: ["Racial Gift", "enhancement", "passive"]},
+          { id: "man-moving-fortress", name: "Moving Fortress", summary: "Your strength has led you to no longer need to dodge", description: "Your strength has led you to no longer need to do dodge, you have reduced reflexes but increased speed.", cooldown: 0, duration: 0, tags: ["Racial Gift", "enhancement", "passive"]},
+          { id: "man-metallic-skin", name: "Metallic Skin", summary: "Your earth and metallic attacks are enhanced", description: "You do more damage with earth and metallic attacks but you're slower because of this.", cooldown: 0, duration: 0, tags: ["Racial Gift", "enhancement", "passive"]},
+          { id: "man-molten-blood", name: "Molten Blood", summary: "Your blood is now extremely toxic", description: "our blood is now extremely metallic and is extremely toxic.", cooldown: 0, duration: 0, tags: ["Racial Gift", "passive"]},
+          { id: "man-ultimate-shield", name: "Ultimate Shield", summary: "You can take damage for allies within 5ft of you", description: "You can take damage for allies within 5ft of you; your damage resistance does not take effect, and you'll take the same amount of damage they would take.", cooldown: 0, duration: 0, tags: ["Racial Gift"]},
+          { id: "man-impenetrable", name: "Impenetrable", summary: "your health was increased when you awakened this racial gift", description: "Your health was increased proportionally to your damage resistance on a 2:1 ratio when you awakened this gift.", cooldown: 0, duration: 0, tags: ["Racial Gift", "passive"]},
         ]
       },
       {
