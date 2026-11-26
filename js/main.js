@@ -526,7 +526,8 @@ function attackWithBurningOrb(orbId) {
             .map((ability) => [ability.id, []])),
           abilityUsesThisTurn: Object.fromEntries(allCharacterAbilities(character).map((ability) => [ability.id, 0])),
           afflictionApplicationsThisTurn: {},
-          equippedEquipment: [...(state.characters[character.id].equippedEquipment || [])]
+          equippedEquipment: [...(state.characters[character.id].equippedEquipment || [])],
+          summons: [], burningOrbs: [], shields: [], boostUses: 0, adjacentAlly: false
         };
       }
       state.activeStatEffects = [];
@@ -653,7 +654,8 @@ function attackWithBurningOrb(orbId) {
 
       const abilityButton = target.closest("[data-use-ability]");
       if (abilityButton) {
-        useAbility(abilityButton.dataset.useAbility);
+        const targetId = abilityButton.closest(".ability-row")?.querySelector("[data-shield-target]")?.value;
+        useAbility(abilityButton.dataset.useAbility, targetId ? { shieldTarget: targetId } : {});
         return;
       }
 
