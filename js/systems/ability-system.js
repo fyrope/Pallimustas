@@ -4,7 +4,7 @@
       const configuredAbility = allCharacterAbilities(character).find((entry) => entry.id === abilityId);
       if (!configuredAbility) return;
       const ability = selectedAbilityFor(character, configuredAbility);
-      if (isPassiveConfiguration(ability) && !abilityHasAnyTag(ability, ["Summon"])) return;
+      if (isPassiveConfiguration(ability) && !abilityHasAnyTag(ability, ["Summon", "Familiar"])) return;
       if (ability.crystalSummon && (
         !Number.isSafeInteger(ability.crystalSummon.max) ||
         ability.crystalSummon.max < 1 ||
@@ -299,7 +299,6 @@
           });
         }
       }
-      if (abilityHasAnyTag(ability, ["Boostable"]) && progress.boostUses > 0) progress.boostUses -= 1;
       if (abilityHasAnyTag(ability, ["Boostable"]) && progress.boostUses > 0) progress.boostUses -= 1;
       saveCampaign();
       render();
