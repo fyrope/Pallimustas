@@ -116,7 +116,7 @@
           <div class="sheet-main">
             <div class="identity-card">
               ${avatarStyle(character, "identity-avatar")}
-              <div class="identity-info"><div class="identity-name">${escapeHtml(character.name)}</div><div class="identity-sub">${escapeHtml(characterSummary(character))}</div><div class="essence-list">${character.essences.map((essence) => `<span class="essence-chip">${escapeHtml(essence)}</span>`).join("")}</div></div>
+              <div class="identity-info"><div class="identity-name">${escapeHtml(character.name)}</div><div class="identity-sub">${escapeHtml(characterSummary(character))}</div><div class="essence-list">${character.essences.map((essence) => `<span class="essence-chip">${escapeHtml(essence)}</span>`).join("")}</div></div><div class="identity-shields">${(state.characters[character.id].shields || []).map((shield) => `<span class="shield-chip">${escapeHtml(shield.name)}</span>`).join("")}</div>
               ${getCurrentCharacter().id === character.id ? '<span class="turn-tag">CURRENT TURN</span>' : ""}
             </div>
             <section class="panel resource-panel">
@@ -171,7 +171,7 @@
       const maximum = getResourceMaximum(character, key);
       return `<div class="resource-row">
         <div class="resource-title">${label}<small>Max ${maximum}</small></div>
-        <div class="resource-track" aria-label="${label} ${current} of ${maximum}"><div class="resource-fill ${key}" style="width:${resourcePercent(character, key)}%"></div></div>
+        <div class="resource-track" aria-label="${label} ${current} of ${maximum}"><div class="resource-fill ${key} ${(key === "health" && (state.characters[character.id].shields || []).length) ? "shielded" : ""}" style="width:${resourcePercent(character, key)}%"></div></div>
         <div class="resource-controls">
           <button class="mini-button" data-resource="${key}" data-delta="-1" aria-label="Decrease ${label} by adjustment amount">−</button>
           <span class="resource-number">${current} / ${maximum}</span>
