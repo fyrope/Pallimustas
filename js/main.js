@@ -482,7 +482,8 @@ function attackWithBurningOrb(orbId) {
   }
   notify(`${character.name} attacks with ${orbId.replace("burning-orb-", "Burning Orb ")} — 2D10 + ${diceCount} damage.`);
 }
-\n    function setResource(characterId, key, delta) {
+
+    function setResource(characterId, key, delta) {
   const character = characterById(characterId);
   const resources = state.characters[characterId].resources;
   const maximum = getResourceMaximum(character, key);
