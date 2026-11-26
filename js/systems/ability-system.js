@@ -319,6 +319,7 @@
         return;
       }
       progress.activeAbilities[stateKey] = false;
+      if (ability.shieldTarget) progress.shields = (progress.shields || []).filter((entry) => entry.abilityId !== configuredAbility.id);
       saveCampaign();
       render();
       notify(`${ability.name} turned off.`);
