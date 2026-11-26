@@ -171,10 +171,10 @@
         </div>
         ${renderRacialGifts(character)}
         ${renderAbilities(character)}
-        ${renderSummons(character)}
         ${renderEquipment(character)}
         ${renderCharacterCollection(character, "titles", "Titles")}
-        ${renderCharacterCollection(character, "inventory", "Inventory")}`;
+        ${renderCharacterCollection(character, "inventory", "Inventory")}
+        ${renderSummons(character)}`;
     }
 
     function turnBanner() {
