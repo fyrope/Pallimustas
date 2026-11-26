@@ -299,7 +299,11 @@
           });
         }
       }
-      if (abilityHasAnyTag(ability, ["Boostable"]) && progress.boostUses > 0) progress.boostUses -= 1;
+      if (abilityHasAnyTag(ability, ["Boostable"]) && progress.boostUses > 0) {
+        progress.boostedAbilityUses ??= {};
+        progress.boostedAbilityUses[ability.id] = (progress.boostedAbilityUses[ability.id] || 0) + 1;
+        progress.boostUses -= 1;
+      }
       saveCampaign();
       render();
       notify(`${ability.name} ${toggleable ? "activated" : "used"}${ability.duration && !toggleable ? ` for ${ability.duration} turns` : ""} — ${character.name}'s resources updated.${deactivatedAbilities.length ? ` Active abilities turned off: ${deactivatedAbilities.join(", ")}.` : ""}`);
@@ -492,7 +496,7 @@
           }
         }
       }
-      if (state.characters[character.id]?.boostUses > 0 && abilityHasAnyTag(ability, ["Boostable"], configuration)) isEnhanced = true;
+      if ((state.characters[character.id]?.boostUses > 0 || state.characters[character.id]?.boostedAbilityUses?.[ability.id] > 0) && abilityHasAnyTag(ability, ["Boostable"], configuration)) isEnhanced = true;
       if (!isEnhanced) return bonus;
       for (const addition of additions) {
         for (const [sides, count] of addition.dice) {
