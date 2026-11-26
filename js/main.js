@@ -51,6 +51,7 @@
             burningOrbs: [],
             shields: [],
             boostUses: 0,
+            boostedAbilityUses: {},
             adjacentAlly: false,
             abilityUsesThisTurn: Object.fromEntries(allCharacterAbilities(character).map((ability) => [ability.id, 0])),
             afflictionApplicationsThisTurn: {},
@@ -252,6 +253,7 @@
           CHARACTERS.some((target) => target.id === entry.targetCharacterId)
         ).map((entry) => ({ id: entry.id, abilityId: entry.abilityId, name: entry.name.slice(0, 100), targetCharacterId: entry.targetCharacterId })) : [];
         progress.boostUses = Number.isSafeInteger(saved.boostUses) ? Math.max(0, Math.min(2, saved.boostUses)) : 0;
+        progress.boostedAbilityUses = saved.boostedAbilityUses && typeof saved.boostedAbilityUses === "object" ? Object.fromEntries(Object.entries(saved.boostedAbilityUses).filter(([id, count]) => allCharacterAbilities(character).some((ability) => ability.id === id && abilityHasAnyTag(ability, ["Boostable"])) && Number.isSafeInteger(count) && count > 0).map(([id, count]) => [id, Math.min(count, 2)])) : {};
         progress.adjacentAlly = saved.adjacentAlly === true;
       }
       const savedManaTide = parsed.manaTide;
@@ -536,7 +538,7 @@ function attackWithBurningOrb(orbId) {
           abilityUsesThisTurn: Object.fromEntries(allCharacterAbilities(character).map((ability) => [ability.id, 0])),
           afflictionApplicationsThisTurn: {},
           equippedEquipment: [...(state.characters[character.id].equippedEquipment || [])],
-          summons: [], burningOrbs: [], shields: [], boostUses: 0, adjacentAlly: false
+          summons: [], burningOrbs: [], shields: [], boostUses: 0, boostedAbilityUses: {}, adjacentAlly: false
         };
       }
       state.activeStatEffects = [];
