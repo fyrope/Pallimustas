@@ -107,6 +107,25 @@
       </section>`;
     }
 
+    function renderSummons(character) {
+      const summons = state.characters[character.id].summons || [];
+      if (!summons.length) return "";
+      return `<section class="ability-section summon-section">
+        <div class="ability-heading"><div><div class="section-title">Active summons & familiars</div><div class="section-helper">Each summon has its own health pool. Set maximum health and current health as needed.</div></div><div class="section-helper">${summons.length} active</div></div>
+        <div class="summon-grid">${summons.map((summon) => `<article class="panel summon-card" data-summon-id="${escapeHtml(summon.id)}">
+          <div class="summon-head"><strong>${escapeHtml(summon.name)}</strong><button class="button subtle" data-remove-summon="${escapeHtml(summon.id)}">Dismiss</button></div>
+          <div class="summon-health">
+            <label>Current HP <input type="number" min="0" step="1" data-summon-value="health" value="${summon.health}"></label>
+            <label>Max HP <input type="number" min="0" step="1" data-summon-value="maxHealth" value="${summon.maxHealth}"></label>
+            <button class="button subtle" data-summon-health="${escapeHtml(summon.id)}" data-field="health">Set HP</button>
+            <button class="button subtle" data-summon-health="${escapeHtml(summon.id)}" data-field="maxHealth">Set max</button>
+          </div>
+          <div class="summon-track"><div class="summon-fill" style="width:${summon.maxHealth > 0 ? Math.max(0, Math.min(100, summon.health / summon.maxHealth * 100)) : 0}%"></div></div>
+          <div class="section-helper">${summon.health} / ${summon.maxHealth} HP</div>
+        </article>`).join("")}</div>
+      </section>`;
+    }
+
     function renderSheet() {
       const character = getSelectedCharacter();
       const order = getTurnOrder();
@@ -116,7 +135,7 @@
           <div class="sheet-main">
             <div class="identity-card">
               ${avatarStyle(character, "identity-avatar")}
-              <div class="identity-info"><div class="identity-name">${escapeHtml(character.name)}</div><div class="identity-sub">${escapeHtml(characterSummary(character))}</div><div class="essence-list">${character.essences.map((essence) => `<span class="essence-chip">${escapeHtml(essence)}</span>`).join("")}</div></div><div class="identity-shields">${(state.characters[character.id].shields || []).map((shield) => `<span class="shield-chip">${escapeHtml(shield.name)}</span>`).join("")}</div>
+              <div class="identity-info"><div class="identity-name">${escapeHtml(character.name)}</div><div class="identity-sub">${escapeHtml(characterSummary(character))}</div><div class="essence-list">${character.essences.map((essence) => `<span class="essence-chip">${escapeHtml(essence)}</span>`).join("")}</div></div><div class="identity-shields">${(state.characters[character.id].shields || []).map((shield) => `<span class="shield-chip">${escapeHtml(shield.name)} <button data-remove-shield="${escapeHtml(shield.id)}" aria-label="Remove ${escapeHtml(shield.name)}">×</button></span>`).join("")}</div>
               ${getCurrentCharacter().id === character.id ? '<span class="turn-tag">CURRENT TURN</span>' : ""}
             </div>
             <section class="panel resource-panel">
@@ -152,6 +171,7 @@
         </div>
         ${renderRacialGifts(character)}
         ${renderAbilities(character)}
+        ${renderSummons(character)}
         ${renderEquipment(character)}
         ${renderCharacterCollection(character, "titles", "Titles")}
         ${renderCharacterCollection(character, "inventory", "Inventory")}`;
