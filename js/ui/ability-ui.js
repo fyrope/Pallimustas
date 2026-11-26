@@ -32,7 +32,7 @@
       const selectedAbility = selectedAbilityFor(character, ability);
       const variantId = selectedAbility.id === ability.id ? null : selectedAbility.id;
       const stateKey = variantId ? `${ability.id}::${variantId}` : ability.id;
-      const passive = isPassiveConfiguration(selectedAbility) && !abilityHasAnyTag(selectedAbility, ["Summon"]);
+      const passive = isPassiveConfiguration(selectedAbility) && !abilityHasAnyTag(selectedAbility, ["Summon", "Familiar"]);
       const isManaTide = Boolean(selectedAbility.manaTide);
       const manaTideActive = isManaTide && state.manaTide?.active === true;
       const toggleable = selectedAbility.activeMode === "toggle";
