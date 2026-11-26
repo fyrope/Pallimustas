@@ -169,16 +169,20 @@
       }
       if (abilityHasAnyTag(ability, ["Summon", "Familiar"])) {
         progress.summons ??= [];
-        const count = Number.isSafeInteger(ability.summonCount) && ability.summonCount > 0 ? ability.summonCount : 1;
-        for (let index = 0; index < count; index += 1) {
-          state.summonSequence = (state.summonSequence || 0) + 1;
-          progress.summons.push({
-            id: `summon-${state.summonSequence}`,
-            abilityId: configuredAbility.id,
-            name: count > 1 ? `${ability.name} ${index + 1}` : ability.name,
-            health: 0,
-            maxHealth: 0
-          });
+        const alreadySummonedFamiliar = abilityHasAnyTag(ability, ["Familiar"]) &&
+          progress.summons.some((entry) => entry.abilityId === configuredAbility.id);
+        if (!alreadySummonedFamiliar) {
+          const count = Number.isSafeInteger(ability.summonCount) && ability.summonCount > 0 ? ability.summonCount : 1;
+          for (let index = 0; index < count; index += 1) {
+            state.summonSequence = (state.summonSequence || 0) + 1;
+            progress.summons.push({
+              id: `summon-${state.summonSequence}`,
+              abilityId: configuredAbility.id,
+              name: count > 1 ? `${ability.name} ${index + 1}` : ability.name,
+              health: 0,
+              maxHealth: 0
+            });
+          }
         }
       }
       if (ability.orbSummon) {
