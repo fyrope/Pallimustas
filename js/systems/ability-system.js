@@ -266,7 +266,6 @@
       }
       progress.abilityUsesThisTurn ??= {};
       progress.abilityUsesThisTurn[abilityId] = (progress.abilityUsesThisTurn[abilityId] || 0) + 1;
-      if (abilityHasAnyTag(ability, ["Boostable"]) && progress.boostUses > 0) progress.boostUses -= 1;
       if (ability.boostEnhancement) progress.boostUses = 2;
       progress.cooldowns[stateKey] = resolvedValues.cooldown;
       progress.activeTurns[stateKey] = Math.max(0, ability.duration || 0);
