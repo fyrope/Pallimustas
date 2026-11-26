@@ -248,7 +248,7 @@
         progress.burningOrbs = Array.isArray(saved.burningOrbs) ? saved.burningOrbs.filter((entry) => entry && typeof entry.id === "string").slice(0, 3).map((entry) => ({ id: entry.id, usedThisTurn: entry.usedThisTurn === true })) : [];
         progress.shields = Array.isArray(saved.shields) ? saved.shields.filter((entry) =>
           entry && typeof entry.id === "string" && typeof entry.name === "string" &&
-          allCharacterAbilities(character).some((ability) => ability.id === entry.abilityId && ability.shieldTarget) &&
+          CHARACTERS.some((source) => allCharacterAbilities(source).some((ability) => ability.id === entry.abilityId && ability.shieldTarget)) &&
           CHARACTERS.some((target) => target.id === entry.targetCharacterId)
         ).map((entry) => ({ id: entry.id, abilityId: entry.abilityId, name: entry.name.slice(0, 100), targetCharacterId: entry.targetCharacterId })) : [];
         progress.boostUses = Number.isSafeInteger(saved.boostUses) ? Math.max(0, Math.min(2, saved.boostUses)) : 0;
