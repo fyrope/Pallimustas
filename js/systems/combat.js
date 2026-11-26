@@ -66,6 +66,13 @@
       const ability = allCharacterAbilities(character).find((entry) => entry.id === abilityId);
       if (!ability || !abilityHasAnyTag(ability, ["attack"])) return;
       const selectedAbility = selectedAbilityFor(character, ability);
+      const progress = state.characters[character.id];
+      if (abilityHasAnyTag(selectedAbility, ["Boostable"]) && progress.boostUses > 0 && !(progress.boostedAbilityUses?.[ability.id] > 0)) {
+        progress.boostedAbilityUses ??= {};
+        progress.boostedAbilityUses[ability.id] = 1;
+        progress.boostUses -= 1;
+        saveCampaign();
+      }
       const attack = abilityAttacks(selectedAbility).find((entry) => entry.id === attackId);
       if (!attack || !isValidAttackConfiguration(character, selectedAbility, attack)) {
         console.error(`Invalid ability attack configuration for ${character.name}'s ${ability.name}.`, attack);
