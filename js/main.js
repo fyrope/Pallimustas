@@ -439,7 +439,49 @@
 
 
 
-function setResource(characterId, key, delta) {
+function updateSummonHealth(summonId, field, rawValue) {
+  const character = getSelectedCharacter();
+  const summon = state.characters[character.id].summons.find((entry) => entry.id === summonId);
+  const value = Number(rawValue);
+  if (!summon || !["health", "maxHealth"].includes(field) || !Number.isSafeInteger(value) || value < 0) return;
+  if (field === "maxHealth") {
+    summon.maxHealth = value;
+    summon.health = Math.min(summon.health, value);
+  } else summon.health = Math.min(value, summon.maxHealth);
+  saveCampaign(); render();
+}
+function removeSummonInstance(summonId) {
+  const progress = state.characters[getSelectedCharacter().id];
+  progress.summons = (progress.summons || []).filter((entry) => entry.id !== summonId);
+  saveCampaign(); render();
+}
+function removeShield(shieldId) {
+  const progress = state.characters[getSelectedCharacter().id];
+  progress.shields = (progress.shields || []).filter((entry) => entry.id !== shieldId);
+  saveCampaign(); render();
+}
+function toggleDarknessEmbrace() {
+  const progress = state.characters["Izaak"];
+  if (!progress) return;
+  progress.adjacentAlly = !progress.adjacentAlly;
+  saveCampaign(); render();
+  notify(progress.adjacentAlly ? "Darkness Embrace: ally adjacent (−1D8)." : "Darkness Embrace: no ally adjacent (+1D8).");
+}
+function attackWithBurningOrb(orbId) {
+  const character = getSelectedCharacter();
+  const progress = state.characters[character.id];
+  if (!progress.burningOrbs?.some((orb) => orb.id === orbId)) return;
+  const magic = parseDiceFormula(character.stats.magic);
+  if (!magic || [...magic.dice.values()].some((count) => count < 0)) { notify("Magic stat has an invalid dice formula."); return; }
+  let diceCount = [...magic.dice.values()].reduce((total, count) => total + count, 0);
+  for (const modifier of getStatModifiers(character, "magic", false)) {
+    const parsed = parseDiceFormula(modifier.bonus);
+    if (!parsed || [...parsed.dice.values()].some((count) => count < 0)) continue;
+    diceCount += [...parsed.dice.values()].reduce((total, count) => total + count, 0);
+  }
+  notify(`${character.name} attacks with ${orbId.replace("burning-orb-", "Burning Orb ")} — 2D10 + ${diceCount} damage.`);
+}
+\n    function setResource(characterId, key, delta) {
   const character = characterById(characterId);
   const resources = state.characters[characterId].resources;
   const maximum = getResourceMaximum(character, key);
