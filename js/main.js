@@ -69,7 +69,7 @@
       // Merge saved progress with today's character/ability setup, ignoring removed entries.
       for (const character of CHARACTERS) {
         const savedCharacter = parsed.characters?.[character.id];
-        if (character.id === "Amarynth" && Number.isInteger(savedCharacter?.shadowShadeCount)) {
+        if (character.id === "Lizzie" && Number.isInteger(savedCharacter?.shadowShadeCount)) {
           initial.characters[character.id].shadowShadeCount = Math.max(0, Math.min(7, savedCharacter.shadowShadeCount));
         }
         if (savedCharacter?.resources) {
@@ -870,7 +870,7 @@ function attackWithBurningOrb(orbId) {
       if (target instanceof HTMLSelectElement && target.matches("[data-shadow-shades]")) {
         const count = Number(target.value);
         if (!Number.isInteger(count) || count < 0 || count > 7) return;
-        state.characters.Amarynth.shadowShadeCount = count;
+        state.characters.Lizzie.shadowShadeCount = count;
         saveCampaign();
         render();
         return;
