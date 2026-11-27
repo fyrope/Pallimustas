@@ -224,6 +224,7 @@
         ...(ability.afflictionEffects || [])
           .filter((effect) => effect.selectPlayers === true)
           .map((effect) => `targetPlayers:${effect.id}`),
+        ...(ability.healingEffect?.selectTarget === true ? ["healingTarget"] : []),
         ...(abilityHasAnyTag(ability, ["Summon", "Familiar"]) ? ["summonMaxHealth"] : [])
       ];
     }

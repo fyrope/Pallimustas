@@ -108,6 +108,15 @@
         notify("Choose at least one valid player.");
         return false;
       }
+
+      const healingTargetId = ability.healingEffect?.selectTarget === true
+        ? suppliedValues.healingTarget
+        : null;
+      if (ability.healingEffect?.selectTarget === true &&
+        (typeof healingTargetId !== "string" || !CHARACTERS.some((player) => player.id === healingTargetId))) {
+        notify("Choose one valid party member to receive Life Bolt.");
+        return false;
+      }
       const invalidInput = (ability.inputFields || []).find((field) =>
         !field ||
         typeof field.id !== "string" ||
@@ -217,6 +226,48 @@
         targetProgress.shields = targetProgress.shields.filter((entry) => entry.abilityId !== configuredAbility.id);
         targetProgress.shields.push({ id: `shield-${character.id}-${configuredAbility.id}`, abilityId: configuredAbility.id, name: ability.name, targetCharacterId: targetId });
       }
+      let healingSummary = "";
+      if (ability.healingEffect) {
+        const healing = ability.healingEffect;
+        const rawBase = character.stats[healing.stat || "magic"];
+        let formula = parseDiceFormula(rawBase);
+        if (!formula || [...formula.dice.values()].some((count) => count < 0)) {
+          notify(`${ability.name} has an invalid healing stat formula.`);
+          return false;
+        }
+        formula = { dice: new Map(formula.dice), flat: formula.flat };
+        for (const modifier of getStatModifiers(character, healing.stat || "magic")) {
+          const parsed = parseDiceFormula(modifier.bonus);
+          if (!parsed || [...parsed.dice.values()].some((count) => count < 0)) continue;
+          for (const [sides, count] of parsed.dice) {
+            formula.dice.set(sides, (formula.dice.get(sides) || 0) + count);
+          }
+          formula.flat += parsed.flat;
+        }
+        const enhancedFormula = parseDiceFormula(enhancedAbilityEffectBonus(
+          character, configuredAbility, ability, "healing", formatDiceFormula(formula)
+        ));
+        if (!enhancedFormula || [...enhancedFormula.dice.values()].some((count) => count < 0)) {
+          notify(`${ability.name} has an invalid enhanced healing formula.`);
+          return false;
+        }
+        let rolledHealing = enhancedFormula.flat;
+        for (const [sides, count] of enhancedFormula.dice) {
+          for (let index = 0; index < count; index += 1) {
+            const result = Math.floor(Math.random() * sides) + 1;
+            rolledHealing += result;
+          }
+        }
+        const targetId = healing.selectTarget === true ? healingTargetId : character.id;
+        const target = characterById(targetId);
+        const targetResources = state.characters[targetId].resources;
+        const previousHealth = targetResources.health;
+        const healedAmount = Math.max(0, Math.floor(rolledHealing));
+        targetResources.health = Math.min(getResourceMaximum(target, "health"), previousHealth + healedAmount);
+        const actualHealing = targetResources.health - previousHealth;
+        healingSummary = `${target.name} healed for ${actualHealing} HP (roll: ${formatDiceFormula(enhancedFormula)} = ${Math.floor(rolledHealing)}).`;
+      }
+
       const resourceChanges = [];
       for (const effect of resolvedResourceEffects) {
         for (const targetCharacterId of statEffectTargets(effect, character)) {
@@ -332,7 +383,7 @@
       }
       saveCampaign();
       render();
-      notify(`${ability.name} ${toggleable ? "activated" : "used"}${ability.duration && !toggleable ? ` for ${ability.duration} turns` : ""} — ${character.name}'s resources updated.${deactivatedAbilities.length ? ` Active abilities turned off: ${deactivatedAbilities.join(", ")}.` : ""}`);
+      notify(`${ability.name} ${toggleable ? "activated" : "used"}${ability.duration && !toggleable ? ` for ${ability.duration} turns` : ""} — ${character.name}'s resources updated.${healingSummary ? ` ${healingSummary}` : ""}${deactivatedAbilities.length ? ` Active abilities turned off: ${deactivatedAbilities.join(", ")}.` : ""}`);
       return true;
     }
 
@@ -368,6 +419,20 @@
 
     function showAbilityCostForm(abilityId, abilityName, fields, ability) {
       const inputs = fields.map((field) => {
+        if (field === "healingTarget") {
+          const options = CHARACTERS.map((player) => `
+            <label class="ability-cost-input">
+              <span>${escapeHtml(player.name)}${player.id === getSelectedCharacter().id ? " (caster)" : ""}</span>
+              <input type="radio" name="healingTarget" value="${escapeHtml(player.id)}" required>
+            </label>
+          `).join("");
+          return `
+            <fieldset class="ability-cost-input">
+              <legend>Choose one party member to heal</legend>
+              <div class="ability-cost-inputs">${options}</div>
+            </fieldset>
+          `;
+        }
         if (field.startsWith("targetPlayers:")) {
           const effectId = field.slice("targetPlayers:".length);
           const effect = (ability.afflictionEffects || []).find(
