@@ -424,7 +424,7 @@
           { id: "amarynth-enchantress-amulet", name: "Enchantress' Amulet", summary: "The queen of the succubus' amulet.", description: "Healing spells have increased effect and once-off healing bestows an over-time effect, you can also imbue 5 other weapons with [Succubus Blessing]", statEffects: 
           [{ id: "enchantress-amulet", stat: "damageResistance", bonus: "+1D8", target: "self" }] },
           { id: "amarynth-bramble-glove", name: "Glove of Brambles", summary: "Increases elemental abilities effects", description: "Increases the effects of Elemental abilities and significantly increases the effect of nature abilities"},
-          { id: "amarynth-kunai-chain", name: "Kunai with Chain", type: "weapon", summary: "A weapon used by a great ninja.", description: "A bronze rank weapon that uses physical attack with 2 spaces of reach.", attacks: [
+          { id: "amarynth-kusarigama", name: "Kusarigama", type: "weapon", summary: "A weapon used by a great ninja.", description: "A bronze rank weapon that uses physical attack with 2 spaces of reach.", attacks: [
             { id: "standard", name: "Standard Attack", stats: ["physicalAttack"]}
           ]},
         ],
@@ -438,7 +438,7 @@
             { id: "Twilight-Avatar", mana: 5, stamina: 5, target: "self", abilityTags: ["Light"] } ] },
           { id: "amarynth-elemental-avatar", name: "Elemental Avatar", summary: "Increased resistances and enhanced elemental abilities", description: "dimension effects, astral forces and Elemental strikes have increased resistance and effects. Transcendent damage is also increased.", cooldown: 0, duration: 0, tags: ["Buff", "Racial Gift", "passive", "enhancement"] },
           { id: "amarynth-holy-affinity", name: "Holy Affinity", summary: "Increased resistance to holy afflictions", description: "Increased resistance to holy afflictions, and Cleanse effects are more effective.", cooldown: 0, duration: 0, tags: ["Holy", "Racial Gift", "passive", "enhancement"] },
-          { id: "amarynth-celestial-bounty", name: "Celestial Bounty", summary: "Increased mana recovery", description: "Increases mana recovery by +1.", cooldown: 0, duration: 0, tags: ["Racial Gift", "passive"], statEffects: [{ id: "celetial-mana-recovery", stat: "manaRecovery", bonus: "+1", target: "self" } ] },
+          { id: "amarynth-celestial-bounty", name: "Celestial Bounty", summary: "Increased mana recovery", description: "Increases mana recovery by +6.", cooldown: 0, duration: 0, tags: ["Racial Gift", "passive"], statEffects: [{ id: "celetial-mana-recovery", stat: "manaRecovery", bonus: "+6", target: "self" } ] },
           { id: "amarynth-mana-integrity", name: "Mana Integrity", summary: "Mana costs are reduced", description: "Ongoing mana costs for maintained abilities are reduced. Resistance to mana drain effects is increased.", cooldown: 0, duration: 0, tags: ["Racial Gift", "passive"] },
           { id: "amarynth-faster-than-light", name: "Faster than Light", summary: "Speed and Reflexes increased", description: "Your Speed and Reflexes increase proportionally to the amount of [Shades] in your shadow.", cooldown: 0, duration: 0, tags: ["Racial Gift", "passive", "Buff"] }
         ]
