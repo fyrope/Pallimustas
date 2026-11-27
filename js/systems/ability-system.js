@@ -187,14 +187,19 @@
             ["physicalAttack", "damageResistance", "magic", "magicResistance", "speed", "reflexes"]
               .map((stat) => [stat, String(suppliedValues[`summonStat:${stat}`] || "").slice(0, 40)])
           );
+          const maxHealth = Number.isSafeInteger(suppliedValues["summonStat:maxHealth"])
+            ? suppliedValues["summonStat:maxHealth"] : 0;
+          const health = Number.isSafeInteger(suppliedValues["summonStat:health"])
+            ? Math.min(suppliedValues["summonStat:health"], maxHealth)
+            : maxHealth;
           for (let index = 0; index < count; index += 1) {
             state.summonSequence = (state.summonSequence || 0) + 1;
             progress.summons.push({
               id: `summon-${state.summonSequence}`,
               abilityId: configuredAbility.id,
               name: count > 1 ? `${ability.name} ${index + 1}` : ability.name,
-              health: 0,
-              maxHealth: 0,
+              health,
+              maxHealth,
               stats: { ...summonStats }
             });
           }
@@ -392,12 +397,14 @@
           `;
         }
         const isSummonStat = field.startsWith("summonStat:");
+        const summonStat = isSummonStat ? field.slice("summonStat:".length) : "";
+        const isSummonResource = ["health", "maxHealth"].includes(summonStat);
         const inputId = field.startsWith("input:") ? field.slice("input:".length) : null;
         const inputConfig = ability.inputFields?.find((entry) => entry.id === inputId);
-        const minimum = inputConfig?.min ?? (field.startsWith("resourceEffect:") ? "" : 0);
+        const minimum = inputConfig?.min ?? (field.startsWith("resourceEffect:") || isSummonStat ? "" : 0);
         return `<label class="ability-cost-input">
           <span>${escapeHtml(abilityCostLabel(field, ability))}</span>
-          <input type="${isSummonStat ? "text" : "number"}" name="${field}" ${isSummonStat ? 'maxlength="40" placeholder="Optional stat formula"' : `${minimum === "" ? "" : `min="${escapeHtml(String(minimum))}"`} step="1" inputmode="numeric" required`}>
+          <input type="${isSummonStat && !isSummonResource ? "text" : "number"}" name="${field}" ${isSummonStat && !isSummonResource ? 'maxlength="40" placeholder="Optional stat formula"' : `${minimum === "" ? (isSummonResource ? 'min="0" step="1" inputmode="numeric"' : "") : `min="${escapeHtml(String(minimum))}"`} step="1" inputmode="numeric" ${isSummonStat ? "" : "required"}`}>
         </label>`;
       }).join("");
       const root = document.getElementById("modal-root");
