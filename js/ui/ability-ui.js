@@ -24,7 +24,9 @@
           magic: "Summon magic",
           magicResistance: "Summon magic resistance",
           speed: "Summon speed",
-          reflexes: "Summon reflexes"
+          reflexes: "Summon reflexes",
+          health: "Summon current HP",
+          maxHealth: "Summon maximum HP"
         })[stat] || stat;
       }
       if (field.startsWith("resourceEffect:")) {
@@ -236,7 +238,7 @@
           .filter((effect) => effect.selectPlayers === true)
           .map((effect) => `targetPlayers:${effect.id}`),
         ...(abilityHasAnyTag(ability, ["Summon", "Familiar"])
-          ? ["physicalAttack", "damageResistance", "magic", "magicResistance", "speed", "reflexes"]
+          ? ["physicalAttack", "damageResistance", "magic", "magicResistance", "speed", "reflexes", "health", "maxHealth"]
             .map((stat) => `summonStat:${stat}`)
           : [])
       ];
