@@ -187,11 +187,11 @@
             ["physicalAttack", "damageResistance", "magic", "magicResistance", "speed", "reflexes"]
               .map((stat) => [stat, String(suppliedValues[`summonStat:${stat}`] || "").slice(0, 40)])
           );
+          const enteredHealth = Number.isSafeInteger(suppliedValues["summonStat:health"])
+            ? suppliedValues["summonStat:health"] : null;
           const maxHealth = Number.isSafeInteger(suppliedValues["summonStat:maxHealth"])
-            ? suppliedValues["summonStat:maxHealth"] : 0;
-          const health = Number.isSafeInteger(suppliedValues["summonStat:health"])
-            ? Math.min(suppliedValues["summonStat:health"], maxHealth)
-            : maxHealth;
+            ? suppliedValues["summonStat:maxHealth"] : enteredHealth ?? 0;
+          const health = enteredHealth === null ? maxHealth : Math.min(enteredHealth, maxHealth);
           for (let index = 0; index < count; index += 1) {
             state.summonSequence = (state.summonSequence || 0) + 1;
             progress.summons.push({
