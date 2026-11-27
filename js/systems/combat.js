@@ -159,6 +159,7 @@
       for (const orb of progress.burningOrbs || []) orb.usedThisTurn = false;
       progress.boostedAbilityUses = {};
       progress.afflictionApplicationsThisTurn = {};
+      accumulateAlacrityReward(character);
       state.activeStatEffects = state.activeStatEffects.flatMap((effect) => {
         if (effect.targetCharacterId !== character.id) return [effect];
         return effect.remainingTurns > 1
