@@ -114,6 +114,19 @@
       const darknessModifiers = character.id === "Izaak" && darknessProgress && darknessStats.includes(stat)
         ? [{ bonus: darknessProgress.adjacentAlly ? "-1D8" : "1D8", source: "Darkness Embrace", detail: darknessProgress.adjacentAlly ? "Ally adjacent" : "No ally adjacent" }]
         : [];
+      const shadeCount = state.characters.Amarynth?.shadowShadeCount || 0;
+      const fasterThanLightBonus = stat === "speed"
+        ? shadeCount
+        : stat === "reflexes"
+          ? Math.floor(shadeCount * 0.25 + 0.5)
+          : 0;
+      const fasterThanLightModifiers = character.id === "Amarynth" && fasterThanLightBonus > 0
+        ? [{
+            bonus: String(fasterThanLightBonus),
+            source: "Faster than Light",
+            detail: `${shadeCount} Shades in shadow · Reflexes round from ${(shadeCount * 0.25).toFixed(2)}`
+          }]
+        : [];
       const tideBonus = stat === "manaRecovery" ? manaTideRecoveryBonus(character) : 0;
       const manaTideModifiers = tideBonus > 0
         ? [{ bonus: String(Number(tideBonus.toFixed(4))), source: "Mana Tide", detail: "Active" }]
@@ -145,7 +158,7 @@
             }];
           });
         });
-      return [...activeModifiers, ...passiveModifiers, ...activeToggleModifiers, ...darknessModifiers, ...manaTideModifiers, ...equipmentModifiers, ...afflictionModifiers];
+      return [...activeModifiers, ...passiveModifiers, ...activeToggleModifiers, ...darknessModifiers, ...fasterThanLightModifiers, ...manaTideModifiers, ...equipmentModifiers, ...afflictionModifiers];
     }
 
     function renderStatValue(character, stat) {

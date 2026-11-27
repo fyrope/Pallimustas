@@ -134,13 +134,21 @@
         : isManaTide
           ? `<button class="button ${disabled ? "" : "primary"}" data-use-ability="${escapeHtml(ability.id)}" ${disabled ? "disabled" : ""}>${manaTideActive ? "Mana Tide active" : "Begin Mana Tide"}</button>`
         : `<button class="button ${disabled ? "" : "primary"}" data-use-ability="${escapeHtml(ability.id)}" ${disabled ? "disabled" : ""}>${turnUsesExhausted ? "Uses spent this turn" : usesThisTurn > 0 ? `Use again (${usesThisTurn}/${usesPerTurn})` : activeTurns > 0 ? "Active" : cooldown > 0 ? "Cooling down" : isRacialGift ? "Use gift" : "Use ability"}</button>`;
+      const fasterThanLightCounter = ability.id === "amarynth-faster-than-light"
+        ? `<label class="cost-chip" style="display:inline-flex;align-items:center;gap:6px">
+            <span>Shades in shadow</span>
+            <select data-shadow-shades="Amarynth" aria-label="Shades in Amarynth's shadow" style="min-width:48px">
+              ${Array.from({ length: 8 }, (_, count) => `<option value="${count}" ${count === (state.characters.Amarynth.shadowShadeCount || 0) ? "selected" : ""}>${count}</option>`).join("")}
+            </select>
+          </label>`
+        : "";
       const attackButtons = abilityAttacks(selectedAbility).map((attack) => {
         const validConfiguration = isValidAttackConfiguration(character, selectedAbility, attack);
         const stats = Array.isArray(attack.stats) ? attack.stats.map(statDisplayName).join(" + ") : "Invalid stats";
         return `<button class="button subtle" title="${escapeHtml(stats)}" data-ability-attack="${escapeHtml(ability.id)}" data-ability-attack-id="${escapeHtml(attack.id)}" ${validConfiguration ? "" : "disabled"}>${escapeHtml(attack.name)}</button>`;
       }).join("");
       return `<div class="ability-row">
-        <div>${variantControl}<div class="ability-name">${escapeHtml(ability.name)}</div>${renderAbilityDescription(selectedAbility)}<div class="ability-costs">${costs}</div><div class="ability-tags">${tags}</div>${crystalControls}${orbControls}${shieldTargetControl}${darknessControl}${shieldRemoveControls}</div>
+        <div>${variantControl}<div class="ability-name">${escapeHtml(ability.name)}</div>${renderAbilityDescription(selectedAbility)}<div class="ability-costs">${costs}</div><div class="ability-tags">${tags}</div>${crystalControls}${orbControls}${shieldTargetControl}${darknessControl}${shieldRemoveControls}${fasterThanLightCounter}</div>
         <div class="ability-action">${attackButtons}${passive ? '<span class="passive-label">PASSIVE</span>' : `${abilityButton}${reason ? `<span class="disabled-reason">${reason}</span>` : ""}`}</div>
       </div>`;
     }
