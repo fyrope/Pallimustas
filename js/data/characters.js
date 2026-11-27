@@ -23,6 +23,9 @@
      * Mana Tide uses { durationRounds, maxRecovery, manaPerRecovery, growth }.
      * Mana spent after cost reductions while it is active adds the matching recovery bonus to the character who paid it.
      * Crystal summon abilities can use { crystalSummon: { max, disableTurns } } to track a limited number of crystals with independent owner-turn disable timers.
+     * Count enhancements belong on the receiving ability: enhancements: [{ effect: "summonCount" | "orbCount" | "crystalCount" | "afflictionStacks", bonus: 1 }].
+     * A passive enhancement ability targets those abilities with enhancement: { target: "self" | "others" | "party" | "tagged" | "self-and-tagged", targetTags: ["Summon"] }.
+     * Summon abilities may define summonStats in code, e.g. summonStats: { physicalAttack: "2D8", damageResistance: "3", magic: "1D6", magicResistance: "2", speed: "4", reflexes: "1D4", maxHealth: 30 }. Summons spawn at maxHealth; current health is then tracked on the summon sheet.
 
      * Each effect uses { id, resource, amount, target }; set amount to "XX" to ask on use.
      * Resource effect amounts may be negative to spend a resource, or positive to restore it.
