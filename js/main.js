@@ -821,7 +821,9 @@ function attackWithBurningOrb(orbId) {
       }
 
       for (const [field, value] of Object.entries(values)) {
-        if (!field.startsWith("targetPlayers:")) {
+        if (field.startsWith("summonStat:")) {
+          values[field] = String(value || "").trim();
+        } else if (!field.startsWith("targetPlayers:")) {
           values[field] = Number(value);
         }
       }
