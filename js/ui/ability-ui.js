@@ -16,6 +16,17 @@
         const inputId = field.slice("input:".length);
         return ability.inputFields?.find((input) => input.id === inputId)?.label || inputId;
       }
+      if (field.startsWith("summonStat:")) {
+        const stat = field.slice("summonStat:".length);
+        return ({
+          physicalAttack: "Summon physical attack",
+          damageResistance: "Summon damage resistance",
+          magic: "Summon magic",
+          magicResistance: "Summon magic resistance",
+          speed: "Summon speed",
+          reflexes: "Summon reflexes"
+        })[stat] || stat;
+      }
       if (field.startsWith("resourceEffect:")) {
         const effectId = field.slice("resourceEffect:".length);
         const effect = (ability.resourceEffects || []).find((entry) => entry.id === effectId);
@@ -50,8 +61,11 @@
         Number.isInteger(selectedAbility.recharge) && selectedAbility.recharge > 0;
       const availableCharges = hasCharges ? Math.max(0, selectedAbility.charges - chargeRecharges.length) : null;
       const crystalSummon = selectedAbility.crystalSummon;
+      const effectiveCrystalLimit = crystalSummon
+        ? getEnhancedAbilityQuantity(character, ability, selectedAbility, "crystalCount", crystalSummon.max)
+        : 0;
       const crystals = crystalSummon ? progress.crystals?.[ability.id] || [] : [];
-      const crystalLimitReached = Boolean(crystalSummon && crystals.length >= crystalSummon.max);
+      const crystalLimitReached = Boolean(crystalSummon && crystals.length >= effectiveCrystalLimit);
       const usesPerTurn = Number.isInteger(selectedAbility.usesPerTurn) && selectedAbility.usesPerTurn > 0
         ? selectedAbility.usesPerTurn
         : 1;
@@ -77,7 +91,7 @@
       ));
       const reason = isManaTide && manaTideActive
         ? `Affects the party · round ${state.manaTide.roundsElapsed + 1}/${selectedAbility.manaTide.durationRounds}`
-        : invalidUpkeep ? "Invalid upkeep configuration" : passive || toggleActive ? "" : resourceExhausted ? "Too exhausted to cast: mana and stamina must be nonnegative" : turnUsesExhausted ? "Uses for this turn spent" : activeTurns > 0 ? `Active for ${activeTurns} more turn${activeTurns === 1 ? "" : "s"}` : cooldown > 0 ? `Ready in ${cooldown} turn${cooldown === 1 ? "" : "s"}` : crystalLimitReached ? `Maximum of ${crystalSummon.max} crystals summoned` : outOfCharges ? `Next use in ${nextChargeIn} turn${nextChargeIn === 1 ? "" : "s"}` : !enoughResources ? "Not enough mana or stamina" : "";
+        : invalidUpkeep ? "Invalid upkeep configuration" : passive || toggleActive ? "" : resourceExhausted ? "Too exhausted to cast: mana and stamina must be nonnegative" : turnUsesExhausted ? "Uses for this turn spent" : activeTurns > 0 ? `Active for ${activeTurns} more turn${activeTurns === 1 ? "" : "s"}` : cooldown > 0 ? `Ready in ${cooldown} turn${cooldown === 1 ? "" : "s"}` : crystalLimitReached ? `Maximum of ${effectiveCrystalLimit} crystals summoned` : outOfCharges ? `Next use in ${nextChargeIn} turn${nextChargeIn === 1 ? "" : "s"}` : !enoughResources ? "Not enough mana or stamina" : "";
       const manaTooltip = manaEffect.sources.length ? ` title="Reduced by ${escapeHtml(manaEffect.sources.join(", "))}"` : "";
       const staminaTooltip = staminaEffect.sources.length ? ` title="Reduced by ${escapeHtml(staminaEffect.sources.join(", "))}"` : "";
       const resourceEffectChips = (selectedAbility.resourceEffects || []).map((effect) => {
@@ -220,6 +234,10 @@
           .map((effect) => `resourceEffect:${effect.id}`),
         ...(ability.afflictionEffects || [])
           .filter((effect) => effect.selectPlayers === true)
-          .map((effect) => `targetPlayers:${effect.id}`)
+          .map((effect) => `targetPlayers:${effect.id}`),
+        ...(abilityHasAnyTag(ability, ["Summon", "Familiar"])
+          ? ["physicalAttack", "damageResistance", "magic", "magicResistance", "speed", "reflexes"]
+            .map((stat) => `summonStat:${stat}`)
+          : [])
       ];
     }
