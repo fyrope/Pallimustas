@@ -183,15 +183,14 @@
         if (!alreadySummonedFamiliar) {
           const baseCount = Number.isSafeInteger(ability.summonCount) && ability.summonCount > 0 ? ability.summonCount : 1;
           const count = getEnhancedAbilityQuantity(character, configuredAbility, ability, "summonCount", baseCount);
+          const configuredSummonStats = ability.summonStats || {};
           const summonStats = Object.fromEntries(
             ["physicalAttack", "damageResistance", "magic", "magicResistance", "speed", "reflexes"]
-              .map((stat) => [stat, String(suppliedValues[`summonStat:${stat}`] || "").slice(0, 40)])
+              .map((stat) => [stat, String(configuredSummonStats[stat] ?? "").slice(0, 40)])
           );
-          const enteredHealth = Number.isSafeInteger(suppliedValues["summonStat:health"])
-            ? suppliedValues["summonStat:health"] : null;
-          const maxHealth = Number.isSafeInteger(suppliedValues["summonStat:maxHealth"])
-            ? suppliedValues["summonStat:maxHealth"] : enteredHealth ?? 0;
-          const health = enteredHealth === null ? maxHealth : Math.min(enteredHealth, maxHealth);
+          const maxHealth = Number.isSafeInteger(configuredSummonStats.maxHealth)
+            ? Math.max(0, configuredSummonStats.maxHealth) : 0;
+          const health = maxHealth;
           for (let index = 0; index < count; index += 1) {
             state.summonSequence = (state.summonSequence || 0) + 1;
             progress.summons.push({
