@@ -821,12 +821,7 @@ function attackWithBurningOrb(orbId) {
       }
 
       for (const [field, value] of Object.entries(values)) {
-        if (field.startsWith("summonStat:")) {
-          const stat = field.slice("summonStat:".length);
-          values[field] = ["health", "maxHealth"].includes(stat)
-            ? (String(value).trim() === "" ? null : Number(value))
-            : String(value || "").trim();
-        } else if (!field.startsWith("targetPlayers:")) {
+        if (!field.startsWith("targetPlayers:")) {
           values[field] = Number(value);
         }
       }
