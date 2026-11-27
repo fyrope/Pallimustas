@@ -51,6 +51,7 @@
     }
 
     function applyAffliction(characterId, afflictionId, stacks, duration, source) {
+      afflictionId = String(afflictionId || "").trim().toLowerCase();
       if (!characterById(characterId) || !Object.hasOwn(AFFLICTION_GLOSSARY, afflictionId)) return;
       if (!Number.isSafeInteger(stacks) || stacks <= 0) return;
       state.afflictionSequence = (state.afflictionSequence || 0) + 1;
@@ -64,6 +65,15 @@
       });
     }
 
+    function accumulateAlacrityReward(character) {
+      const ability = allCharacterAbilities(character).find((entry) => entry.id === "amarynth-alacrity-reward");
+      if (!ability || !isPassiveConfiguration(ability)) return;
+      for (const effect of ability.afflictionEffects || []) {
+        if (effect.afflictionId !== "Blessing of Anticipation" || effect.target !== "self") continue;
+        applyConfiguredAfflictionEffect(character, ability, effect, character.id, effect.stacks);
+      }
+    }
+
     function applyConfiguredAfflictionEffect(sourceCharacter, ability, effect, targetCharacterId, stackCount) {
       const sourceProgress = state.characters[sourceCharacter.id];
       sourceProgress.afflictionApplicationsThisTurn ??= {};
@@ -73,7 +83,7 @@
       const existingStacks = state.activeAfflictions
         .filter((entry) =>
           entry.characterId === targetCharacterId &&
-          entry.afflictionId === effect.afflictionId &&
+          entry.afflictionId === String(effect.afflictionId || "").trim().toLowerCase() &&
           entry.source === source
         )
         .reduce((total, entry) => total + entry.stacks, 0);
