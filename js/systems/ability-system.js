@@ -391,12 +391,13 @@
             </fieldset>
           `;
         }
+        const isSummonStat = field.startsWith("summonStat:");
         const inputId = field.startsWith("input:") ? field.slice("input:".length) : null;
         const inputConfig = ability.inputFields?.find((entry) => entry.id === inputId);
         const minimum = inputConfig?.min ?? (field.startsWith("resourceEffect:") ? "" : 0);
         return `<label class="ability-cost-input">
           <span>${escapeHtml(abilityCostLabel(field, ability))}</span>
-          <input type="number" name="${field}" ${minimum === "" ? "" : `min="${escapeHtml(String(minimum))}"`} step="1" inputmode="numeric" required>
+          <input type="${isSummonStat ? "text" : "number"}" name="${field}" ${isSummonStat ? 'maxlength="40" placeholder="Optional stat formula"' : `${minimum === "" ? "" : `min="${escapeHtml(String(minimum))}"`} step="1" inputmode="numeric" required`}>
         </label>`;
       }).join("");
       const root = document.getElementById("modal-root");
