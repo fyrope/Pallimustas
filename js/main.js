@@ -36,6 +36,7 @@
           character.id,
           {
             resources: { ...character.resources },
+            shadowShadeCount: 0,
             cooldowns: Object.fromEntries(abilityConfigurationKeys(character).map((key) => [key, 0])),
             activeTurns: Object.fromEntries(abilityConfigurationKeys(character).map((key) => [key, 0])),
             activeAbilities: Object.fromEntries(allCharacterAbilities(character).flatMap((ability) =>
@@ -68,6 +69,9 @@
       // Merge saved progress with today's character/ability setup, ignoring removed entries.
       for (const character of CHARACTERS) {
         const savedCharacter = parsed.characters?.[character.id];
+        if (character.id === "Amarynth" && Number.isInteger(savedCharacter?.shadowShadeCount)) {
+          initial.characters[character.id].shadowShadeCount = Math.max(0, Math.min(7, savedCharacter.shadowShadeCount));
+        }
         if (savedCharacter?.resources) {
           for (const key of Object.keys(character.resources)) {
             if (Number.isFinite(savedCharacter.resources[key])) {
@@ -861,6 +865,14 @@ function attackWithBurningOrb(orbId) {
       if (target instanceof HTMLInputElement && target.matches("[data-summon-stat]")) {
         const card = target.closest("[data-summon-id]");
         if (card) updateSummonStat(card.dataset.summonId, target.dataset.summonStat, target.value.trim());
+        return;
+      }
+      if (target instanceof HTMLSelectElement && target.matches("[data-shadow-shades]")) {
+        const count = Number(target.value);
+        if (!Number.isInteger(count) || count < 0 || count > 7) return;
+        state.characters.Amarynth.shadowShadeCount = count;
+        saveCampaign();
+        render();
         return;
       }
       if (!(target instanceof HTMLSelectElement) || !target.matches("[data-variant-character]")) return;
