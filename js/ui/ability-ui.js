@@ -137,8 +137,8 @@
       const fasterThanLightCounter = ability.id === "amarynth-faster-than-light"
         ? `<label class="cost-chip" style="display:inline-flex;align-items:center;gap:6px">
             <span>Shades in shadow</span>
-            <select data-shadow-shades="Amarynth" aria-label="Shades in Amarynth's shadow" style="min-width:48px">
-              ${Array.from({ length: 8 }, (_, count) => `<option value="${count}" ${count === (state.characters.Amarynth.shadowShadeCount || 0) ? "selected" : ""}>${count}</option>`).join("")}
+            <select data-shadow-shades="Lizzie" aria-label="Shades in Amarynth's shadow" style="min-width:48px">
+              ${Array.from({ length: 8 }, (_, count) => `<option value="${count}" ${count === (state.characters?.Lizzie?.shadowShadeCount || 0) ? "selected" : ""}>${count}</option>`).join("")}
             </select>
           </label>`
         : "";
