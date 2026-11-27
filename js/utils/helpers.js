@@ -114,7 +114,7 @@
       const darknessModifiers = character.id === "Izaak" && darknessProgress && darknessStats.includes(stat)
         ? [{ bonus: darknessProgress.adjacentAlly ? "-1D8" : "1D8", source: "Darkness Embrace", detail: darknessProgress.adjacentAlly ? "Ally adjacent" : "No ally adjacent" }]
         : [];
-      const shadeCount = state.characters.Amarynth?.shadowShadeCount || 0;
+      const shadeCount = state.characters?.Amarynth?.shadowShadeCount || 0;
       const fasterThanLightBonus = stat === "speed"
         ? shadeCount
         : stat === "reflexes"
