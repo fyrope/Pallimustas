@@ -368,7 +368,7 @@
       {
         id: "Lizzie", name: "Amarynth Bellwether", race: "Celelstine", magicspecialty: "Array",
         rank: "Bronze", initials: "AB", color: "#c5a6d8", avatarBg: "#30273a",
-        resources: { health: 24, mana: 440, stamina: 440 },
+        resources: { health: 68, mana: 440, stamina: 440 },
         stats: { manaRecovery: 12, staminaRecovery: 64, physicalAttack: "2D8+1", damageResistance: "2D8+1", magic: "2D8", magicResistance: "2D8", speed: 32, reflexes: 4 },
         essences: ["Moon", "Star", "Sun", "Sky"],
         abilities: [
@@ -636,13 +636,13 @@
           { id: "smelf-debt", name: "Debt", description: "You are in debt 2,147,483,647 gold spirit coins to various tax brokers, loan sharks and corporations around pallimustas." }
         ],
         racialGifts: [
-          { id: "smelf-spell-aptitude", name: "Spell Aptitude", summary: "You are more likely to awaken spells", description: "You are more likely to awaken spells over other abilities.", cooldown: 0, duration: 0, tags: []},
-          { id: "smelf-nature-affinity", name: "Nature Affinity", summary: "Your nature type abilities are enhanced", description: "You have greater proficiency with Nature-type abilities, and they will have a greater effect.", cooldown: 0, duration: 0, tags: []},
-          { id: "smelf-life-affinity", name: "Life Affinity", summary: "Effects that have a positive effect on life have a greater effect", description: "Effects used or received with a positive effect on life have greater effect.", cooldown: 0, duration: 0, tags: []},
-          { id: "smelf-magic-affinity", name: "Magic Affinity", summary: "Enhanced magical abilities.", description: "Increases magic damage by 1D8", cooldown: 0, duration: 0, tags: ["Racial Gift", "Buff", "passive"], statEffects: [
+          { id: "smelf-spell-aptitude", name: "Spell Aptitude", summary: "You are more likely to awaken spells", description: "You are more likely to awaken spells over other abilities.", cooldown: 0, duration: 0, tags: ["Racial Gift", "passive"]},
+          { id: "smelf-nature-affinity", name: "Nature Affinity", summary: "Your nature type abilities are enhanced", description: "You have greater proficiency with Nature-type abilities, and they will have a greater effect.", cooldown: 0, duration: 0, tags: ["Racial Gift", "passive"]},
+          { id: "smelf-life-affinity", name: "Life Affinity", summary: "Effects that have a positive effect on life have a greater effect", description: "Effects used or received with a positive effect on life have greater effect.", cooldown: 0, duration: 0, tags: ["Racial Gift", "passive"]},
+          { id: "smelf-magic-affinity", name: "Magic Affinity", summary: "Enhanced magical abilities.", description: "Increases magic damage by 1D8", stamina: 0, mana: 0, cooldown: 0, duration: 0, tags: ["Racial Gift", "Buff", "passive"], statEffects: [
             { id: "magic-affinity-magic", stat: "magic", bonus: "1D8", target: "self" } ] },
-          { id: "smelf-mystic-bloodline", name: "Mystic Bloodline", summary: "Expanded Mana Pool", description: "Your mana pool is increased by 100.", cooldown: 0, duration: 0, tags: []},
-          { id: "smelf-Grace", name: "Grace", summary: "Enhanced Agility", description: "You have +1 Reflexes.", cooldown: 0, duration: 0, tags: []},
+          { id: "smelf-mystic-bloodline", name: "Mystic Bloodline", summary: "Expanded Mana Pool", description: "Your mana pool is increased by 100.", cooldown: 0, duration: 0, tags: ["Racial Gift", "passive"]},
+          { id: "smelf-Grace", name: "Grace", summary: "Enhanced Agility", description: "You have +1 Reflexes.", cooldown: 0, duration: 0, tags: ["Racial Gift", "passive"]},
         ]
       }
     ];
