@@ -821,7 +821,7 @@ function attackWithBurningOrb(orbId) {
       }
 
       for (const [field, value] of Object.entries(values)) {
-        if (!field.startsWith("targetPlayers:")) {
+        if (!field.startsWith("targetPlayers:") && field !== "healingTarget") {
           values[field] = Number(value);
         }
       }
