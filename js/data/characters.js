@@ -368,7 +368,7 @@
       {
         id: "Lizzie", name: "Amarynth Bellwether", race: "Celelstine", magicspecialty: "Array",
         rank: "Bronze", initials: "AB", color: "#c5a6d8", avatarBg: "#30273a",
-        resources: { health: 24, mana: 440, stamina: 440 },
+        resources: { health: 68, mana: 440, stamina: 440 },
         stats: { manaRecovery: 12, staminaRecovery: 64, physicalAttack: "2D8+1", damageResistance: "2D8+1", magic: "2D8", magicResistance: "2D8", speed: 32, reflexes: 4 },
         essences: ["Moon", "Star", "Sun", "Sky"],
         abilities: [
