@@ -16,19 +16,6 @@
         const inputId = field.slice("input:".length);
         return ability.inputFields?.find((input) => input.id === inputId)?.label || inputId;
       }
-      if (field.startsWith("summonStat:")) {
-        const stat = field.slice("summonStat:".length);
-        return ({
-          physicalAttack: "Summon physical attack",
-          damageResistance: "Summon damage resistance",
-          magic: "Summon magic",
-          magicResistance: "Summon magic resistance",
-          speed: "Summon speed",
-          reflexes: "Summon reflexes",
-          health: "Summon current HP",
-          maxHealth: "Summon maximum HP"
-        })[stat] || stat;
-      }
       if (field.startsWith("resourceEffect:")) {
         const effectId = field.slice("resourceEffect:".length);
         const effect = (ability.resourceEffects || []).find((entry) => entry.id === effectId);
@@ -236,10 +223,6 @@
           .map((effect) => `resourceEffect:${effect.id}`),
         ...(ability.afflictionEffects || [])
           .filter((effect) => effect.selectPlayers === true)
-          .map((effect) => `targetPlayers:${effect.id}`),
-        ...(abilityHasAnyTag(ability, ["Summon", "Familiar"])
-          ? ["physicalAttack", "damageResistance", "magic", "magicResistance", "speed", "reflexes", "health", "maxHealth"]
-            .map((stat) => `summonStat:${stat}`)
-          : [])
+          .map((effect) => `targetPlayers:${effect.id}`)
       ];
     }
