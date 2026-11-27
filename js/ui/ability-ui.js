@@ -24,7 +24,7 @@
         const label = resource ? resource[0].toUpperCase() + resource.slice(1) : "Resource";
         return `${label} change (negative spends)`;
       }
-      return ({ mana: "Mana cost", stamina: "Stamina cost", cooldown: "Cooldown (turns)" })[field];
+      return ({ mana: "Mana cost", stamina: "Stamina cost", cooldown: "Cooldown (turns)", summonMaxHealth: "Summon maximum health" })[field];
     }
 
     function renderAbilityRow(character, ability, isRacialGift = false) {
