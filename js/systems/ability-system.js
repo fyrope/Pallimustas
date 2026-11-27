@@ -635,7 +635,7 @@
       return Math.max(0, baseValue + bonus);
     }
 
-    function getAbilityCostModifiers(character, resource, targetAbility = null) {
+    function getAbilityCostModifiers(character, resource, targetAbility = null, mode = "activation") {
       return CHARACTERS.flatMap((sourceCharacter) => {
         if (!isCharacterAttending(sourceCharacter)) return [];
         return allCharacterAbilities(sourceCharacter).flatMap((ability) =>
@@ -645,6 +645,7 @@
               .filter((effect) =>
                 Number.isSafeInteger(effect[resource]) &&
                 effect[resource] > 0 &&
+                (!effect.upkeepOnly || mode === "upkeep") &&
                 statEffectTargets(effect, sourceCharacter).includes(character.id) &&
                 (!effect.abilityTags || (targetAbility && abilityHasAnyTag(targetAbility, effect.abilityTags)))
               )
@@ -669,7 +670,7 @@
     }
 
     function getEffectiveAbilityUpkeep(character, resource, cost, ability = null) {
-      const modifiers = getAbilityCostModifiers(character, resource, ability);
+      const modifiers = getAbilityCostModifiers(character, resource, ability, "upkeep");
       const reduction = modifiers.reduce((total, modifier) => total + modifier.amount / 10 * 6, 0);
       return {
         cost: Math.max(0, cost - reduction),
