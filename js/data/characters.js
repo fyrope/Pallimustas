@@ -4,7 +4,7 @@
      * Add statEffects to an ability or racial gift to apply a source-labeled stat bonus. Numeric bonuses and flat strings such as "+6" or "6" are valid; recovery modifiers must be flat numeric bonuses, not dice.
      * Effects stack and render separately; active effects need duration, while "passive" effects apply continuously.
      * Add costEffects to a passive to reduce mana/stamina costs for selected targets; abilityTags can limit which abilities are affected.
-     * Add enhancements: [{ stat, bonus }] to an ability to configure its Avatar of Speed bonus. The matching passive's enhancement rule controls which tagged abilities receive it. Prose-only effects must be represented as statEffects before they can be enhanced.
+     * Add enhancements to a receiving ability; supported entries include { stat, bonus }, { effect, bonus }, cooldown/recharge reductions, resource maximum increases, and { costReduction: { mana, stamina } }. Cost reductions apply to activation and upkeep (upkeep uses the existing 6-second-turn conversion) when a matching enhancement passive or Boost effect applies.
      * A variant of a passive ability can set activeVersion: true to expose its own costs, cooldown, inputs, and effects as a usable action while keeping the parent passive.
      * Add inputFields: [{ id, label, min }] to request a whole-number value on use. Affliction effects can convert it to stacks with stacksFromInput: { field, divisor }.
      * Add afflictionEffects to abilities to apply glossary statuses: { id, afflictionId, target, stacks, duration, maxStacksPerTurn }.
