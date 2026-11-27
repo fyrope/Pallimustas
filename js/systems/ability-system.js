@@ -252,12 +252,10 @@
           return false;
         }
         let rolledHealing = enhancedFormula.flat;
-        const diceResults = [];
         for (const [sides, count] of enhancedFormula.dice) {
           for (let index = 0; index < count; index += 1) {
             const result = Math.floor(Math.random() * sides) + 1;
             rolledHealing += result;
-            diceResults.push(result);
           }
         }
         const targetId = healing.selectTarget === true ? healingTargetId : character.id;
