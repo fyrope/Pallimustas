@@ -67,9 +67,12 @@
       const isRacialGift = (character.racialGifts || []).some((gift) => gift.id === abilityId);
       const stateKey = abilityStateKey(configuredAbility, ability.id === configuredAbility.id ? null : ability);
       if (toggleable && progress.activeAbilities?.[stateKey]) return;
+      const crystalLimit = ability.crystalSummon
+        ? getEnhancedAbilityQuantity(character, configuredAbility, ability, "crystalCount", ability.crystalSummon.max)
+        : 0;
       const crystals = ability.crystalSummon ? progress.crystals?.[configuredAbility.id] || [] : [];
-      if (ability.crystalSummon && crystals.length >= ability.crystalSummon.max) {
-        notify(`You can have at most ${ability.crystalSummon.max} mana crystals at a time.`);
+      if (ability.crystalSummon && crystals.length >= crystalLimit) {
+        notify(`You can have at most ${crystalLimit} mana crystals at a time.`);
         return;
       }
       const chargeRecharges = progress.chargeRecharges?.[stateKey] || [];
@@ -161,18 +164,29 @@
       if (ability.crystalSummon) {
         progress.crystals ??= {};
         progress.crystals[configuredAbility.id] ??= [];
-        state.crystalSequence += 1;
-        progress.crystals[configuredAbility.id].push({
-          id: `mana-crystal-${state.crystalSequence}`,
-          disabledTurns: 0
-        });
+        const crystalsToCreate = Math.min(
+          crystalLimit - progress.crystals[configuredAbility.id].length,
+          getEnhancedAbilityQuantity(character, configuredAbility, ability, "crystalCount", 1)
+        );
+        for (let index = 0; index < crystalsToCreate; index += 1) {
+          state.crystalSequence += 1;
+          progress.crystals[configuredAbility.id].push({
+            id: `mana-crystal-${state.crystalSequence}`,
+            disabledTurns: 0
+          });
+        }
       }
       if (abilityHasAnyTag(ability, ["Summon", "Familiar"])) {
         progress.summons ??= [];
         const alreadySummonedFamiliar = abilityHasAnyTag(ability, ["Familiar"]) &&
           progress.summons.some((entry) => entry.abilityId === configuredAbility.id);
         if (!alreadySummonedFamiliar) {
-          const count = Number.isSafeInteger(ability.summonCount) && ability.summonCount > 0 ? ability.summonCount : 1;
+          const baseCount = Number.isSafeInteger(ability.summonCount) && ability.summonCount > 0 ? ability.summonCount : 1;
+          const count = getEnhancedAbilityQuantity(character, configuredAbility, ability, "summonCount", baseCount);
+          const summonStats = Object.fromEntries(
+            ["physicalAttack", "damageResistance", "magic", "magicResistance", "speed", "reflexes"]
+              .map((stat) => [stat, String(suppliedValues[`summonStat:${stat}`] || "").slice(0, 40)])
+          );
           for (let index = 0; index < count; index += 1) {
             state.summonSequence = (state.summonSequence || 0) + 1;
             progress.summons.push({
@@ -180,13 +194,15 @@
               abilityId: configuredAbility.id,
               name: count > 1 ? `${ability.name} ${index + 1}` : ability.name,
               health: 0,
-              maxHealth: 0
+              maxHealth: 0,
+              stats: { ...summonStats }
             });
           }
         }
       }
       if (ability.orbSummon) {
-        progress.burningOrbs = Array.from({ length: ability.orbSummon.max }, (_, index) => ({ id: `burning-orb-${index + 1}` }));
+        const orbCount = getEnhancedAbilityQuantity(character, configuredAbility, ability, "orbCount", ability.orbSummon.max);
+        progress.burningOrbs = Array.from({ length: orbCount }, (_, index) => ({ id: `burning-orb-${index + 1}` }));
       }
       if (ability.shieldTarget) {
         const targetId = ability.shieldTarget === "self" ? character.id : (suppliedValues.shieldTarget || character.id);
@@ -239,6 +255,7 @@
             const maximum = characterById(change.targetCharacterId).resources[change.resource];
             stacks = Math.max(1, Math.ceil(Math.abs(change.amount) / maximum * 100));
           }
+          stacks = getEnhancedAbilityQuantity(character, configuredAbility, ability, "afflictionStacks", stacks);
           if (!Number.isSafeInteger(stacks) || stacks <= 0) continue;
 
           const selectedPlayers = effect.selectPlayers === true
@@ -509,6 +526,40 @@
         enhanced.flat += addition.flat;
       }
       return formatDiceFormula(enhanced);
+    }
+
+    function isAbilityEnhancedForCount(character, ability, configuration) {
+      for (const enhancerCharacter of CHARACTERS) {
+        if (!isCharacterAttending(enhancerCharacter)) continue;
+        for (const enhancer of allCharacterAbilities(enhancerCharacter)) {
+          for (const enhancerConfiguration of [enhancer, ...(enhancer.variants || [])]) {
+            const rule = enhancerConfiguration.enhancement;
+            if (!enhancerConfiguration.tags?.includes("enhancement") || !isPassiveConfiguration(enhancerConfiguration)) continue;
+            const validRule = rule &&
+              ["self", "others", "party", "tagged", "self-and-tagged"].includes(rule.target) &&
+              Array.isArray(rule.targetTags) && rule.targetTags.length > 0 &&
+              rule.targetTags.every((tag) => typeof tag === "string" && tag.trim()) &&
+              (!["tagged", "self-and-tagged"].includes(rule.target) ||
+                (Array.isArray(rule.tags) && rule.tags.length > 0 && rule.tags.every((tag) => typeof tag === "string" && tag.trim())));
+            if (!validRule) continue;
+            if (abilityHasAnyTag(ability, rule.targetTags, configuration) &&
+              statEffectTargets(rule, enhancerCharacter).includes(character.id)) return true;
+          }
+        }
+      }
+      return (state.characters[character.id]?.boostUses || 0) > 0 &&
+        abilityHasAnyTag(ability, ["Boostable"], configuration);
+    }
+
+    function getEnhancedAbilityQuantity(character, ability, configuration, effect, baseValue) {
+      if (!Number.isSafeInteger(baseValue)) return baseValue;
+      const enhancements = configuration.enhancements || ability.enhancements || [];
+      if (!Array.isArray(enhancements)) return baseValue;
+      const bonus = enhancements
+        .filter((entry) => entry?.effect === effect && Number.isSafeInteger(entry.bonus))
+        .reduce((total, entry) => total + entry.bonus, 0);
+      if (bonus <= 0 || !isAbilityEnhancedForCount(character, ability, configuration)) return baseValue;
+      return Math.max(0, baseValue + bonus);
     }
 
     function getAbilityCostModifiers(character, resource, targetAbility = null) {
