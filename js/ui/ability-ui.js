@@ -223,6 +223,7 @@
           .map((effect) => `resourceEffect:${effect.id}`),
         ...(ability.afflictionEffects || [])
           .filter((effect) => effect.selectPlayers === true)
-          .map((effect) => `targetPlayers:${effect.id}`)
+          .map((effect) => `targetPlayers:${effect.id}`),
+        ...(abilityHasAnyTag(ability, ["Summon", "Familiar"]) ? ["summonMaxHealth"] : [])
       ];
     }
