@@ -513,6 +513,7 @@ function attackWithBurningOrb(orbId) {
 
   if (key === "health" && delta < 0 && resources.health > 0) {
     let damageToAbsorb = Math.min(-delta, resources.health);
+    let absorbedTotal = 0;
     const blessings = state.activeAfflictions.filter((entry) =>
       entry.characterId === characterId && entry.afflictionId === "blessing of anticipation"
     );
@@ -521,11 +522,15 @@ function attackWithBurningOrb(orbId) {
       const absorbed = Math.min(blessing.stacks, damageToAbsorb);
       blessing.stacks -= absorbed;
       damageToAbsorb -= absorbed;
+      absorbedTotal += absorbed;
     }
     state.activeAfflictions = state.activeAfflictions.filter((entry) =>
       entry.afflictionId !== "blessing of anticipation" || entry.stacks > 0
     );
     delta += Math.min(-delta, resources.health) - damageToAbsorb;
+    if (absorbedTotal > 0) {
+      applyAffliction(characterId, "integrity", absorbedTotal, null, "Alacrity's Reward");
+    }
   }
 
   const nextValue = Math.max(
