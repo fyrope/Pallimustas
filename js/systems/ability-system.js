@@ -636,7 +636,7 @@
     }
 
     function getAbilityCostModifiers(character, resource, targetAbility = null, mode = "activation") {
-      return CHARACTERS.flatMap((sourceCharacter) => {
+      const passiveModifiers = CHARACTERS.flatMap((sourceCharacter) => {
         if (!isCharacterAttending(sourceCharacter)) return [];
         return allCharacterAbilities(sourceCharacter).flatMap((ability) =>
           [ability, ...(ability.variants || [])].flatMap((configuration) => {
@@ -653,6 +653,23 @@
           })
         );
       });
+
+      if (!targetAbility || !isAbilityEnhancedForCount(character, targetAbility, targetAbility)) {
+        return passiveModifiers;
+      }
+      const enhancements = targetAbility.enhancements || [];
+      if (!Array.isArray(enhancements)) {
+        console.error("Invalid enhancements configured for " + targetAbility.name + ".", enhancements);
+        return passiveModifiers;
+      }
+      const enhancementReduction = enhancements.reduce((total, entry) => {
+        const amount = entry && entry.costReduction && entry.costReduction[resource];
+        return Number.isSafeInteger(amount) && amount > 0 ? total + amount : total;
+      }, 0);
+      if (enhancementReduction <= 0) return passiveModifiers;
+      // Cost reductions use the same per-second conversion for upkeep as passive costEffects.
+      const amount = mode === "upkeep" ? enhancementReduction / 10 * 6 : enhancementReduction;
+      return [...passiveModifiers, { amount, source: targetAbility.name + " enhancement" }];
     }
 
 
