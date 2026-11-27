@@ -478,9 +478,9 @@
             {stat: "physicalAttack", bonus: "+1D8"}
           ] },
           { id: "gertrude-immortality", name: "Immortality", category: "Potent", summary: "Restore everything", description: "Instantly Fully restore all health, mana and stamina. Gain an ongoing health, mana and stamina recovery effects of 10/s for 3 rounds", mana: 0, stamina: 0, cooldown: 9999, tags: ["Special Ability", "Healing", "Recovery", "Boostable"], resourceEffects: [
-            { id: "immortality-mana", resource: "mana", bonus: 999, target: "self" },
-            { id: "immortality-stamina", resource: "stamina", bonus: 999, target: "self" },
-            { id: "immortality-health", resource: "health", bonus: 999, target: "self" }
+            { id: "immortality-mana", resource: "mana", amount: 999, target: "self" },
+            { id: "immortality-stamina", resource: "stamina", amount: 999, target: "self" },
+            { id: "immortality-health", resource: "health", amount: 999, target: "self" }
           ], afflictionEffects: [
             {id: "immortality", afflictionId: "immortality", target: "self", stacks: 1, duration: 3}
           ], enhancements: [

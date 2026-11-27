@@ -113,6 +113,10 @@
       "blessing of anticipation": {
         name: "Blessing of Anticipation",
         description: "Each stack absorbs 1 point of damage when health would be reduced. Consumed stacks are removed.",
+      },
+      "immortality": {
+        name: "Immortality",
+        description: "Stamina, Mana and Health Regen.",
       }
     };
 
