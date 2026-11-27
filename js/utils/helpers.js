@@ -115,9 +115,17 @@
         ? [{ bonus: darknessProgress.adjacentAlly ? "-1D8" : "1D8", source: "Darkness Embrace", detail: darknessProgress.adjacentAlly ? "Ally adjacent" : "No ally adjacent" }]
         : [];
       const shadeCount = state.characters.Amarynth?.shadowShadeCount || 0;
-      const fasterThanLightModifiers = character.id === "Amarynth" && shadeCount > 0 &&
-        ["speed", "reflexes"].includes(stat)
-        ? [{ bonus: String(shadeCount), source: "Faster than Light", detail: `${shadeCount} Shades in shadow` }]
+      const fasterThanLightBonus = stat === "speed"
+        ? shadeCount
+        : stat === "reflexes"
+          ? Math.floor(shadeCount * 0.25 + 0.5)
+          : 0;
+      const fasterThanLightModifiers = character.id === "Amarynth" && fasterThanLightBonus > 0
+        ? [{
+            bonus: String(fasterThanLightBonus),
+            source: "Faster than Light",
+            detail: `${shadeCount} Shades in shadow · Reflexes round from ${(shadeCount * 0.25).toFixed(2)}`
+          }]
         : [];
       const tideBonus = stat === "manaRecovery" ? manaTideRecoveryBonus(character) : 0;
       const manaTideModifiers = tideBonus > 0
